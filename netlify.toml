@@ -1,0 +1,14 @@
+[build]
+  command = "pnpm build"
+  publish = "dist/public"
+
+[build.environment]
+  # Netlify supports Node 22 broadly; Node 24 may not be available.
+  NODE_VERSION = "22"
+  PNPM_VERSION = "10.4.1"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
