@@ -89,17 +89,15 @@ function DialogOverlay({
 
 DialogOverlay.displayName = "DialogOverlay";
 
-const dialogCloseBarClass =
-  "flex shrink-0 justify-end border-b border-border/60 bg-background/95 px-4 py-3 backdrop-blur-sm supports-[backdrop-filter]:bg-background/80 sm:px-5 sm:py-3.5";
-
+/** Shared hit target + focus styles; layout (sticky vs absolute) is applied per layout mode. */
 const dialogCloseButtonClass =
-  "ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground rounded-xs opacity-80 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4";
+  "inline-flex shrink-0 rounded-xs text-neutral-400 opacity-80 ring-offset-background transition-colors hover:bg-neutral-800 hover:text-neutral-100 hover:opacity-100 focus:ring-2 focus:ring-[#D4AF37]/50 focus:ring-offset-2 focus:ring-offset-neutral-950 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4";
 
 function DialogContent({
   className,
   children,
   showCloseButton = true,
-  /** When false, children are not wrapped in a scroll container — use for split/full-bleed layouts (close bar stays fixed at top). */
+  /** When false, children are not wrapped in a scroll container — use for split/full-bleed layouts; close stays absolute in the panel corner. */
   bodyScroll = true,
   onEscapeKeyDown,
   ...props
@@ -133,33 +131,34 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 flex max-h-[min(90vh,100dvh)] w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] flex-col overflow-hidden gap-0 rounded-none border p-0 shadow-lg duration-200 sm:max-w-lg",
+          "border-border bg-background text-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 fixed top-[50%] left-[50%] z-50 flex max-h-[90vh] min-h-0 w-full max-w-[calc(100%-2rem)] translate-x-[-50%] translate-y-[-50%] flex-col gap-0 overflow-hidden rounded-none border p-0 shadow-lg duration-200 sm:max-w-lg",
           className
         )}
         onEscapeKeyDown={handleEscapeKeyDown}
         {...props}
       >
         {showCloseButton && bodyScroll ? (
-          <>
-            <div className={dialogCloseBarClass}>
-              <DialogPrimitive.Close data-slot="dialog-close" className={dialogCloseButtonClass}>
-                <XIcon />
-                <span className="sr-only">Close</span>
-              </DialogPrimitive.Close>
+          <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
+            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
+              <div className="sticky top-0 z-30 flex justify-end px-4 pt-4 sm:px-6">
+                <DialogPrimitive.Close data-slot="dialog-close" className={dialogCloseButtonClass}>
+                  <XIcon />
+                  <span className="sr-only">Close</span>
+                </DialogPrimitive.Close>
+              </div>
+              <div className="px-4 pb-4 sm:px-6 sm:pb-5">{children}</div>
             </div>
-            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-6 sm:py-5">
-              {children}
-            </div>
-          </>
+          </div>
         ) : showCloseButton && !bodyScroll ? (
           <>
-            <div className={dialogCloseBarClass}>
-              <DialogPrimitive.Close data-slot="dialog-close" className={dialogCloseButtonClass}>
-                <XIcon />
-                <span className="sr-only">Close</span>
-              </DialogPrimitive.Close>
-            </div>
-            <div className="min-h-0 flex-1 overflow-hidden">{children}</div>
+            <DialogPrimitive.Close
+              data-slot="dialog-close"
+              className={cn(dialogCloseButtonClass, "absolute right-4 top-4 z-50")}
+            >
+              <XIcon />
+              <span className="sr-only">Close</span>
+            </DialogPrimitive.Close>
+            <div className="flex min-h-0 flex-1 flex-col overflow-hidden">{children}</div>
           </>
         ) : (
           <div className="max-h-[min(90vh,100dvh)] overflow-y-auto overscroll-contain p-5 sm:p-6">
@@ -201,7 +200,7 @@ function DialogTitle({
   return (
     <DialogPrimitive.Title
       data-slot="dialog-title"
-      className={cn("text-lg leading-none font-semibold", className)}
+      className={cn("text-lg font-semibold leading-none text-neutral-100", className)}
       {...props}
     />
   );
@@ -214,7 +213,7 @@ function DialogDescription({
   return (
     <DialogPrimitive.Description
       data-slot="dialog-description"
-      className={cn("text-muted-foreground text-sm", className)}
+      className={cn("text-sm text-neutral-400", className)}
       {...props}
     />
   );

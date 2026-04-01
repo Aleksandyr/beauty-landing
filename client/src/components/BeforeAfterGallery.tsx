@@ -37,7 +37,7 @@ export default function BeforeAfterGallery({ items }: BeforeAfterGalleryProps) {
     <div className="space-y-8">
       {/* Main Slider */}
       <div
-        className="relative w-full bg-gray-200 overflow-hidden rounded-none shadow-lg cursor-col-resize max-w-2xl mx-auto"
+        className="relative mx-auto w-full max-w-2xl cursor-col-resize overflow-hidden rounded-none bg-neutral-900 shadow-lg"
         style={{ aspectRatio: "4/3" }}
         onMouseMove={handleMouseMove}
         onTouchMove={handleTouchMove}
@@ -91,12 +91,12 @@ export default function BeforeAfterGallery({ items }: BeforeAfterGalleryProps) {
       {/* Title and Description */}
       <div className="text-center">
         <h3
-          className="text-4xl font-light mb-4"
+          className="mb-4 text-4xl font-light text-neutral-100"
           style={{ fontFamily: "Bodoni Moda" }}
         >
           {current.title}
         </h3>
-        <p className="text-gray-600 max-w-2xl mx-auto text-base" style={{ fontFamily: "Inter" }}>
+        <p className="mx-auto max-w-2xl text-base text-neutral-400" style={{ fontFamily: "Inter" }}>
           {current.description}
         </p>
       </div>
@@ -135,7 +135,7 @@ export default function BeforeAfterGallery({ items }: BeforeAfterGalleryProps) {
               setSliderPosition(50);
             }}
             className={`h-3 rounded-none transition-all ${
-              activeIndex === index ? "bg-[#D4AF37] w-8" : "bg-gray-300"
+              activeIndex === index ? "bg-[#D4AF37] w-8" : "bg-neutral-600"
             }`}
             aria-label={`View service ${index + 1}`}
           />
