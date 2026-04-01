@@ -26,7 +26,83 @@ import laminationBrowsLashesImage from "@/assets/lamination-brows-lashes.png";
 import moreForMePortrait from "@/assets/more-for-me.png";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useCallback, useEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
+
+/** Movement above this (px) counts as scroll/drag — do not open the service dialog. */
+const SERVICE_CAROUSEL_TAP_THRESHOLD_PX = 14;
+
+const serviceCarouselImageTriggerClass =
+  "relative mb-4 h-52 cursor-pointer touch-pan-x select-none overflow-hidden rounded-none shadow-md sm:mb-6 sm:h-64";
+
+/**
+ * Carousel card image opens a dialog on tap only. Radix `DialogTrigger` on the image
+ * captures touch in a way that blocks horizontal carousel scrolling; this uses a
+ * controlled dialog and ignores opens when the user pans past a small threshold.
+ */
+function ServiceCarouselTapDialog({
+  triggerChildren,
+  dialogChildren,
+}: {
+  triggerChildren: ReactNode;
+  dialogChildren: ReactNode;
+}) {
+  const [open, setOpen] = useState(false);
+  const startRef = useRef<{ x: number; y: number } | null>(null);
+  const cancelTapRef = useRef(false);
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <div
+        className={serviceCarouselImageTriggerClass}
+        role="button"
+        tabIndex={0}
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        onPointerDown={(e) => {
+          startRef.current = { x: e.clientX, y: e.clientY };
+          cancelTapRef.current = false;
+        }}
+        onPointerMove={(e) => {
+          if (!startRef.current) return;
+          const dx = e.clientX - startRef.current.x;
+          const dy = e.clientY - startRef.current.y;
+          if (Math.hypot(dx, dy) > SERVICE_CAROUSEL_TAP_THRESHOLD_PX) {
+            cancelTapRef.current = true;
+          }
+        }}
+        onPointerUp={() => {
+          startRef.current = null;
+        }}
+        onPointerCancel={() => {
+          startRef.current = null;
+          cancelTapRef.current = true;
+        }}
+        onClick={() => {
+          if (cancelTapRef.current) {
+            cancelTapRef.current = false;
+            return;
+          }
+          setOpen(true);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            setOpen(true);
+          }
+        }}
+      >
+        {triggerChildren}
+      </div>
+      {dialogChildren}
+    </Dialog>
+  );
+}
 
 /**
  * PhiBrows Landing Page - Material Design
@@ -239,7 +315,11 @@ export default function Home() {
                       Повече за Мен
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="flex max-h-[90vh] w-full max-w-[calc(100%-2rem)] flex-col gap-0 overflow-hidden border-[#E7DBC1] bg-gradient-to-br from-[#FFFEFB] via-white to-[#F8F3E8] p-0 shadow-2xl backdrop-blur-sm sm:max-w-4xl md:max-w-5xl md:flex-row">
+                  <DialogContent
+                    bodyScroll={false}
+                    className="flex max-h-[90vh] w-full max-w-[calc(100%-2rem)] flex-col gap-0 overflow-hidden border-[#E7DBC1] bg-gradient-to-br from-[#FFFEFB] via-white to-[#F8F3E8] p-0 shadow-2xl backdrop-blur-sm sm:max-w-4xl md:max-w-5xl"
+                  >
+                    <div className="flex min-h-0 min-w-0 flex-1 flex-col md:flex-row">
                     {/* Left: portrait */}
                     <div className="relative h-56 w-full shrink-0 overflow-hidden sm:h-64 md:h-auto md:min-h-[min(78vh,560px)] md:w-[42%]">
                       <img
@@ -337,6 +417,7 @@ export default function Home() {
                         </div>
                       </div>
                     </div>
+                    </div>
                   </DialogContent>
                 </Dialog>
               </div>
@@ -393,25 +474,26 @@ export default function Home() {
             >
             {/* Service 1: Hairstrokes */}
             <div className={serviceSlideClass(0)}>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <div className="relative h-52 sm:h-64 overflow-hidden mb-4 sm:mb-6 rounded-none shadow-md cursor-pointer select-none">
+              <ServiceCarouselTapDialog
+                triggerChildren={
+                  <>
                     <img
                       src={hairstrokesImage}
                       alt="Hairstrokes"
-                      className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:blur-sm"
+                      className="h-full w-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:blur-sm"
                     />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors duration-300" />
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/25" />
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                       <span
-                        className="px-6 py-2 border border-white/70 text-white tracking-widest text-xs font-semibold rounded-none"
+                        className="rounded-none border border-white/70 px-6 py-2 text-xs font-semibold tracking-widest text-white"
                         style={{ fontFamily: "Inter" }}
                       >
                         повече
                       </span>
                     </div>
-                  </div>
-                </DialogTrigger>
+                  </>
+                }
+                dialogChildren={
                 <DialogContent className="max-w-2xl border-[#E7DBC1] bg-gradient-to-br from-[#FFFEFB] via-white to-[#F8F3E8] backdrop-blur-sm shadow-2xl">
                   <DialogHeader>
                     <DialogTitle
@@ -483,7 +565,8 @@ export default function Home() {
                     </div>
                   </div>
                 </DialogContent>
-              </Dialog>
+                }
+              />
               <h3
                 className={serviceCardTitleClass}
                 style={{ fontFamily: "Bodoni Moda" }}
@@ -497,25 +580,26 @@ export default function Home() {
 
             {/* Service 2: Микропигментация на вежди */}
             <div className={serviceSlideClass(1)}>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <div className="relative h-52 sm:h-64 overflow-hidden mb-4 sm:mb-6 rounded-none shadow-md cursor-pointer select-none">
+              <ServiceCarouselTapDialog
+                triggerChildren={
+                  <>
                     <img
                       src={micropigmentationImage}
                       alt="Микропигментация на вежди"
-                      className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:blur-sm"
+                      className="h-full w-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:blur-sm"
                     />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors duration-300" />
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/25" />
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                       <span
-                        className="px-6 py-2 border border-white/70 text-white tracking-widest text-xs font-semibold rounded-none"
+                        className="rounded-none border border-white/70 px-6 py-2 text-xs font-semibold tracking-widest text-white"
                         style={{ fontFamily: "Inter" }}
                       >
                         повече
                       </span>
                     </div>
-                  </div>
-                </DialogTrigger>
+                  </>
+                }
+                dialogChildren={
                 <DialogContent className="max-w-2xl border-[#E7DBC1] bg-gradient-to-br from-[#FFFEFB] via-white to-[#F8F3E8] backdrop-blur-sm shadow-2xl">
                   <DialogHeader>
                     <DialogTitle
@@ -597,7 +681,8 @@ export default function Home() {
                     </div>
                   </div>
                 </DialogContent>
-              </Dialog>
+                }
+              />
               <h3
                 className={serviceCardTitleClass}
                 style={{ fontFamily: "Bodoni Moda" }}
@@ -611,25 +696,26 @@ export default function Home() {
 
             {/* Service 3: Микроблейдинг */}
             <div className={serviceSlideClass(2)}>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <div className="relative h-52 sm:h-64 overflow-hidden mb-4 sm:mb-6 rounded-none shadow-md cursor-pointer select-none">
+              <ServiceCarouselTapDialog
+                triggerChildren={
+                  <>
                     <img
                       src={microbladingImage}
                       alt="Микроблейдинг"
-                      className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:blur-sm"
+                      className="h-full w-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:blur-sm"
                     />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors duration-300" />
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/25" />
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                       <span
-                        className="px-6 py-2 border border-white/70 text-white tracking-widest text-xs font-semibold rounded-none"
+                        className="rounded-none border border-white/70 px-6 py-2 text-xs font-semibold tracking-widest text-white"
                         style={{ fontFamily: "Inter" }}
                       >
                         повече
                       </span>
                     </div>
-                  </div>
-                </DialogTrigger>
+                  </>
+                }
+                dialogChildren={
                 <DialogContent className="max-w-2xl border-[#E7DBC1] bg-gradient-to-br from-[#FFFEFB] via-white to-[#F8F3E8] backdrop-blur-sm shadow-2xl">
                   <DialogHeader>
                     <DialogTitle
@@ -695,7 +781,8 @@ export default function Home() {
                     </div>
                   </div>
                 </DialogContent>
-              </Dialog>
+                }
+              />
               <h3
                 className={serviceCardTitleClass}
                 style={{ fontFamily: "Bodoni Moda" }}
@@ -709,25 +796,26 @@ export default function Home() {
 
             {/* Service 4: hairstrokes + powder effect */}
             <div className={serviceSlideClass(3)}>
-              <Dialog>
-                <DialogTrigger asChild>
-                  <div className="relative h-52 sm:h-64 overflow-hidden mb-4 sm:mb-6 rounded-none shadow-md cursor-pointer select-none">
+              <ServiceCarouselTapDialog
+                triggerChildren={
+                  <>
                     <img
                       src={hairstrokesPowderImage}
                       alt="hairstrokes + powder effect"
-                      className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:blur-sm"
+                      className="h-full w-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:blur-sm"
                     />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors duration-300" />
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/25" />
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                       <span
-                        className="px-6 py-2 border border-white/70 text-white tracking-widest text-xs font-semibold rounded-none"
+                        className="rounded-none border border-white/70 px-6 py-2 text-xs font-semibold tracking-widest text-white"
                         style={{ fontFamily: "Inter" }}
                       >
                         повече
                       </span>
                     </div>
-                  </div>
-                </DialogTrigger>
+                  </>
+                }
+                dialogChildren={
                 <DialogContent className="max-w-2xl border-[#E7DBC1] bg-gradient-to-br from-[#FFFEFB] via-white to-[#F8F3E8] backdrop-blur-sm shadow-2xl">
                   <DialogHeader>
                     <DialogTitle
@@ -814,7 +902,8 @@ export default function Home() {
                     </div>
                   </div>
                 </DialogContent>
-              </Dialog>
+                }
+              />
               <h3
                 className={serviceCardTitleClass}
                 style={{ fontFamily: "Bodoni Moda" }}
@@ -831,25 +920,26 @@ export default function Home() {
                   key={service.title}
                   className={serviceSlideClass(4 + slideIdx)}
                 >
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <div className="relative h-52 sm:h-64 overflow-hidden mb-4 sm:mb-6 rounded-none shadow-md cursor-pointer select-none">
+                  <ServiceCarouselTapDialog
+                    triggerChildren={
+                      <>
                         <img
                           src={service.image}
                           alt={service.title}
-                          className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:blur-sm"
+                          className="h-full w-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:blur-sm"
                         />
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors duration-300" />
-                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/25" />
+                        <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                           <span
-                            className="px-6 py-2 border border-white/70 text-white tracking-widest text-xs font-semibold rounded-none"
+                            className="rounded-none border border-white/70 px-6 py-2 text-xs font-semibold tracking-widest text-white"
                             style={{ fontFamily: "Inter" }}
                           >
                             more
                           </span>
                         </div>
-                      </div>
-                    </DialogTrigger>
+                      </>
+                    }
+                    dialogChildren={
                     <DialogContent className="max-w-2xl border-[#E7DBC1] bg-gradient-to-br from-[#FFFEFB] via-white to-[#F8F3E8] backdrop-blur-sm shadow-2xl">
                       <DialogHeader>
                         <DialogTitle
@@ -1330,7 +1420,8 @@ export default function Home() {
                         )}
                       </div>
                     </DialogContent>
-                  </Dialog>
+                    }
+                  />
                   <h3
                     className={serviceCardTitleClass}
                     style={{ fontFamily: "Bodoni Moda" }}
