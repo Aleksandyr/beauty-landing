@@ -31,7 +31,7 @@ export default function ContactForm() {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 bg-[#1A1A1A] rounded-none overflow-hidden min-h-screen lg:min-h-auto">
+    <div className="grid min-h-screen grid-cols-1 gap-0 overflow-hidden rounded-none bg-black lg:min-h-auto lg:grid-cols-2">
       {/* Left Side - Map/Location Image */}
       <div
         className="hidden lg:block h-full min-h-screen bg-cover bg-center relative"
@@ -57,7 +57,7 @@ export default function ContactForm() {
       </div>
 
       {/* Right Side - Form */}
-      <div className="bg-[#1A1A1A] p-8 lg:p-12 flex items-center justify-center">
+      <div className="flex items-center justify-center bg-black p-8 lg:p-12">
         <form onSubmit={handleSubmit} className="w-full max-w-lg space-y-6">
           {/* Heading */}
           <div className="mb-10">
@@ -136,11 +136,11 @@ export default function ContactForm() {
                 className="w-full px-0 py-3 bg-transparent border-b border-gray-600 text-white focus:outline-none focus:border-[#D4AF37] transition-colors appearance-none cursor-pointer text-base"
                 style={{ fontFamily: "Inter" }}
               >
-                <option value="" className="bg-[#1A1A1A] text-white">Select a treatment</option>
-                <option value="microblading" className="bg-[#1A1A1A] text-white">Microblading</option>
-                <option value="eyelashes" className="bg-[#1A1A1A] text-white">Eyelash Extensions</option>
-                <option value="laser" className="bg-[#1A1A1A] text-white">Laser Pigmentation Removal</option>
-                <option value="lipstick" className="bg-[#1A1A1A] text-white">Permanent Lipstick</option>
+                <option value="" className="bg-black text-white">Select a treatment</option>
+                <option value="microblading" className="bg-black text-white">Microblading</option>
+                <option value="eyelashes" className="bg-black text-white">Eyelash Extensions</option>
+                <option value="laser" className="bg-black text-white">Laser Pigmentation Removal</option>
+                <option value="lipstick" className="bg-black text-white">Permanent Lipstick</option>
               </select>
             </div>
           </div>

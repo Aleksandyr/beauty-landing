@@ -75,19 +75,19 @@ export default function FAQSection() {
   const categories = Array.from(new Set(faqItems.map((item) => item.category)));
 
   return (
-    <section id="faq" className="py-24 bg-white">
+    <section id="faq" className="bg-black py-24 text-neutral-100">
       <div className="container">
         <div className="text-center mb-20">
           <span className="text-xs tracking-widest font-semibold text-[#D4AF37]" style={{ fontFamily: "Inter" }}>
             COMMON QUESTIONS
           </span>
           <h2
-            className="text-6xl font-light mt-4"
+            className="mt-4 text-6xl font-light text-neutral-100"
             style={{ fontFamily: "Bodoni Moda" }}
           >
             Frequently Asked Questions
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto mt-6" style={{ fontFamily: "Inter" }}>
+          <p className="mx-auto mt-6 max-w-2xl text-lg text-neutral-400" style={{ fontFamily: "Inter" }}>
             Find answers to common questions about our beauty services, aftercare, and procedures.
           </p>
           <div className="w-12 h-1 bg-[#D4AF37] mx-auto mt-6 rounded-none"></div>
@@ -97,7 +97,7 @@ export default function FAQSection() {
           {categories.map((category) => (
             <div key={category}>
               <h3
-                className="text-2xl font-light mb-6 pb-4 border-b-2 border-gray-300"
+                className="mb-6 border-b-2 border-neutral-800 pb-4 text-2xl font-light text-neutral-100"
                 style={{ fontFamily: "Bodoni Moda" }}
               >
                 {category}
@@ -113,7 +113,7 @@ export default function FAQSection() {
                     return (
                       <div
                         key={globalIndex}
-                        className="border-b border-gray-200 pb-4"
+                        className="border-b border-neutral-800 pb-4"
                       >
                         <button
                           onClick={() =>
@@ -122,13 +122,13 @@ export default function FAQSection() {
                           className="w-full flex items-start justify-between gap-4 py-4 hover:text-[#D4AF37] transition-colors text-left"
                         >
                           <span
-                            className="text-lg font-light flex-1"
+                            className="flex-1 text-lg font-light text-neutral-100"
                             style={{ fontFamily: "Bodoni Moda" }}
                           >
                             {item.question}
                           </span>
                           <ChevronDown
-                            className={`w-5 h-5 flex-shrink-0 transition-transform duration-300 ${
+                            className={`h-5 w-5 shrink-0 text-neutral-400 transition-transform duration-300 ${
                               isOpen ? "rotate-180" : ""
                             }`}
                           />
@@ -136,7 +136,7 @@ export default function FAQSection() {
 
                         {isOpen && (
                           <div
-                            className="pb-4 text-gray-700 text-base leading-relaxed"
+                            className="pb-4 text-base leading-relaxed text-neutral-300"
                             style={{ fontFamily: "Inter" }}
                           >
                             {item.answer}
@@ -151,11 +151,11 @@ export default function FAQSection() {
         </div>
 
         <div className="mt-20 text-center">
-          <p className="text-gray-600 mb-6" style={{ fontFamily: "Inter" }}>
+          <p className="mb-6 text-neutral-400" style={{ fontFamily: "Inter" }}>
             Didn't find your answer? Contact us directly for personalized assistance.
           </p>
           <button
-            className="bg-[#0A0A0A] text-white px-8 py-3 rounded-none hover:bg-[#D4AF37] hover:text-white transition-all font-medium"
+            className="rounded-none border border-[#D4AF37] bg-[#D4AF37] px-8 py-3 font-medium text-black transition-all hover:bg-white hover:text-[#D4AF37]"
             style={{ fontFamily: "Inter" }}
           >
             Contact Us
