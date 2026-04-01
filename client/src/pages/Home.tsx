@@ -16,8 +16,17 @@ import micropigmentationImage from "@/assets/micropigmentation.png";
 import microbladingImage from "@/assets/microblading.png";
 import hairstrokesPowderImage from "@/assets/hairstrokes-powder.png";
 import softLipsImage from "@/assets/soft-lips.png";
-import { ArrowRight } from "lucide-react";
-import { useEffect, useState } from "react";
+import softEyesImage from "@/assets/soft-eyes.png";
+import laserProceduresCardImage from "@/assets/laser-procedures-card.png";
+import laserPmuRemovalImage from "@/assets/laser-pmu-removal.png";
+import laserCarbonPeelingImage from "@/assets/laser-carbon-peeling.png";
+import laserTattooRemovalImage from "@/assets/laser-tattoo-removal.png";
+import migloplastikaImage from "@/assets/migloplastika.png";
+import laminationBrowsLashesImage from "@/assets/lamination-brows-lashes.png";
+import moreForMePortrait from "@/assets/more-for-me.png";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 /**
  * PhiBrows Landing Page - Material Design
@@ -28,6 +37,47 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const servicesCarouselRef = useRef<HTMLDivElement>(null);
+  const [canScrollServicesLeft, setCanScrollServicesLeft] = useState(false);
+  const [canScrollServicesRight, setCanScrollServicesRight] = useState(true);
+  const [focusedCarouselIndex, setFocusedCarouselIndex] = useState(0);
+
+  const updateServicesCarouselScrollState = () => {
+    const el = servicesCarouselRef.current;
+    if (!el) return;
+    const { scrollLeft, scrollWidth, clientWidth } = el;
+    setCanScrollServicesLeft(scrollLeft > 4);
+    setCanScrollServicesRight(scrollLeft < scrollWidth - clientWidth - 4);
+  };
+
+  const updateFocusedCarouselCard = useCallback(() => {
+    const el = servicesCarouselRef.current;
+    if (!el) return;
+    const { children } = el;
+    if (children.length === 0) return;
+    const trackRect = el.getBoundingClientRect();
+    const viewportCenterX = trackRect.left + el.clientWidth / 2;
+    let bestIdx = 0;
+    let bestDist = Infinity;
+    for (let i = 0; i < children.length; i++) {
+      const child = children[i] as HTMLElement;
+      const r = child.getBoundingClientRect();
+      const cardCenterX = r.left + r.width / 2;
+      const dist = Math.abs(viewportCenterX - cardCenterX);
+      if (dist < bestDist) {
+        bestDist = dist;
+        bestIdx = i;
+      }
+    }
+    setFocusedCarouselIndex(bestIdx);
+  }, []);
+
+  const scrollServicesCarousel = (dir: "left" | "right") => {
+    const el = servicesCarouselRef.current;
+    if (!el) return;
+    const step = Math.max(el.clientWidth * 0.75, 280);
+    el.scrollBy({ left: dir === "left" ? -step : step, behavior: "smooth" });
+  };
 
   const additionalServices = [
     {
@@ -37,28 +87,28 @@ export default function Home() {
       image: softLipsImage,
     },
     {
-      title: "Brow Correction",
+      title: "Soft Eyes",
       description:
-        "Shape and symmetry refinement designed to balance your facial features naturally.",
-      image: microbladingImage,
+        "Перманентната очна линия деликатно подчертава линията на миглите и придава по-изразителен и оформен поглед.",
+      image: softEyesImage,
     },
     {
-      title: "Lip Blush",
+      title: "Лазерни процедури",
       description:
-        "Natural lip color enhancement that improves tone and contour with subtle elegance.",
-      image: micropigmentationImage,
+        "Съвременните лазерни технологии почистват, подмладяват и изсветляват кожата, като разграждат пигменти и замърсявания, които организмът естествено елиминира.",
+      image: laserProceduresCardImage,
     },
     {
-      title: "Lash Line Enhancement",
+      title: "Миглопластика",
       description:
-        "Delicate pigment placement along the lash line for a soft, fuller-eye effect.",
-      image: hairstrokesImage,
+        "Процедура, която сгъстява естествените мигли, придавайки им по-дълъг, плътен и изразителен вид.",
+      image: migloplastikaImage,
     },
     {
-      title: "Consultation & Design",
+      title: "Ламиниране на вежди и мигли",
       description:
-        "Personalized brow mapping and treatment planning tailored to your desired result.",
-      image: hairstrokesPowderImage,
+        "Процедура, която оформя, подрежда и фиксира косъмчетата в желаната посока, създавайки по-плътен, подреден и естествен вид.",
+      image: laminationBrowsLashesImage,
     },
   ];
 
@@ -69,6 +119,43 @@ export default function Home() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    const el = servicesCarouselRef.current;
+    if (!el) return;
+    const syncCarouselUi = () => {
+      updateServicesCarouselScrollState();
+      updateFocusedCarouselCard();
+    };
+    syncCarouselUi();
+    requestAnimationFrame(syncCarouselUi);
+    el.addEventListener("scroll", syncCarouselUi, { passive: true });
+    const ro = new ResizeObserver(syncCarouselUi);
+    ro.observe(el);
+    window.addEventListener("resize", syncCarouselUi);
+    return () => {
+      el.removeEventListener("scroll", syncCarouselUi);
+      ro.disconnect();
+      window.removeEventListener("resize", syncCarouselUi);
+    };
+  }, [updateFocusedCarouselCard]);
+
+  const serviceSlideClass = (index: number) =>
+    cn(
+      "group relative flex min-w-0 w-full flex-col gap-3 px-3 pb-4 pt-2 sm:px-4 sm:pb-5 sm:pt-3 md:px-5 md:pb-6 md:pt-3 lg:px-4 lg:pb-5 snap-center shrink-0",
+      /* ~1 card mobile, 2 on tablet, 5 on lg+ (middle card visible) */
+      "basis-[85%] md:basis-[calc((100%-2rem)/2)] lg:basis-[calc((100%-8rem)/5)]",
+      "transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform",
+      focusedCarouselIndex === index
+        ? "z-20 shadow-[0_22px_55px_rgba(0,0,0,0.14)] ring-2 ring-[#D4AF37]/40 max-md:scale-[1.02] md:scale-[1.05]"
+        : "z-0 shadow-md max-md:scale-100 max-md:opacity-100 md:scale-[0.96] md:opacity-[0.88]"
+    );
+
+  const serviceCardTitleClass =
+    "min-w-0 max-w-full break-words [overflow-wrap:anywhere] text-pretty font-light leading-tight text-base sm:text-xl lg:text-sm xl:text-base 2xl:text-lg mb-2";
+
+  const serviceCardDescClass =
+    "min-w-0 max-w-full break-words [overflow-wrap:anywhere] text-pretty text-gray-600 mb-0 text-xs sm:text-sm leading-relaxed";
 
   return (
     <div className="min-h-screen bg-[#FAFAF8] text-[#0A0A0A]">
@@ -149,94 +236,105 @@ export default function Home() {
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button className="bg-[#D4AF37] text-white px-8 py-6 hover:bg-white hover:text-[#D4AF37] transition-all text-base rounded-none font-semibold">
-                      повече за мен
+                      Повече за Мен
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="max-w-2xl border-[#E7DBC1] bg-gradient-to-br from-[#FFFEFB] via-white to-[#F8F3E8] backdrop-blur-sm shadow-2xl">
-                    <DialogHeader>
-                      <DialogTitle
-                        className="text-2xl tracking-wide"
-                        style={{ fontFamily: "Bodoni Moda" }}
+                  <DialogContent className="flex max-h-[90vh] w-full max-w-[calc(100%-2rem)] flex-col gap-0 overflow-hidden border-[#E7DBC1] bg-gradient-to-br from-[#FFFEFB] via-white to-[#F8F3E8] p-0 shadow-2xl backdrop-blur-sm sm:max-w-4xl md:max-w-5xl md:flex-row">
+                    {/* Left: portrait */}
+                    <div className="relative h-56 w-full shrink-0 overflow-hidden sm:h-64 md:h-auto md:min-h-[min(78vh,560px)] md:w-[42%]">
+                      <img
+                        src={moreForMePortrait}
+                        alt="Цветелина Каменова"
+                        className="h-full w-full object-cover object-[center_20%]"
+                      />
+                    </div>
+                    {/* Right: text (scrolls independently on desktop) */}
+                    <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto px-6 pb-6 pt-0 sm:px-8 sm:pb-8 md:max-h-[min(90vh,620px)]">
+                      <DialogHeader className="space-y-0 pt-0 text-left">
+                        <DialogTitle
+                          className="text-2xl leading-snug tracking-wide"
+                          style={{ fontFamily: "Bodoni Moda" }}
+                        >
+                          Повече за мен
+                        </DialogTitle>
+                      </DialogHeader>
+                      <div
+                        className="mt-10 space-y-5 text-sm leading-relaxed text-foreground sm:mt-12"
+                        style={{ fontFamily: "Inter" }}
                       >
-                        Повече за мен
-                      </DialogTitle>
-                    </DialogHeader>
-                    <div
-                      className="space-y-5 text-sm leading-relaxed text-foreground"
-                      style={{ fontFamily: "Inter" }}
-                    >
-                      <div className="space-y-3">
-                        <p className="text-xs tracking-[0.25em] text-[#D4AF37] uppercase">
-                          Мaster trainer • Permanent makeup
-                        </p>
-                        <p className="text-base">
-                          <span className="font-semibold">
-                            Цветелина Каменова
-                          </span>{" "}
-                          е утвърден професионалист и разпознаваемо име в света
-                          на перманентния грим. Нейната работа се отличава с{" "}
-                          <span className="font-semibold">
-                            изключителна прецизност, естетика и безкомпромисно
-                            качество.
-                          </span>
-                        </p>
-                      </div>
+                        <div className="space-y-3">
+                          <p className="text-xs tracking-[0.25em] text-[#D4AF37] uppercase">
+                            Мaster trainer • Permanent makeup
+                          </p>
+                          <p className="text-base">
+                            <span className="font-semibold">
+                              Цветелина Каменова
+                            </span>{" "}
+                            е утвърден професионалист и разпознаваемо име в света
+                            на перманентния грим. Нейната работа се отличава с{" "}
+                            <span className="font-semibold">
+                              изключителна прецизност, естетика и безкомпромисно
+                              качество.
+                            </span>
+                          </p>
+                        </div>
 
-                      <div className="space-y-2 border-l-2 border-[#D4AF37] pl-4">
-                        <p className="font-semibold text-sm text-[#D4AF37]">
-                          Международно признание
-                        </p>
-                        <p>
-                          През <span className="font-semibold">2025 година</span>{" "}
-                          печели признанието на световноизвестни имена в
-                          областта на перманентния грим, като завоюва{" "}
-                          <span className="font-semibold">Първо място</span> на
-                          международния шампионат{" "}
-                          <span className="italic">The Queens Night</span> с
-                          представяне на своята работа в техниката{" "}
-                          <span className="font-semibold">Powderbrows</span> —
-                          отличие, което утвърждава нейния авторитет и я
-                          позиционира сред най-добрите професионалисти в
-                          България.
-                        </p>
-                      </div>
+                        <div className="space-y-2 border-l-2 border-[#D4AF37] pl-4">
+                          <p className="font-semibold text-sm text-[#D4AF37]">
+                            Международно признание
+                          </p>
+                          <p>
+                            През <span className="font-semibold">2025 година</span>{" "}
+                            печели признанието на световноизвестни имена в
+                            областта на перманентния грим, като завоюва{" "}
+                            <span className="font-semibold">Първо място</span> на
+                            международния шампионат{" "}
+                            <span className="italic">The Queens Night</span> с
+                            представяне на своята работа в техниката{" "}
+                            <span className="font-semibold">Powderbrows</span> —
+                            отличие, което утвърждава нейния авторитет и я
+                            позиционира сред най-добрите професионалисти в
+                            България.
+                          </p>
+                        </div>
 
-                      <div className="space-y-2">
-                        <p className="font-semibold text-sm text-[#D4AF37]">
-                          Обучител и ментор
-                        </p>
-                        <p>
-                          Освен активен практик, Цветелина е и{" "}
-                          <span className="font-semibold">
-                            вдъхновяващ обучител
-                          </span>
-                          , провеждащ професионални обучения{" "}
-                          <span className="font-semibold">
-                            на живо и онлайн
-                          </span>
-                          . Нейните курсове са насочени както към{" "}
-                          начинаещи, така и към практикуващи специалисти, които
-                          търсят не просто техника, а{" "}
-                          <span className="font-semibold">
-                            висок стандарт, увереност и професионално
-                            израстване.
-                          </span>
-                        </p>
-                      </div>
+                        <div className="space-y-2">
+                          <p className="font-semibold text-sm text-[#D4AF37]">
+                            Обучител и ментор
+                          </p>
+                          <p>
+                            Освен активен практик, Цветелина е и{" "}
+                            <span className="font-semibold">
+                              вдъхновяващ обучител
+                            </span>
+                            , провеждащ професионални обучения{" "}
+                            <span className="font-semibold">
+                              на живо и онлайн
+                            </span>
+                            . Нейните курсове са насочени както към{" "}
+                            начинаещи, така и към практикуващи специалисти, които
+                            търсят не просто техника, а{" "}
+                            <span className="font-semibold">
+                              висок стандарт, увереност и професионално
+                              израстване.
+                            </span>
+                          </p>
+                        </div>
 
-                      <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
-                        <p className="font-semibold text-sm text-[#D4AF37]">
-                          Цел
-                        </p>
-                        <p>
-                          Участието ѝ в престижни кампании и шампионати е
-                          естествено продължение на философията ѝ — да представя
-                          перманентния грим като{" "}
-                          <span className="font-semibold">
-                            изкуство, професия и отговорност
-                          </span>
-                          , издигнати на най-високо ниво.
-                        </p>
+                        <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                          <p className="font-semibold text-sm text-[#D4AF37]">
+                            Цел
+                          </p>
+                          <p>
+                            Участието ѝ в престижни кампании и шампионати е
+                            естествено продължение на философията ѝ — да представя
+                            перманентния грим като{" "}
+                            <span className="font-semibold">
+                              изкуство, професия и отговорност
+                            </span>
+                            , издигнати на най-високо ниво.
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </DialogContent>
@@ -248,14 +346,14 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-24 bg-white relative">
+      <section id="services" className="py-16 md:py-24 bg-white relative">
         <div className="container">
-          <div className="text-center mb-20">
+          <div className="text-center mb-12 md:mb-20">
             <span className="text-xs tracking-widest font-semibold text-[#D4AF37]" style={{ fontFamily: "Inter" }}>
               УСЛУГИ
             </span>
             <h2
-              className="text-6xl font-light mt-4"
+              className="text-4xl sm:text-5xl md:text-6xl font-light mt-4 px-2"
               style={{ fontFamily: "Bodoni Moda" }}
             >
               {/* Mobile/tablet: stacked */}
@@ -275,12 +373,29 @@ export default function Home() {
             <div className="w-12 h-1 bg-[#D4AF37] mx-auto mt-6 rounded-none"></div>
           </div>
 
-          <div className="flex gap-8 overflow-x-auto pb-4 snap-x snap-mandatory">
+          <div className="flex items-stretch gap-2 sm:gap-3 md:gap-5">
+            <button
+              type="button"
+              aria-label="Scroll services left"
+              disabled={!canScrollServicesLeft}
+              onClick={() => scrollServicesCarousel("left")}
+              className={cn(
+                "flex h-11 w-11 shrink-0 items-center justify-center self-center rounded-full border-2 border-[#D4AF37] bg-white/90 text-[#0A0A0A] opacity-40 shadow-[0_4px_20px_rgba(0,0,0,0.08)] transition-[opacity,transform,box-shadow,background-color,color] max-md:hover:opacity-100 hover:bg-[#D4AF37] hover:text-white max-md:hover:shadow-lg sm:h-12 sm:w-12 md:h-14 md:w-14 md:opacity-100 md:bg-white md:shadow-[0_4px_20px_rgba(0,0,0,0.12)] md:hover:shadow-lg active:scale-95",
+                !canScrollServicesLeft &&
+                  "pointer-events-none border-[#E5E5E0] text-[#A3A3A3] opacity-25 shadow-none max-md:hover:opacity-25 hover:bg-white/90 hover:text-[#A3A3A3] md:opacity-25 md:bg-white md:hover:bg-white md:hover:text-[#A3A3A3] md:hover:shadow-none"
+              )}
+            >
+              <ChevronLeft className="h-6 w-6 md:h-7 md:w-7" strokeWidth={2.5} aria-hidden />
+            </button>
+            <div
+              ref={servicesCarouselRef}
+              className="min-w-0 flex-1 flex gap-4 md:gap-8 overflow-x-auto overflow-y-visible py-4 sm:py-6 snap-x snap-mandatory scroll-smooth touch-pan-x overscroll-x-contain [-webkit-overflow-scrolling:touch] scroll-pl-3 scroll-pr-3 sm:scroll-pl-0 sm:scroll-pr-0 [scrollbar-width:thin] [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#D4AF37]/40 select-none"
+            >
             {/* Service 1: Hairstrokes */}
-            <div className="group relative snap-start shrink-0 basis-[85%] md:basis-[48%] lg:basis-[23%]">
+            <div className={serviceSlideClass(0)}>
               <Dialog>
                 <DialogTrigger asChild>
-                  <div className="relative h-64 overflow-hidden mb-6 rounded-none shadow-md cursor-pointer select-none">
+                  <div className="relative h-52 sm:h-64 overflow-hidden mb-4 sm:mb-6 rounded-none shadow-md cursor-pointer select-none">
                     <img
                       src={hairstrokesImage}
                       alt="Hairstrokes"
@@ -370,24 +485,21 @@ export default function Home() {
                 </DialogContent>
               </Dialog>
               <h3
-                className="text-2xl font-light mb-3"
+                className={serviceCardTitleClass}
                 style={{ fontFamily: "Bodoni Moda" }}
               >
                 Hairstrokes
               </h3>
-              <p className="text-gray-600 mb-4 text-sm" style={{ fontFamily: "Inter" }}>
+              <p className={serviceCardDescClass} style={{ fontFamily: "Inter" }}>
                 Hairstrokes е хиперреалистична техника за перманентен грим на вежди
               </p>
-              <a href="#contact" className="text-[#D4AF37] font-semibold hover:text-black transition-colors flex items-center gap-2">
-                Learn More <ArrowRight size={16} />
-              </a>
             </div>
 
             {/* Service 2: Микропигментация на вежди */}
-            <div className="group relative snap-start shrink-0 basis-[85%] md:basis-[48%] lg:basis-[23%]">
+            <div className={serviceSlideClass(1)}>
               <Dialog>
                 <DialogTrigger asChild>
-                  <div className="relative h-64 overflow-hidden mb-6 rounded-none shadow-md cursor-pointer select-none">
+                  <div className="relative h-52 sm:h-64 overflow-hidden mb-4 sm:mb-6 rounded-none shadow-md cursor-pointer select-none">
                     <img
                       src={micropigmentationImage}
                       alt="Микропигментация на вежди"
@@ -487,24 +599,21 @@ export default function Home() {
                 </DialogContent>
               </Dialog>
               <h3
-                className="text-2xl font-light mb-3"
+                className={serviceCardTitleClass}
                 style={{ fontFamily: "Bodoni Moda" }}
               >
                 Микропигментация на вежди
               </h3>
-              <p className="text-gray-600 mb-4 text-sm" style={{ fontFamily: "Inter" }}>
+              <p className={serviceCardDescClass} style={{ fontFamily: "Inter" }}>
                 Микропигментацията е техника, при която чрез машинен метод пигментът се въвежда в кожата.
               </p>
-              <a href="#contact" className="text-[#D4AF37] font-semibold hover:text-black transition-colors flex items-center gap-2">
-                Learn More <ArrowRight size={16} />
-              </a>
             </div>
 
             {/* Service 3: Микроблейдинг */}
-            <div className="group relative snap-start shrink-0 basis-[85%] md:basis-[48%] lg:basis-[23%]">
+            <div className={serviceSlideClass(2)}>
               <Dialog>
                 <DialogTrigger asChild>
-                  <div className="relative h-64 overflow-hidden mb-6 rounded-none shadow-md cursor-pointer select-none">
+                  <div className="relative h-52 sm:h-64 overflow-hidden mb-4 sm:mb-6 rounded-none shadow-md cursor-pointer select-none">
                     <img
                       src={microbladingImage}
                       alt="Микроблейдинг"
@@ -588,24 +697,21 @@ export default function Home() {
                 </DialogContent>
               </Dialog>
               <h3
-                className="text-2xl font-light mb-3"
+                className={serviceCardTitleClass}
                 style={{ fontFamily: "Bodoni Moda" }}
               >
                 Микроблейдинг
               </h3>
-              <p className="text-gray-600 mb-4 text-sm" style={{ fontFamily: "Inter" }}>
+              <p className={serviceCardDescClass} style={{ fontFamily: "Inter" }}>
                 Ръчна техника, при която се създават деликатни косъмчета, имитиращи естествения растеж на веждите.
               </p>
-              <a href="#contact" className="text-[#D4AF37] font-semibold hover:text-black transition-colors flex items-center gap-2">
-                Learn More <ArrowRight size={16} />
-              </a>
             </div>
 
             {/* Service 4: hairstrokes + powder effect */}
-            <div className="group relative snap-start shrink-0 basis-[85%] md:basis-[48%] lg:basis-[23%]">
+            <div className={serviceSlideClass(3)}>
               <Dialog>
                 <DialogTrigger asChild>
-                  <div className="relative h-64 overflow-hidden mb-6 rounded-none shadow-md cursor-pointer select-none">
+                  <div className="relative h-52 sm:h-64 overflow-hidden mb-4 sm:mb-6 rounded-none shadow-md cursor-pointer select-none">
                     <img
                       src={hairstrokesPowderImage}
                       alt="hairstrokes + powder effect"
@@ -710,27 +816,24 @@ export default function Home() {
                 </DialogContent>
               </Dialog>
               <h3
-                className="text-2xl font-light mb-3"
+                className={serviceCardTitleClass}
                 style={{ fontFamily: "Bodoni Moda" }}
               >
                 hairstrokes + powder effect
               </h3>
-              <p className="text-gray-600 mb-4 text-sm" style={{ fontFamily: "Inter" }}>
+              <p className={serviceCardDescClass} style={{ fontFamily: "Inter" }}>
                 Комбинирана техника за естествени, но по-плътни и изразени вежди с дълготраен резултат.
               </p>
-              <a href="#contact" className="text-[#D4AF37] font-semibold hover:text-black transition-colors flex items-center gap-2">
-                Learn More <ArrowRight size={16} />
-              </a>
             </div>
 
-            {additionalServices.map((service) => (
+            {additionalServices.map((service, slideIdx) => (
                 <div
                   key={service.title}
-                  className="group relative snap-start shrink-0 basis-[85%] md:basis-[48%] lg:basis-[23%]"
+                  className={serviceSlideClass(4 + slideIdx)}
                 >
                   <Dialog>
                     <DialogTrigger asChild>
-                      <div className="relative h-64 overflow-hidden mb-6 rounded-none shadow-md cursor-pointer select-none">
+                      <div className="relative h-52 sm:h-64 overflow-hidden mb-4 sm:mb-6 rounded-none shadow-md cursor-pointer select-none">
                         <img
                           src={service.image}
                           alt={service.title}
@@ -831,6 +934,385 @@ export default function Home() {
                               </p>
                             </div>
                           </>
+                        ) : service.title === "Soft Eyes" ? (
+                          <>
+                            <p className="text-base">
+                              Перманентната очна линия е процедура, която
+                              деликатно подчертава линията на миглите и придава
+                              по-изразителен и оформен поглед.
+                            </p>
+
+                            <div className="space-y-4">
+                              <p>
+                                Чрез прецизно имплантиране на пигмент се създава
+                                естествен ефект, който визуално сгъстява
+                                миглите и подчертава очите, без да изглежда
+                                тежко или изкуствено.
+                              </p>
+                              <p>
+                                Интензитетът и формата се съобразяват
+                                индивидуално според формата на очите и желаната
+                                визия.
+                              </p>
+                            </div>
+
+                            <div className="space-y-2 border-l-2 border-[#D4AF37] pl-4">
+                              <p className="font-semibold text-[#D4AF37]">
+                                Подходяща за:
+                              </p>
+                              <ul className="list-disc pl-5 space-y-1">
+                                <li>
+                                  подчертаване на естествената линия на окото
+                                </li>
+                                <li>
+                                  по-изразителен поглед без ежедневен грим
+                                </li>
+                                <li>визуално сгъстяване на миглите</li>
+                                <li>
+                                  клиенти, които търсят деликатен ефект
+                                </li>
+                              </ul>
+                            </div>
+
+                            <div className="space-y-2">
+                              <p className="font-semibold text-[#D4AF37]">
+                                Какво да очаквате:
+                              </p>
+                              <ul className="list-disc pl-5 space-y-1">
+                                <li>Времетраене на процедурата: 1.5 – 2 часа</li>
+                                <li>Корекция: след 8 – 10 седмици</li>
+                                <li>Трайност: 2 – 4 години</li>
+                              </ul>
+                            </div>
+
+                            <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                              <p className="font-semibold text-[#D4AF37]">
+                                Предимства:
+                              </p>
+                              <ul className="list-disc pl-5 space-y-1">
+                                <li>естествен и изчистен резултат</li>
+                                <li>спестява време от ежедневен грим</li>
+                                <li>дълготраен ефект</li>
+                                <li>подчертава формата на очите</li>
+                              </ul>
+                            </div>
+
+                            <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                              <p className="font-semibold text-[#D4AF37]">
+                                Важно:
+                              </p>
+                              <p>
+                                Целта на процедурата е да подчертае погледа по
+                                фин и елегантен начин, без да натоварва
+                                визията.
+                              </p>
+                            </div>
+                          </>
+                        ) : service.title === "Лазерни процедури" ? (
+                          <>
+                            <p className="text-base">
+                              Съвременни лазерни технологии за ефективно
+                              премахване на пигменти и подобряване на
+                              състоянието на кожата.
+                            </p>
+                            <p>
+                              Процедурите се извършват с внимание към детайла и
+                              индивидуален подход, като се цели максимална
+                              ефективност и безопасност.
+                            </p>
+
+                            <div className="space-y-4 border-t border-[#E7DBC1]/60 pt-4">
+                              <h3
+                                className="text-base font-semibold tracking-wide text-[#D4AF37]"
+                                style={{ fontFamily: "Bodoni Moda" }}
+                              >
+                                Лазерно отстраняване на стар перманентен грим
+                              </h3>
+                              <div className="flow-root">
+                                <div className="mb-4 overflow-hidden rounded-sm border border-[#E7DBC1] bg-white/60 shadow-sm max-md:w-full md:float-left md:mb-3 md:mr-5 md:w-[40%] md:max-w-[280px]">
+                                  <img
+                                    src={laserPmuRemovalImage}
+                                    alt="Лазерно отстраняване на перманентен грим"
+                                    className="h-auto w-full max-h-56 object-cover md:max-h-[min(320px,55vh)]"
+                                  />
+                                </div>
+                                <p className="text-sm leading-relaxed text-[#0A0A0A]">
+                                  Процедура, при която чрез лазерна технология
+                                  пигментът в кожата се разгражда постепенно,
+                                  позволявайки неговото изсветляване или пълно
+                                  премахване.
+                                  <br />
+                                  <br />
+                                  Подходяща при нежелан, променен или
+                                  неправилно направен перманентен грим.
+                                </p>
+                              </div>
+                              <div className="w-full clear-both space-y-3 pt-1">
+                                <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                                  <p className="font-semibold text-[#D4AF37]">
+                                    Предимства:
+                                  </p>
+                                  <ul className="list-disc pl-5 space-y-1">
+                                    <li>
+                                      контролирано и постепенно премахване
+                                    </li>
+                                    <li>щадящо към кожата</li>
+                                    <li>
+                                      възможност за корекция и нова процедура
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="space-y-4 border-t border-[#E7DBC1]/60 pt-4">
+                              <h3
+                                className="text-base font-semibold tracking-wide text-[#D4AF37]"
+                                style={{ fontFamily: "Bodoni Moda" }}
+                              >
+                                Карбонов пилинг
+                              </h3>
+                              <div className="flow-root">
+                                <div className="mb-4 overflow-hidden rounded-sm border border-[#E7DBC1] bg-white/60 shadow-sm max-md:w-full md:float-left md:mb-3 md:mr-5 md:w-[40%] md:max-w-[280px]">
+                                  <img
+                                    src={laserCarbonPeelingImage}
+                                    alt="Карбонов пилинг"
+                                    className="h-auto w-full max-h-56 object-cover md:max-h-[min(320px,55vh)]"
+                                  />
+                                </div>
+                                <p className="text-sm leading-relaxed text-[#0A0A0A]">
+                                  Карбоновият пилинг е иновативна лазерна
+                                  процедура за дълбоко почистване, подмладяване
+                                  и освежаване на кожата.
+                                  <br />
+                                  <br />
+                                  Чрез нанасяне на специална въглеродна маска и
+                                  последващо лазерно третиране се постига
+                                  почистване на порите, подобряване на текстурата
+                                  на кожата и стимулиране на колагена.
+                                </p>
+                              </div>
+                              <div className="w-full clear-both space-y-3 pt-1">
+                                <div className="space-y-2 border-l-2 border-[#D4AF37] pl-4">
+                                  <p className="font-semibold text-[#D4AF37]">
+                                    Подходящ за:
+                                  </p>
+                                  <ul className="list-disc pl-5 space-y-1">
+                                    <li>разширени пори</li>
+                                    <li>мазна кожа</li>
+                                    <li>неравен тен и пигментни петна</li>
+                                    <li>уморена и безжизнена кожа</li>
+                                  </ul>
+                                </div>
+                                <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                                  <p className="font-semibold text-[#D4AF37]">
+                                    Предимства:
+                                  </p>
+                                  <ul className="list-disc pl-5 space-y-1">
+                                    <li>заличаване на бръчици</li>
+                                    <li>дълбоко почистване</li>
+                                    <li>отстраняване на акне</li>
+                                    <li>по-гладка и свежа кожа</li>
+                                    <li>стимулиране на колаген</li>
+                                    <li>моментален освежаващ ефект</li>
+                                  </ul>
+                                </div>
+                                <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                                  <p className="font-semibold text-[#D4AF37]">
+                                    Важно:
+                                  </p>
+                                  <p>
+                                    Броят на необходимите процедури се определя
+                                    индивидуално в зависимост от състоянието на
+                                    кожата и желания резултат.
+                                  </p>
+                                  <p>
+                                    Преди всяка процедура се провежда
+                                    консултация.
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="space-y-4 border-t border-[#E7DBC1]/60 pt-4">
+                              <h3
+                                className="text-base font-semibold tracking-wide text-[#D4AF37]"
+                                style={{ fontFamily: "Bodoni Moda" }}
+                              >
+                                Лазерно премахване на татуировки
+                              </h3>
+                              <div className="flow-root">
+                                <div className="mb-4 overflow-hidden rounded-sm border border-[#E7DBC1] bg-white/60 shadow-sm max-md:w-full md:float-left md:mb-3 md:mr-5 md:w-[40%] md:max-w-[280px]">
+                                  <img
+                                    src={laserTattooRemovalImage}
+                                    alt="Лазерно премахване на татуировки"
+                                    className="h-auto w-full max-h-56 object-cover md:max-h-[min(320px,55vh)]"
+                                  />
+                                </div>
+                                <p className="text-sm leading-relaxed text-[#0A0A0A]">
+                                  Лазерната технология разгражда туша в кожата на
+                                  малки частици, които организмът естествено
+                                  елиминира с времето.
+                                  <br />
+                                  <br />
+                                  Процедурата се извършва на етапи, като са
+                                  необходими няколко сесии за постигане на
+                                  оптимален резултат.
+                                </p>
+                              </div>
+                              <div className="w-full clear-both space-y-3 pt-1">
+                                <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                                  <p className="font-semibold text-[#D4AF37]">
+                                    Предимства:
+                                  </p>
+                                  <ul className="list-disc pl-5 space-y-1">
+                                    <li>
+                                      ефективно премахване на нежелани
+                                      татуировки
+                                    </li>
+                                    <li>
+                                      постепенно изсветляване без увреждане на
+                                      кожата
+                                    </li>
+                                    <li>
+                                      подходяща за различни цветове и размери
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+
+                            <p className="border-t border-[#E7DBC1]/60 pt-4 text-center text-sm text-[#0A0A0A]/85">
+                              Работя с модерна лазерна технология за максимална
+                              ефективност и безопасност.
+                            </p>
+                          </>
+                        ) : service.title === "Миглопластика" ? (
+                          <>
+                            <p className="text-base">
+                              Миглопластиката е процедура, която сгъстява
+                              естествените мигли, придавайки им по-дълъг, плътен
+                              и изразителен вид без нужда от ежедневен грим.
+                            </p>
+                            <p>
+                              Чрез фините снопчета, които са направени от
+                              естествен косъм, миглите се оформят и фиксират в
+                              желаната форма, което създава ефект на по-отворен и
+                              свеж поглед.
+                            </p>
+
+                            <div className="space-y-2 border-l-2 border-[#D4AF37] pl-4">
+                              <p className="font-semibold text-[#D4AF37]">
+                                Подходяща за:
+                              </p>
+                              <ul className="list-disc pl-5 space-y-1">
+                                <li>прави или падащи мигли</li>
+                                <li>желание за естествен ефект</li>
+                                <li>подчертаване на погледа без спирала</li>
+                                <li>
+                                  клиенти, които търсят поддържана визия с
+                                  минимални усилия
+                                </li>
+                              </ul>
+                            </div>
+
+                            <div className="space-y-2">
+                              <p className="font-semibold text-[#D4AF37]">
+                                Какво да очаквате:
+                              </p>
+                              <ul className="list-disc pl-5 space-y-1">
+                                <li>
+                                  Времетраене на процедурата: около 60 минути
+                                </li>
+                                <li>Ефект: веднага след процедурата</li>
+                                <li>Трайност: 3 – 5 седмици</li>
+                              </ul>
+                            </div>
+
+                            <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                              <p className="font-semibold text-[#D4AF37]">
+                                Предимства:
+                              </p>
+                              <ul className="list-disc pl-5 space-y-1">
+                                <li>естествен резултат</li>
+                                <li>визуално по-дълги и извити мигли</li>
+                                <li>без нужда от ежедневен грим</li>
+                                <li>удобство и лесна поддръжка</li>
+                              </ul>
+                            </div>
+
+                            <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                              <p className="font-semibold text-[#D4AF37]">
+                                Важно:
+                              </p>
+                              <p>
+                                Процедурата е напълно неинвазивна и щадяща
+                                естествените мигли.
+                              </p>
+                            </div>
+                          </>
+                        ) : service.title === "Ламиниране на вежди и мигли" ? (
+                          <>
+                            <p className="text-base">
+                              Ламинирането на вежди и мигли е процедура, която
+                              оформя, подрежда и фиксира косъмчетата в желаната
+                              посока, създавайки по-плътен, подреден и естествен
+                              вид.
+                            </p>
+                            <p>
+                              Чрез специални продукти се постига дълготраен
+                              ефект, при който веждите изглеждат по-обемни и
+                              оформени, а миглите – по-повдигнати и изразителни.
+                            </p>
+
+                            <div className="space-y-2 border-l-2 border-[#D4AF37] pl-4">
+                              <p className="font-semibold text-[#D4AF37]">
+                                Подходяща за:
+                              </p>
+                              <ul className="list-disc pl-5 space-y-1">
+                                <li>непокорни или тънки косъмчета</li>
+                                <li>редки или неоформени вежди</li>
+                                <li>естествено подчертаване на миглите</li>
+                                <li>
+                                  поддържана визия без ежедневен грим
+                                </li>
+                              </ul>
+                            </div>
+
+                            <div className="space-y-2">
+                              <p className="font-semibold text-[#D4AF37]">
+                                Какво да очаквате:
+                              </p>
+                              <ul className="list-disc pl-5 space-y-1">
+                                <li>Времетраене: около 50 минути</li>
+                                <li>Ефект: веднага след процедурата</li>
+                                <li>Трайност: 4 – 6 седмици</li>
+                              </ul>
+                            </div>
+
+                            <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                              <p className="font-semibold text-[#D4AF37]">
+                                Предимства:
+                              </p>
+                              <ul className="list-disc pl-5 space-y-1">
+                                <li>по-плътни и оформени вежди</li>
+                                <li>подреден и естествен вид</li>
+                                <li>повдигнати и изразителни мигли</li>
+                                <li>лесна поддръжка</li>
+                              </ul>
+                            </div>
+
+                            <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                              <p className="font-semibold text-[#D4AF37]">
+                                Важно:
+                              </p>
+                              <p>
+                                Процедурата е неинвазивна и щадяща, като
+                                резултатът се съобразява с естествената форма на
+                                веждите и миглите.
+                              </p>
+                            </div>
+                          </>
                         ) : (
                           <>
                             <p className="text-base">{service.description}</p>
@@ -850,25 +1332,43 @@ export default function Home() {
                     </DialogContent>
                   </Dialog>
                   <h3
-                    className="text-2xl font-light mb-3"
+                    className={serviceCardTitleClass}
                     style={{ fontFamily: "Bodoni Moda" }}
                   >
                     {service.title}
                   </h3>
                   <p
-                    className="text-gray-600 mb-4 text-sm"
+                    className={serviceCardDescClass}
                     style={{ fontFamily: "Inter" }}
                   >
                     {service.description}
                   </p>
-                  <a
-                    href="#contact"
-                    className="text-[#D4AF37] font-semibold hover:text-black transition-colors flex items-center gap-2"
-                  >
-                    Learn More <ArrowRight size={16} />
-                  </a>
                 </div>
               ))}
+            </div>
+            <button
+              type="button"
+              aria-label="Scroll services right"
+              disabled={!canScrollServicesRight}
+              onClick={() => scrollServicesCarousel("right")}
+              className={cn(
+                "flex h-11 w-11 shrink-0 items-center justify-center self-center rounded-full border-2 border-[#D4AF37] bg-white/90 text-[#0A0A0A] opacity-40 shadow-[0_4px_20px_rgba(0,0,0,0.08)] transition-[opacity,transform,box-shadow,background-color,color] max-md:hover:opacity-100 hover:bg-[#D4AF37] hover:text-white max-md:hover:shadow-lg sm:h-12 sm:w-12 md:h-14 md:w-14 md:opacity-100 md:bg-white md:shadow-[0_4px_20px_rgba(0,0,0,0.12)] md:hover:shadow-lg active:scale-95",
+                !canScrollServicesRight &&
+                  "pointer-events-none border-[#E5E5E0] text-[#A3A3A3] opacity-25 shadow-none max-md:hover:opacity-25 hover:bg-white/90 hover:text-[#A3A3A3] md:opacity-25 md:bg-white md:hover:bg-white md:hover:text-[#A3A3A3] md:hover:shadow-none"
+              )}
+            >
+              <ChevronRight className="h-6 w-6 md:h-7 md:w-7" strokeWidth={2.5} aria-hidden />
+            </button>
+          </div>
+          <div className="mt-10 flex justify-center">
+            <a href="#contact" className="inline-block">
+              <Button
+                className="rounded-none border-2 border-[#D4AF37] bg-[#D4AF37] px-10 py-5 text-base font-semibold text-white transition-colors hover:bg-white hover:text-[#D4AF37]"
+                style={{ fontFamily: "Inter" }}
+              >
+                Научи повече
+              </Button>
+            </a>
           </div>
         </div>
       </section>
