@@ -48,17 +48,17 @@ const reviews: Review[] = [
 
 export default function ClientReviews() {
   return (
-    <section id="reviews" className="py-24 bg-white">
+    <section id="reviews" className="bg-black py-24 text-neutral-100">
       <div className="container">
         {/* Section Header */}
         <div className="text-center mb-16">
           <h2
-            className="text-6xl font-light mb-4"
+            className="mb-4 text-6xl font-light text-neutral-100"
             style={{ fontFamily: "Bodoni Moda" }}
           >
             Client Reviews
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto" style={{ fontFamily: "Inter" }}>
+          <p className="mx-auto max-w-2xl text-lg text-neutral-400" style={{ fontFamily: "Inter" }}>
             Hear from our satisfied clients who have experienced the PhiBrows difference
           </p>
           <div className="w-12 h-1 bg-[#D4AF37] mx-auto mt-6 rounded-none"></div>
@@ -69,7 +69,7 @@ export default function ClientReviews() {
           {reviews.map((review) => (
             <div
               key={review.id}
-              className="bg-white border border-gray-200 p-8 rounded-none hover:shadow-lg transition-shadow"
+              className="rounded-none border border-neutral-800 bg-neutral-950 p-8 transition-shadow hover:shadow-lg"
             >
               {/* Stars */}
               <div className="flex gap-1 mb-4">
@@ -84,22 +84,22 @@ export default function ClientReviews() {
 
               {/* Review Text */}
               <p
-                className="text-gray-700 mb-6 text-base leading-relaxed"
+                className="mb-6 text-base leading-relaxed text-neutral-300"
                 style={{ fontFamily: "Inter" }}
               >
                 "{review.text}"
               </p>
 
               {/* Client Info */}
-              <div className="border-t border-gray-200 pt-4">
+              <div className="border-t border-neutral-800 pt-4">
                 <p
-                  className="font-semibold text-gray-900"
+                  className="font-semibold text-neutral-100"
                   style={{ fontFamily: "Inter" }}
                 >
                   {review.name}
                 </p>
                 <p
-                  className="text-sm text-gray-500"
+                  className="text-sm text-neutral-500"
                   style={{ fontFamily: "Inter" }}
                 >
                   {review.service}

@@ -155,32 +155,32 @@ export default function Home() {
     "min-w-0 max-w-full break-words [overflow-wrap:anywhere] text-pretty font-light leading-tight text-base sm:text-xl lg:text-sm xl:text-base 2xl:text-lg mb-2";
 
   const serviceCardDescClass =
-    "min-w-0 max-w-full break-words [overflow-wrap:anywhere] text-pretty text-gray-600 mb-0 text-xs sm:text-sm leading-relaxed";
+    "min-w-0 max-w-full break-words [overflow-wrap:anywhere] text-pretty text-neutral-400 mb-0 text-xs sm:text-sm leading-relaxed";
 
   return (
-    <div className="min-h-screen bg-[#FAFAF8] text-[#0A0A0A]">
+    <div className="min-h-screen bg-black text-neutral-100">
       {/* Navigation */}
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? "bg-[#FAFAF8] shadow-sm border-b border-[#E5E5E0]" : "bg-transparent"
+          isScrolled ? "border-b border-neutral-800 bg-black/90 shadow-sm backdrop-blur-md" : "bg-transparent"
         }`}
       >
         <div className="container flex items-center justify-between py-4">
           <div />
           <div className="hidden md:flex gap-12" style={{ fontFamily: "Inter" }}>
-            <a href="#services" className={`nav-link text-sm font-semibold transition-colors ${isScrolled ? "text-[#0A0A0A]" : "text-white"} hover:text-[#D4AF37]`}>
+            <a href="#services" className={`nav-link text-sm font-semibold transition-colors ${isScrolled ? "text-neutral-100" : "text-white"} hover:text-[#D4AF37]`}>
               Услуги
             </a>
-            <a href="#gallery" className={`nav-link text-sm font-semibold transition-colors ${isScrolled ? "text-[#0A0A0A]" : "text-white"} hover:text-[#D4AF37]`}>
+            <a href="#gallery" className={`nav-link text-sm font-semibold transition-colors ${isScrolled ? "text-neutral-100" : "text-white"} hover:text-[#D4AF37]`}>
               Галерия
             </a>
-            <a href="#pricing" className={`nav-link text-sm font-semibold transition-colors ${isScrolled ? "text-[#0A0A0A]" : "text-white"} hover:text-[#D4AF37]`}>
+            <a href="#pricing" className={`nav-link text-sm font-semibold transition-colors ${isScrolled ? "text-neutral-100" : "text-white"} hover:text-[#D4AF37]`}>
               Цени
             </a>
-            <a href="#about" className={`nav-link text-sm font-semibold transition-colors ${isScrolled ? "text-[#0A0A0A]" : "text-white"} hover:text-[#D4AF37]`}>
+            <a href="#about" className={`nav-link text-sm font-semibold transition-colors ${isScrolled ? "text-neutral-100" : "text-white"} hover:text-[#D4AF37]`}>
               За нас
             </a>
-            <a href="#contact" className={`nav-link text-sm font-semibold transition-colors ${isScrolled ? "text-[#0A0A0A]" : "text-white"} hover:text-[#D4AF37]`}>
+            <a href="#contact" className={`nav-link text-sm font-semibold transition-colors ${isScrolled ? "text-neutral-100" : "text-white"} hover:text-[#D4AF37]`}>
               Контакти
             </a>
           </div>
@@ -190,7 +190,7 @@ export default function Home() {
             rel="noopener noreferrer"
             className="inline-block"
           >
-            <Button className={`transition-all border rounded-none ${isScrolled ? "bg-[#0A0A0A] text-white hover:bg-[#D4AF37] border-[#0A0A0A]" : "bg-[#D4AF37] text-white hover:bg-white hover:text-[#D4AF37] border-[#D4AF37]"}`}>
+            <Button className={`transition-all border rounded-none ${isScrolled ? "border-[#D4AF37] bg-[#D4AF37] text-black hover:bg-white hover:text-[#D4AF37]" : "border-[#D4AF37] bg-[#D4AF37] text-white hover:bg-white hover:text-[#D4AF37]"}`}>
               Запази Час
             </Button>
           </a>
@@ -346,14 +346,14 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-16 md:py-24 bg-white relative">
+      <section id="services" className="relative bg-black py-16 md:py-24">
         <div className="container">
           <div className="text-center mb-12 md:mb-20">
             <span className="text-xs tracking-widest font-semibold text-[#D4AF37]" style={{ fontFamily: "Inter" }}>
               УСЛУГИ
             </span>
             <h2
-              className="text-4xl sm:text-5xl md:text-6xl font-light mt-4 px-2"
+              className="mt-4 px-2 text-4xl font-light text-neutral-100 sm:text-5xl md:text-6xl"
               style={{ fontFamily: "Bodoni Moda" }}
             >
               {/* Mobile/tablet: stacked */}
@@ -380,9 +380,9 @@ export default function Home() {
               disabled={!canScrollServicesLeft}
               onClick={() => scrollServicesCarousel("left")}
               className={cn(
-                "flex h-11 w-11 shrink-0 items-center justify-center self-center rounded-full border-2 border-[#D4AF37] bg-white/90 text-[#0A0A0A] opacity-40 shadow-[0_4px_20px_rgba(0,0,0,0.08)] transition-[opacity,transform,box-shadow,background-color,color] max-md:hover:opacity-100 hover:bg-[#D4AF37] hover:text-white max-md:hover:shadow-lg sm:h-12 sm:w-12 md:h-14 md:w-14 md:opacity-100 md:bg-white md:shadow-[0_4px_20px_rgba(0,0,0,0.12)] md:hover:shadow-lg active:scale-95",
+                "flex h-11 w-11 shrink-0 items-center justify-center self-center rounded-full border-2 border-[#D4AF37] bg-neutral-900/90 text-neutral-100 opacity-40 shadow-[0_4px_20px_rgba(0,0,0,0.4)] transition-[opacity,transform,box-shadow,background-color,color] max-md:hover:opacity-100 hover:bg-[#D4AF37] hover:text-black max-md:hover:shadow-lg sm:h-12 sm:w-12 md:h-14 md:w-14 md:opacity-100 md:bg-neutral-900 md:shadow-[0_4px_24px_rgba(212,175,55,0.12)] md:hover:shadow-lg active:scale-95",
                 !canScrollServicesLeft &&
-                  "pointer-events-none border-[#E5E5E0] text-[#A3A3A3] opacity-25 shadow-none max-md:hover:opacity-25 hover:bg-white/90 hover:text-[#A3A3A3] md:opacity-25 md:bg-white md:hover:bg-white md:hover:text-[#A3A3A3] md:hover:shadow-none"
+                  "pointer-events-none border-neutral-700 text-neutral-600 opacity-25 shadow-none max-md:hover:opacity-25 hover:bg-neutral-900/90 hover:text-neutral-600 md:opacity-25 md:bg-neutral-900 md:hover:bg-neutral-900 md:hover:text-neutral-600 md:hover:shadow-none"
               )}
             >
               <ChevronLeft className="h-6 w-6 md:h-7 md:w-7" strokeWidth={2.5} aria-hidden />
@@ -1352,9 +1352,9 @@ export default function Home() {
               disabled={!canScrollServicesRight}
               onClick={() => scrollServicesCarousel("right")}
               className={cn(
-                "flex h-11 w-11 shrink-0 items-center justify-center self-center rounded-full border-2 border-[#D4AF37] bg-white/90 text-[#0A0A0A] opacity-40 shadow-[0_4px_20px_rgba(0,0,0,0.08)] transition-[opacity,transform,box-shadow,background-color,color] max-md:hover:opacity-100 hover:bg-[#D4AF37] hover:text-white max-md:hover:shadow-lg sm:h-12 sm:w-12 md:h-14 md:w-14 md:opacity-100 md:bg-white md:shadow-[0_4px_20px_rgba(0,0,0,0.12)] md:hover:shadow-lg active:scale-95",
+                "flex h-11 w-11 shrink-0 items-center justify-center self-center rounded-full border-2 border-[#D4AF37] bg-neutral-900/90 text-neutral-100 opacity-40 shadow-[0_4px_20px_rgba(0,0,0,0.4)] transition-[opacity,transform,box-shadow,background-color,color] max-md:hover:opacity-100 hover:bg-[#D4AF37] hover:text-black max-md:hover:shadow-lg sm:h-12 sm:w-12 md:h-14 md:w-14 md:opacity-100 md:bg-neutral-900 md:shadow-[0_4px_24px_rgba(212,175,55,0.12)] md:hover:shadow-lg active:scale-95",
                 !canScrollServicesRight &&
-                  "pointer-events-none border-[#E5E5E0] text-[#A3A3A3] opacity-25 shadow-none max-md:hover:opacity-25 hover:bg-white/90 hover:text-[#A3A3A3] md:opacity-25 md:bg-white md:hover:bg-white md:hover:text-[#A3A3A3] md:hover:shadow-none"
+                  "pointer-events-none border-neutral-700 text-neutral-600 opacity-25 shadow-none max-md:hover:opacity-25 hover:bg-neutral-900/90 hover:text-neutral-600 md:opacity-25 md:bg-neutral-900 md:hover:bg-neutral-900 md:hover:text-neutral-600 md:hover:shadow-none"
               )}
             >
               <ChevronRight className="h-6 w-6 md:h-7 md:w-7" strokeWidth={2.5} aria-hidden />
@@ -1374,19 +1374,19 @@ export default function Home() {
       </section>
 
       {/* Before & After Gallery Section */}
-      <section id="gallery" className="py-16 bg-[#FAFAF8] relative">
+      <section id="gallery" className="relative bg-black py-16">
         <div className="container">
           <div className="text-center mb-12">
             <span className="text-xs tracking-widest font-semibold text-[#D4AF37]" style={{ fontFamily: "Inter" }}>
               REAL RESULTS
             </span>
             <h2
-              className="text-5xl font-light mt-4"
+              className="mt-4 text-5xl font-light text-neutral-100"
               style={{ fontFamily: "Bodoni Moda" }}
             >
               Transformations
             </h2>
-            <p className="text-base text-gray-600 max-w-2xl mx-auto mt-4" style={{ fontFamily: "Inter" }}>
+            <p className="mx-auto mt-4 max-w-2xl text-base text-neutral-400" style={{ fontFamily: "Inter" }}>
               Drag the slider to compare before and after results from our clients.
             </p>
           </div>
@@ -1426,7 +1426,7 @@ export default function Home() {
       <PricingSection />
 
       {/* Why PhiBrows Section */}
-      <section id="about" className="py-24 bg-white relative">
+      <section id="about" className="relative bg-black py-24">
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-10">
@@ -1435,7 +1435,7 @@ export default function Home() {
                   ABOUT US
                 </span>
                 <h2
-                  className="text-6xl font-light mt-4"
+                  className="mt-4 text-6xl font-light text-neutral-100"
                   style={{ fontFamily: "Bodoni Moda" }}
                 >
                   Why PhiBrows?
@@ -1456,12 +1456,12 @@ export default function Home() {
                     </div>
                     <div>
                       <h3
-                        className="text-xl font-light mb-2"
+                        className="mb-2 text-xl font-light text-neutral-100"
                         style={{ fontFamily: "Bodoni Moda" }}
                       >
                         {item.title}
                       </h3>
-                      <p className="text-gray-600 text-sm" style={{ fontFamily: "Inter" }}>
+                      <p className="text-sm text-neutral-400" style={{ fontFamily: "Inter" }}>
                         {item.desc}
                       </p>
                     </div>
@@ -1469,14 +1469,14 @@ export default function Home() {
                 ))}
               </div>
             </div>
-            <div className="bg-[#F5F5F0] p-12 rounded-none border border-gray-200 relative shadow-md">
+            <div className="relative rounded-none border border-neutral-800 bg-neutral-950 p-12 shadow-md">
               <p
-                className="text-3xl font-light text-center mb-8"
+                className="mb-8 text-center text-3xl font-light text-neutral-100"
                 style={{ fontFamily: "Bodoni Moda" }}
               >
                 "Beauty is not about perfection. It's about confidence."
               </p>
-              <p className="text-center text-gray-700 text-sm" style={{ fontFamily: "Inter" }}>
+              <p className="text-center text-sm text-neutral-300" style={{ fontFamily: "Inter" }}>
                 At PhiBrows, we believe every client deserves to feel beautiful and confident. Our mission is to enhance your natural beauty through precision, artistry, and luxury care.
               </p>
             </div>
@@ -1488,7 +1488,7 @@ export default function Home() {
       <ClientReviews />
 
       {/* Contact Section */}
-      <section id="contact" className="py-0 bg-[#1A1A1A] relative">
+      <section id="contact" className="relative bg-black py-0">
         <ContactForm />
       </section>
 
