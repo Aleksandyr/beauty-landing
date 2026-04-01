@@ -53,22 +53,22 @@ export function ManusDialog({
     >
       <DialogContent
         bodyScroll={false}
-        className="w-[400px] gap-0 rounded-[20px] border border-[rgba(0,0,0,0.08)] bg-[#f8f8f7] p-0 py-5 text-center shadow-[0px_4px_11px_0px_rgba(0,0,0,0.08)] backdrop-blur-2xl"
+        className="w-[400px] gap-0 rounded-[20px] border border-neutral-700 bg-gradient-to-br from-neutral-950 via-neutral-900 to-black p-0 py-5 text-center text-neutral-200 shadow-2xl backdrop-blur-xl"
       >
         <div className="flex flex-col items-center gap-2 p-5 pt-2">
           {logo ? (
-            <div className="w-16 h-16 bg-white rounded-none border border-[rgba(0,0,0,0.08)] flex items-center justify-center">
-              <img src={logo} alt="Dialog graphic" className="w-10 h-10 rounded-none" />
+            <div className="flex h-16 w-16 items-center justify-center rounded-none border border-neutral-700 bg-neutral-900">
+              <img src={logo} alt="Dialog graphic" className="h-10 w-10 rounded-none" />
             </div>
           ) : null}
 
           {/* Title and subtitle */}
           {title ? (
-            <DialogTitle className="text-xl font-semibold text-[#34322d] leading-[26px] tracking-[-0.44px]">
+            <DialogTitle className="text-xl font-semibold leading-[26px] tracking-[-0.44px] text-neutral-100">
               {title}
             </DialogTitle>
           ) : null}
-          <DialogDescription className="text-sm text-[#858481] leading-5 tracking-[-0.154px]">
+          <DialogDescription className="text-sm leading-5 tracking-[-0.154px] text-neutral-400">
             Please login with Manus to continue
           </DialogDescription>
         </div>
@@ -77,7 +77,7 @@ export function ManusDialog({
           {/* Login button */}
           <Button
             onClick={onLogin}
-            className="w-full h-10 bg-[#1a1a19] hover:bg-[#1a1a19]/90 text-white rounded-[10px] text-sm font-medium leading-5 tracking-[-0.154px]"
+            className="h-10 w-full rounded-[10px] border border-[#D4AF37] bg-[#D4AF37] text-sm font-medium leading-5 tracking-[-0.154px] text-black hover:border-[#b8941f] hover:bg-[#b8941f] hover:text-white"
           >
             Login with Manus
           </Button>
