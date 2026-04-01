@@ -115,7 +115,7 @@ export default function PricingSection() {
             Combine multiple services and save up to 20%. Book a consultation to discuss custom packages tailored to your needs and budget.
           </p>
           <button
-            className="rounded-none border border-[#D4AF37] bg-[#D4AF37] px-8 py-3 font-medium text-black transition-all hover:bg-white hover:text-[#D4AF37]"
+            className="rounded-none border border-[#D4AF37] bg-[#D4AF37] px-8 py-3 font-medium text-black transition-all hover:border-[#b8941f] hover:bg-[#b8941f] hover:text-white"
             style={{ fontFamily: "Inter" }}
           >
             Inquire About Packages

@@ -155,7 +155,7 @@ export default function FAQSection() {
             Didn't find your answer? Contact us directly for personalized assistance.
           </p>
           <button
-            className="rounded-none border border-[#D4AF37] bg-[#D4AF37] px-8 py-3 font-medium text-black transition-all hover:bg-white hover:text-[#D4AF37]"
+            className="rounded-none border border-[#D4AF37] bg-[#D4AF37] px-8 py-3 font-medium text-black transition-all hover:border-[#b8941f] hover:bg-[#b8941f] hover:text-white"
             style={{ fontFamily: "Inter" }}
           >
             Contact Us

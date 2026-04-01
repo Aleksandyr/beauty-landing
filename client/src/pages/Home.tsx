@@ -26,7 +26,7 @@ import laminationBrowsLashesImage from "@/assets/lamination-brows-lashes.png";
 import moreForMePortrait from "@/assets/more-for-me.png";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 
 /**
  * PhiBrows Landing Page - Material Design
@@ -40,7 +40,8 @@ export default function Home() {
   const servicesCarouselRef = useRef<HTMLDivElement>(null);
   const [canScrollServicesLeft, setCanScrollServicesLeft] = useState(false);
   const [canScrollServicesRight, setCanScrollServicesRight] = useState(true);
-  const [focusedCarouselIndex, setFocusedCarouselIndex] = useState(0);
+  /** Second slide (index 1) is the default focused card */
+  const [focusedCarouselIndex, setFocusedCarouselIndex] = useState(1);
 
   const updateServicesCarouselScrollState = () => {
     const el = servicesCarouselRef.current;
@@ -71,13 +72,6 @@ export default function Home() {
     }
     setFocusedCarouselIndex(bestIdx);
   }, []);
-
-  const scrollServicesCarousel = (dir: "left" | "right") => {
-    const el = servicesCarouselRef.current;
-    if (!el) return;
-    const step = Math.max(el.clientWidth * 0.75, 280);
-    el.scrollBy({ left: dir === "left" ? -step : step, behavior: "smooth" });
-  };
 
   const additionalServices = [
     {
@@ -112,12 +106,40 @@ export default function Home() {
     },
   ];
 
+  const serviceCarouselSlideCount = 4 + additionalServices.length;
+
+  const scrollToServiceSlide = useCallback((index: number) => {
+    const el = servicesCarouselRef.current;
+    if (!el || index < 0 || index >= el.children.length) return;
+    (el.children[index] as HTMLElement).scrollIntoView({
+      behavior: "smooth",
+      inline: "center",
+      block: "nearest",
+    });
+  }, []);
+
+  const scrollServicesCarousel = (dir: "left" | "right") => {
+    const next =
+      dir === "left" ? focusedCarouselIndex - 1 : focusedCarouselIndex + 1;
+    scrollToServiceSlide(next);
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useLayoutEffect(() => {
+    const el = servicesCarouselRef.current;
+    if (!el || el.children.length < 2) return;
+    (el.children[1] as HTMLElement).scrollIntoView({
+      behavior: "auto",
+      inline: "center",
+      block: "nearest",
+    });
   }, []);
 
   useEffect(() => {
@@ -140,22 +162,33 @@ export default function Home() {
     };
   }, [updateFocusedCarouselCard]);
 
+  /* Carousel pattern aligned with https://alexkamenov.com/ — center snap, fixed card width, scale + dots */
   const serviceSlideClass = (index: number) =>
     cn(
-      "group relative flex min-w-0 w-full flex-col gap-3 px-3 pb-4 pt-2 sm:px-4 sm:pb-5 sm:pt-3 md:px-5 md:pb-6 md:pt-3 lg:px-4 lg:pb-5 snap-center shrink-0",
-      /* ~1 card mobile, 2 on tablet, 5 on lg+ (middle card visible) */
-      "basis-[85%] md:basis-[calc((100%-2rem)/2)] lg:basis-[calc((100%-8rem)/5)]",
-      "transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform",
+      "group relative flex w-[min(88vw,400px)] max-w-[400px] min-w-0 shrink-0 snap-center flex-col gap-3 overflow-hidden rounded-[12px] border px-3 pb-4 pt-2 sm:px-4 sm:pb-5 sm:pt-3",
+      "transition-[transform,opacity,box-shadow,border-color] duration-[400ms] ease-[cubic-bezier(0.25,0.46,0.45,0.94)] will-change-transform",
       focusedCarouselIndex === index
-        ? "z-20 shadow-[0_22px_55px_rgba(0,0,0,0.14)] ring-2 ring-[#D4AF37]/40 max-md:scale-[1.02] md:scale-[1.05]"
-        : "z-0 shadow-md max-md:scale-100 max-md:opacity-100 md:scale-[0.96] md:opacity-[0.88]"
+        ? "z-20 scale-[1.05] border-[#D4AF37]/45 bg-neutral-950 opacity-100 shadow-[0_4px_6px_rgba(0,0,0,0.15),0_18px_48px_rgba(0,0,0,0.35)]"
+        : "z-10 scale-[0.94] border-neutral-800 bg-neutral-950/90 opacity-[0.82]"
     );
 
   const serviceCardTitleClass =
-    "min-w-0 max-w-full break-words [overflow-wrap:anywhere] text-pretty font-light leading-tight text-base sm:text-xl lg:text-sm xl:text-base 2xl:text-lg mb-2";
+    "min-w-0 max-w-full break-words [overflow-wrap:anywhere] text-pretty font-light leading-tight text-base text-neutral-100 sm:text-xl lg:text-sm xl:text-base 2xl:text-lg mb-2";
 
   const serviceCardDescClass =
     "min-w-0 max-w-full break-words [overflow-wrap:anywhere] text-pretty text-neutral-400 mb-0 text-xs sm:text-sm leading-relaxed";
+
+  /** Image tap targets: hover overlay for mouse; visible hint + ring + press feedback on touch / coarse pointer */
+  const serviceCardImageShellClass =
+    "group relative mb-4 h-52 cursor-pointer overflow-hidden rounded-none shadow-md select-none touch-manipulation transition-transform active:scale-[0.99] pointer-coarse:ring-2 pointer-coarse:ring-[#D4AF37]/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37]/55 focus-visible:ring-offset-2 focus-visible:ring-offset-black sm:mb-6 sm:h-64";
+  const serviceCardImageOverlayTintClass =
+    "absolute inset-0 bg-black/0 transition-colors duration-300 pointer-coarse:bg-black/15 pointer-fine:group-hover:bg-black/25";
+  const serviceCardImageHoverMoreWrapClass =
+    "absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 pointer-fine:group-hover:opacity-100 pointer-coarse:hidden";
+  const serviceCardImageTouchHintClass =
+    "absolute bottom-0 left-0 right-0 hidden items-center justify-center bg-gradient-to-t from-black/80 via-black/45 to-transparent px-3 pb-3 pt-10 pointer-coarse:flex";
+  const serviceCardImageTouchHintTextClass =
+    "text-[10px] font-semibold uppercase tracking-[0.2em] text-white/95";
 
   return (
     <div className="min-h-screen bg-black text-neutral-100">
@@ -190,7 +223,7 @@ export default function Home() {
             rel="noopener noreferrer"
             className="inline-block"
           >
-            <Button className={`transition-all border rounded-none ${isScrolled ? "border-[#D4AF37] bg-[#D4AF37] text-black hover:bg-white hover:text-[#D4AF37]" : "border-[#D4AF37] bg-[#D4AF37] text-white hover:bg-white hover:text-[#D4AF37]"}`}>
+            <Button className={`transition-all border rounded-none ${isScrolled ? "border-[#D4AF37] bg-[#D4AF37] text-black hover:border-[#b8941f] hover:bg-[#b8941f] hover:text-white" : "border-[#D4AF37] bg-[#D4AF37] text-white hover:border-[#b8941f] hover:bg-[#b8941f] hover:text-white"}`}>
               Запази Час
             </Button>
           </a>
@@ -235,11 +268,11 @@ export default function Home() {
               <div className="flex gap-6 pt-4">
                 <Dialog>
                   <DialogTrigger asChild>
-                    <Button className="bg-[#D4AF37] text-white px-8 py-6 hover:bg-white hover:text-[#D4AF37] transition-all text-base rounded-none font-semibold">
+                    <Button className="rounded-none bg-[#D4AF37] px-8 py-6 text-base font-semibold text-white transition-all hover:bg-[#b8941f] hover:text-white">
                       Повече за Мен
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="flex max-h-[90vh] w-full max-w-[calc(100%-2rem)] flex-col gap-0 overflow-hidden border-[#E7DBC1] bg-gradient-to-br from-[#FFFEFB] via-white to-[#F8F3E8] p-0 shadow-2xl backdrop-blur-sm sm:max-w-4xl md:max-w-5xl md:flex-row">
+                  <DialogContent className="flex max-h-[90vh] w-full max-w-[calc(100%-2rem)] flex-col gap-0 overflow-hidden border-neutral-700 bg-gradient-to-br from-neutral-950 via-neutral-900 to-black p-0 text-neutral-200 shadow-2xl backdrop-blur-sm sm:max-w-4xl md:max-w-5xl md:flex-row">
                     {/* Left: portrait */}
                     <div className="relative h-56 w-full shrink-0 overflow-hidden sm:h-64 md:h-auto md:min-h-[min(78vh,560px)] md:w-[42%]">
                       <img
@@ -252,14 +285,14 @@ export default function Home() {
                     <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto px-6 pb-6 pt-0 sm:px-8 sm:pb-8 md:max-h-[min(90vh,620px)]">
                       <DialogHeader className="space-y-0 pt-0 text-left">
                         <DialogTitle
-                          className="text-2xl leading-snug tracking-wide"
+                          className="text-2xl leading-snug tracking-wide text-neutral-100"
                           style={{ fontFamily: "Bodoni Moda" }}
                         >
                           Повече за мен
                         </DialogTitle>
                       </DialogHeader>
                       <div
-                        className="mt-10 space-y-5 text-sm leading-relaxed text-foreground sm:mt-12"
+                        className="mt-10 space-y-5 text-sm leading-relaxed text-neutral-300 sm:mt-12"
                         style={{ fontFamily: "Inter" }}
                       >
                         <div className="space-y-3">
@@ -321,7 +354,7 @@ export default function Home() {
                           </p>
                         </div>
 
-                        <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                        <div className="space-y-2 border border-neutral-700 bg-neutral-900/50 px-4 py-3 shadow-sm">
                           <p className="font-semibold text-sm text-[#D4AF37]">
                             Цел
                           </p>
@@ -373,46 +406,41 @@ export default function Home() {
             <div className="w-12 h-1 bg-[#D4AF37] mx-auto mt-6 rounded-none"></div>
           </div>
 
-          <div className="flex items-stretch gap-2 sm:gap-3 md:gap-5">
-            <button
-              type="button"
-              aria-label="Scroll services left"
-              disabled={!canScrollServicesLeft}
-              onClick={() => scrollServicesCarousel("left")}
-              className={cn(
-                "flex h-11 w-11 shrink-0 items-center justify-center self-center rounded-full border-2 border-[#D4AF37] bg-neutral-900/90 text-neutral-100 opacity-40 shadow-[0_4px_20px_rgba(0,0,0,0.4)] transition-[opacity,transform,box-shadow,background-color,color] max-md:hover:opacity-100 hover:bg-[#D4AF37] hover:text-black max-md:hover:shadow-lg sm:h-12 sm:w-12 md:h-14 md:w-14 md:opacity-100 md:bg-neutral-900 md:shadow-[0_4px_24px_rgba(212,175,55,0.12)] md:hover:shadow-lg active:scale-95",
-                !canScrollServicesLeft &&
-                  "pointer-events-none border-neutral-700 text-neutral-600 opacity-25 shadow-none max-md:hover:opacity-25 hover:bg-neutral-900/90 hover:text-neutral-600 md:opacity-25 md:bg-neutral-900 md:hover:bg-neutral-900 md:hover:text-neutral-600 md:hover:shadow-none"
-              )}
-            >
-              <ChevronLeft className="h-6 w-6 md:h-7 md:w-7" strokeWidth={2.5} aria-hidden />
-            </button>
+          <div className="relative -mx-2">
             <div
               ref={servicesCarouselRef}
-              className="min-w-0 flex-1 flex gap-4 md:gap-8 overflow-x-auto overflow-y-visible py-4 sm:py-6 snap-x snap-mandatory scroll-smooth touch-pan-x overscroll-x-contain [-webkit-overflow-scrolling:touch] scroll-pl-3 scroll-pr-3 sm:scroll-pl-0 sm:scroll-pr-0 [scrollbar-width:thin] [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#D4AF37]/40 select-none"
+              className="flex min-w-0 gap-5 overflow-x-auto overflow-y-visible overscroll-x-contain scroll-smooth snap-x snap-mandatory touch-pan-x [-webkit-overflow-scrolling:touch] [scroll-padding-inline:max(1rem,calc(50vw-min(45vw,200px)))] px-[max(1rem,calc(50%-min(45vw,200px)))] pb-11 pt-8 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden select-none"
             >
             {/* Service 1: Hairstrokes */}
             <div className={serviceSlideClass(0)}>
               <Dialog>
                 <DialogTrigger asChild>
-                  <div className="relative h-52 sm:h-64 overflow-hidden mb-4 sm:mb-6 rounded-none shadow-md cursor-pointer select-none">
+                  <div className={serviceCardImageShellClass}>
                     <img
                       src={hairstrokesImage}
                       alt="Hairstrokes"
-                      className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:blur-sm"
+                      className="h-full w-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:blur-sm"
                     />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors duration-300" />
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className={serviceCardImageOverlayTintClass} />
+                    <div className={serviceCardImageHoverMoreWrapClass}>
                       <span
-                        className="px-6 py-2 border border-white/70 text-white tracking-widest text-xs font-semibold rounded-none"
+                        className="rounded-none border border-white/70 px-6 py-2 text-xs font-semibold tracking-widest text-white"
                         style={{ fontFamily: "Inter" }}
                       >
                         повече
                       </span>
                     </div>
+                    <div className={serviceCardImageTouchHintClass}>
+                      <span
+                        className={serviceCardImageTouchHintTextClass}
+                        style={{ fontFamily: "Inter" }}
+                      >
+                        Натисни за повече
+                      </span>
+                    </div>
                   </div>
                 </DialogTrigger>
-                <DialogContent className="max-w-2xl border-[#E7DBC1] bg-gradient-to-br from-[#FFFEFB] via-white to-[#F8F3E8] backdrop-blur-sm shadow-2xl">
+                <DialogContent className="max-w-2xl border-neutral-700 bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950 text-neutral-200 shadow-2xl backdrop-blur-sm">
                   <DialogHeader>
                     <DialogTitle
                       className="text-2xl tracking-wide"
@@ -423,7 +451,7 @@ export default function Home() {
                   </DialogHeader>
                   <div
                     style={{ fontFamily: "Inter" }}
-                    className="space-y-5 text-sm leading-relaxed"
+                    className="space-y-5 text-sm leading-relaxed text-neutral-300"
                   >
                     <p className="text-base">
                       <span className="font-semibold">Hairstrokes</span> е
@@ -472,7 +500,7 @@ export default function Home() {
                         </ul>
                       </div>
 
-                      <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                      <div className="space-y-2 border border-neutral-700 bg-neutral-900/50 px-4 py-3 shadow-sm">
                         <div className="font-semibold text-[#D4AF37]">Важно:</div>
                         <p>
                           Резултатът се съобразява индивидуално с типа кожа и
@@ -499,24 +527,32 @@ export default function Home() {
             <div className={serviceSlideClass(1)}>
               <Dialog>
                 <DialogTrigger asChild>
-                  <div className="relative h-52 sm:h-64 overflow-hidden mb-4 sm:mb-6 rounded-none shadow-md cursor-pointer select-none">
+                  <div className={serviceCardImageShellClass}>
                     <img
                       src={micropigmentationImage}
                       alt="Микропигментация на вежди"
                       className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:blur-sm"
                     />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors duration-300" />
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className={serviceCardImageOverlayTintClass} />
+                    <div className={serviceCardImageHoverMoreWrapClass}>
                       <span
-                        className="px-6 py-2 border border-white/70 text-white tracking-widest text-xs font-semibold rounded-none"
+                        className="rounded-none border border-white/70 px-6 py-2 text-xs font-semibold tracking-widest text-white"
                         style={{ fontFamily: "Inter" }}
                       >
                         повече
                       </span>
                     </div>
+                    <div className={serviceCardImageTouchHintClass}>
+                      <span
+                        className={serviceCardImageTouchHintTextClass}
+                        style={{ fontFamily: "Inter" }}
+                      >
+                        Натисни за повече
+                      </span>
+                    </div>
                   </div>
                 </DialogTrigger>
-                <DialogContent className="max-w-2xl border-[#E7DBC1] bg-gradient-to-br from-[#FFFEFB] via-white to-[#F8F3E8] backdrop-blur-sm shadow-2xl">
+                <DialogContent className="max-w-2xl border-neutral-700 bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950 text-neutral-200 shadow-2xl backdrop-blur-sm">
                   <DialogHeader>
                     <DialogTitle
                       className="text-2xl tracking-wide"
@@ -527,7 +563,7 @@ export default function Home() {
                   </DialogHeader>
                   <div
                     style={{ fontFamily: "Inter" }}
-                    className="space-y-5 text-sm leading-relaxed"
+                    className="space-y-5 text-sm leading-relaxed text-neutral-300"
                   >
                     <p className="text-base">
                       <span className="font-semibold">Микропигментацията</span>{" "}
@@ -580,7 +616,7 @@ export default function Home() {
                       </ul>
                     </div>
 
-                    <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                    <div className="space-y-2 border border-neutral-700 bg-neutral-900/50 px-4 py-3 shadow-sm">
                       <p className="font-semibold text-[#D4AF37]">
                         Предимства на техниката:
                       </p>
@@ -613,24 +649,32 @@ export default function Home() {
             <div className={serviceSlideClass(2)}>
               <Dialog>
                 <DialogTrigger asChild>
-                  <div className="relative h-52 sm:h-64 overflow-hidden mb-4 sm:mb-6 rounded-none shadow-md cursor-pointer select-none">
+                  <div className={serviceCardImageShellClass}>
                     <img
                       src={microbladingImage}
                       alt="Микроблейдинг"
                       className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:blur-sm"
                     />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors duration-300" />
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className={serviceCardImageOverlayTintClass} />
+                    <div className={serviceCardImageHoverMoreWrapClass}>
                       <span
-                        className="px-6 py-2 border border-white/70 text-white tracking-widest text-xs font-semibold rounded-none"
+                        className="rounded-none border border-white/70 px-6 py-2 text-xs font-semibold tracking-widest text-white"
                         style={{ fontFamily: "Inter" }}
                       >
                         повече
                       </span>
                     </div>
+                    <div className={serviceCardImageTouchHintClass}>
+                      <span
+                        className={serviceCardImageTouchHintTextClass}
+                        style={{ fontFamily: "Inter" }}
+                      >
+                        Натисни за повече
+                      </span>
+                    </div>
                   </div>
                 </DialogTrigger>
-                <DialogContent className="max-w-2xl border-[#E7DBC1] bg-gradient-to-br from-[#FFFEFB] via-white to-[#F8F3E8] backdrop-blur-sm shadow-2xl">
+                <DialogContent className="max-w-2xl border-neutral-700 bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950 text-neutral-200 shadow-2xl backdrop-blur-sm">
                   <DialogHeader>
                     <DialogTitle
                       className="text-2xl tracking-wide"
@@ -641,7 +685,7 @@ export default function Home() {
                   </DialogHeader>
                   <div
                     style={{ fontFamily: "Inter" }}
-                    className="space-y-5 text-sm leading-relaxed"
+                    className="space-y-5 text-sm leading-relaxed text-neutral-300"
                   >
                     <p className="text-base">
                       <span className="font-semibold">Микроблейдингът</span> е
@@ -681,7 +725,7 @@ export default function Home() {
                       </ul>
                     </div>
 
-                    <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                    <div className="space-y-2 border border-neutral-700 bg-neutral-900/50 px-4 py-3 shadow-sm">
                       <p className="font-semibold text-[#D4AF37]">
                         Какво да очаквате:
                       </p>
@@ -711,24 +755,32 @@ export default function Home() {
             <div className={serviceSlideClass(3)}>
               <Dialog>
                 <DialogTrigger asChild>
-                  <div className="relative h-52 sm:h-64 overflow-hidden mb-4 sm:mb-6 rounded-none shadow-md cursor-pointer select-none">
+                  <div className={serviceCardImageShellClass}>
                     <img
                       src={hairstrokesPowderImage}
                       alt="hairstrokes + powder effect"
                       className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:blur-sm"
                     />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors duration-300" />
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className={serviceCardImageOverlayTintClass} />
+                    <div className={serviceCardImageHoverMoreWrapClass}>
                       <span
-                        className="px-6 py-2 border border-white/70 text-white tracking-widest text-xs font-semibold rounded-none"
+                        className="rounded-none border border-white/70 px-6 py-2 text-xs font-semibold tracking-widest text-white"
                         style={{ fontFamily: "Inter" }}
                       >
                         повече
                       </span>
                     </div>
+                    <div className={serviceCardImageTouchHintClass}>
+                      <span
+                        className={serviceCardImageTouchHintTextClass}
+                        style={{ fontFamily: "Inter" }}
+                      >
+                        Натисни за повече
+                      </span>
+                    </div>
                   </div>
                 </DialogTrigger>
-                <DialogContent className="max-w-2xl border-[#E7DBC1] bg-gradient-to-br from-[#FFFEFB] via-white to-[#F8F3E8] backdrop-blur-sm shadow-2xl">
+                <DialogContent className="max-w-2xl border-neutral-700 bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950 text-neutral-200 shadow-2xl backdrop-blur-sm">
                   <DialogHeader>
                     <DialogTitle
                       className="text-2xl tracking-wide"
@@ -739,7 +791,7 @@ export default function Home() {
                   </DialogHeader>
                   <div
                     style={{ fontFamily: "Inter" }}
-                    className="space-y-5 text-sm leading-relaxed"
+                    className="space-y-5 text-sm leading-relaxed text-neutral-300"
                   >
                     <p className="text-base">
                       Комбинираната техника съчетава прецизността на косъм по
@@ -791,7 +843,7 @@ export default function Home() {
                       </ul>
                     </div>
 
-                    <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                    <div className="space-y-2 border border-neutral-700 bg-neutral-900/50 px-4 py-3 shadow-sm">
                       <p className="font-semibold text-[#D4AF37]">
                         Предимства на техниката:
                       </p>
@@ -803,7 +855,7 @@ export default function Home() {
                       </ul>
                     </div>
 
-                    <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                    <div className="space-y-2 border border-neutral-700 bg-neutral-900/50 px-4 py-3 shadow-sm">
                       <p className="font-semibold text-[#D4AF37]">Важно:</p>
                       <p>
                         Комбинираната техника се съобразява изцяло с
@@ -833,24 +885,32 @@ export default function Home() {
                 >
                   <Dialog>
                     <DialogTrigger asChild>
-                      <div className="relative h-52 sm:h-64 overflow-hidden mb-4 sm:mb-6 rounded-none shadow-md cursor-pointer select-none">
+                      <div className={serviceCardImageShellClass}>
                         <img
                           src={service.image}
                           alt={service.title}
                           className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:blur-sm"
                         />
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/25 transition-colors duration-300" />
-                        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className={serviceCardImageOverlayTintClass} />
+                        <div className={serviceCardImageHoverMoreWrapClass}>
                           <span
-                            className="px-6 py-2 border border-white/70 text-white tracking-widest text-xs font-semibold rounded-none"
+                            className="rounded-none border border-white/70 px-6 py-2 text-xs font-semibold tracking-widest text-white"
                             style={{ fontFamily: "Inter" }}
                           >
                             more
                           </span>
                         </div>
+                        <div className={serviceCardImageTouchHintClass}>
+                          <span
+                            className={serviceCardImageTouchHintTextClass}
+                            style={{ fontFamily: "Inter" }}
+                          >
+                            Натисни за повече
+                          </span>
+                        </div>
                       </div>
                     </DialogTrigger>
-                    <DialogContent className="max-w-2xl border-[#E7DBC1] bg-gradient-to-br from-[#FFFEFB] via-white to-[#F8F3E8] backdrop-blur-sm shadow-2xl">
+                    <DialogContent className="max-w-2xl border-neutral-700 bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950 text-neutral-200 shadow-2xl backdrop-blur-sm">
                       <DialogHeader>
                         <DialogTitle
                           className="text-2xl tracking-wide"
@@ -861,7 +921,7 @@ export default function Home() {
                       </DialogHeader>
                       <div
                         style={{ fontFamily: "Inter" }}
-                        className="space-y-4 text-sm leading-relaxed"
+                        className="space-y-4 text-sm leading-relaxed text-neutral-300"
                       >
                         {service.title === "Soft Lips Перманентно червило" ? (
                           <>
@@ -908,7 +968,7 @@ export default function Home() {
                               </ul>
                             </div>
 
-                            <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                            <div className="space-y-2 border border-neutral-700 bg-neutral-900/50 px-4 py-3 shadow-sm">
                               <p className="font-semibold text-[#D4AF37]">
                                 Предимства на процедурата:
                               </p>
@@ -923,7 +983,7 @@ export default function Home() {
                               </ul>
                             </div>
 
-                            <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                            <div className="space-y-2 border border-neutral-700 bg-neutral-900/50 px-4 py-3 shadow-sm">
                               <p className="font-semibold text-[#D4AF37]">
                                 Важно:
                               </p>
@@ -985,7 +1045,7 @@ export default function Home() {
                               </ul>
                             </div>
 
-                            <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                            <div className="space-y-2 border border-neutral-700 bg-neutral-900/50 px-4 py-3 shadow-sm">
                               <p className="font-semibold text-[#D4AF37]">
                                 Предимства:
                               </p>
@@ -997,7 +1057,7 @@ export default function Home() {
                               </ul>
                             </div>
 
-                            <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                            <div className="space-y-2 border border-neutral-700 bg-neutral-900/50 px-4 py-3 shadow-sm">
                               <p className="font-semibold text-[#D4AF37]">
                                 Важно:
                               </p>
@@ -1021,7 +1081,7 @@ export default function Home() {
                               ефективност и безопасност.
                             </p>
 
-                            <div className="space-y-4 border-t border-[#E7DBC1]/60 pt-4">
+                            <div className="space-y-4 border-t border-neutral-700/90 pt-4">
                               <h3
                                 className="text-base font-semibold tracking-wide text-[#D4AF37]"
                                 style={{ fontFamily: "Bodoni Moda" }}
@@ -1029,14 +1089,14 @@ export default function Home() {
                                 Лазерно отстраняване на стар перманентен грим
                               </h3>
                               <div className="flow-root">
-                                <div className="mb-4 overflow-hidden rounded-sm border border-[#E7DBC1] bg-white/60 shadow-sm max-md:w-full md:float-left md:mb-3 md:mr-5 md:w-[40%] md:max-w-[280px]">
+                                <div className="mb-4 max-md:w-full overflow-hidden rounded-sm border border-neutral-700 bg-neutral-900/40 shadow-sm md:float-left md:mb-3 md:mr-5 md:w-[40%] md:max-w-[280px]">
                                   <img
                                     src={laserPmuRemovalImage}
                                     alt="Лазерно отстраняване на перманентен грим"
                                     className="h-auto w-full max-h-56 object-cover md:max-h-[min(320px,55vh)]"
                                   />
                                 </div>
-                                <p className="text-sm leading-relaxed text-[#0A0A0A]">
+                                <p className="text-sm leading-relaxed text-neutral-200">
                                   Процедура, при която чрез лазерна технология
                                   пигментът в кожата се разгражда постепенно,
                                   позволявайки неговото изсветляване или пълно
@@ -1048,7 +1108,7 @@ export default function Home() {
                                 </p>
                               </div>
                               <div className="w-full clear-both space-y-3 pt-1">
-                                <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                                <div className="space-y-2 border border-neutral-700 bg-neutral-900/50 px-4 py-3 shadow-sm">
                                   <p className="font-semibold text-[#D4AF37]">
                                     Предимства:
                                   </p>
@@ -1065,7 +1125,7 @@ export default function Home() {
                               </div>
                             </div>
 
-                            <div className="space-y-4 border-t border-[#E7DBC1]/60 pt-4">
+                            <div className="space-y-4 border-t border-neutral-700/90 pt-4">
                               <h3
                                 className="text-base font-semibold tracking-wide text-[#D4AF37]"
                                 style={{ fontFamily: "Bodoni Moda" }}
@@ -1073,14 +1133,14 @@ export default function Home() {
                                 Карбонов пилинг
                               </h3>
                               <div className="flow-root">
-                                <div className="mb-4 overflow-hidden rounded-sm border border-[#E7DBC1] bg-white/60 shadow-sm max-md:w-full md:float-left md:mb-3 md:mr-5 md:w-[40%] md:max-w-[280px]">
+                                <div className="mb-4 max-md:w-full overflow-hidden rounded-sm border border-neutral-700 bg-neutral-900/40 shadow-sm md:float-left md:mb-3 md:mr-5 md:w-[40%] md:max-w-[280px]">
                                   <img
                                     src={laserCarbonPeelingImage}
                                     alt="Карбонов пилинг"
                                     className="h-auto w-full max-h-56 object-cover md:max-h-[min(320px,55vh)]"
                                   />
                                 </div>
-                                <p className="text-sm leading-relaxed text-[#0A0A0A]">
+                                <p className="text-sm leading-relaxed text-neutral-200">
                                   Карбоновият пилинг е иновативна лазерна
                                   процедура за дълбоко почистване, подмладяване
                                   и освежаване на кожата.
@@ -1104,7 +1164,7 @@ export default function Home() {
                                     <li>уморена и безжизнена кожа</li>
                                   </ul>
                                 </div>
-                                <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                                <div className="space-y-2 border border-neutral-700 bg-neutral-900/50 px-4 py-3 shadow-sm">
                                   <p className="font-semibold text-[#D4AF37]">
                                     Предимства:
                                   </p>
@@ -1117,7 +1177,7 @@ export default function Home() {
                                     <li>моментален освежаващ ефект</li>
                                   </ul>
                                 </div>
-                                <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                                <div className="space-y-2 border border-neutral-700 bg-neutral-900/50 px-4 py-3 shadow-sm">
                                   <p className="font-semibold text-[#D4AF37]">
                                     Важно:
                                   </p>
@@ -1134,7 +1194,7 @@ export default function Home() {
                               </div>
                             </div>
 
-                            <div className="space-y-4 border-t border-[#E7DBC1]/60 pt-4">
+                            <div className="space-y-4 border-t border-neutral-700/90 pt-4">
                               <h3
                                 className="text-base font-semibold tracking-wide text-[#D4AF37]"
                                 style={{ fontFamily: "Bodoni Moda" }}
@@ -1142,14 +1202,14 @@ export default function Home() {
                                 Лазерно премахване на татуировки
                               </h3>
                               <div className="flow-root">
-                                <div className="mb-4 overflow-hidden rounded-sm border border-[#E7DBC1] bg-white/60 shadow-sm max-md:w-full md:float-left md:mb-3 md:mr-5 md:w-[40%] md:max-w-[280px]">
+                                <div className="mb-4 max-md:w-full overflow-hidden rounded-sm border border-neutral-700 bg-neutral-900/40 shadow-sm md:float-left md:mb-3 md:mr-5 md:w-[40%] md:max-w-[280px]">
                                   <img
                                     src={laserTattooRemovalImage}
                                     alt="Лазерно премахване на татуировки"
                                     className="h-auto w-full max-h-56 object-cover md:max-h-[min(320px,55vh)]"
                                   />
                                 </div>
-                                <p className="text-sm leading-relaxed text-[#0A0A0A]">
+                                <p className="text-sm leading-relaxed text-neutral-200">
                                   Лазерната технология разгражда туша в кожата на
                                   малки частици, които организмът естествено
                                   елиминира с времето.
@@ -1161,7 +1221,7 @@ export default function Home() {
                                 </p>
                               </div>
                               <div className="w-full clear-both space-y-3 pt-1">
-                                <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                                <div className="space-y-2 border border-neutral-700 bg-neutral-900/50 px-4 py-3 shadow-sm">
                                   <p className="font-semibold text-[#D4AF37]">
                                     Предимства:
                                   </p>
@@ -1182,7 +1242,7 @@ export default function Home() {
                               </div>
                             </div>
 
-                            <p className="border-t border-[#E7DBC1]/60 pt-4 text-center text-sm text-[#0A0A0A]/85">
+                            <p className="border-t border-neutral-700/90 pt-4 text-center text-sm text-neutral-400">
                               Работя с модерна лазерна технология за максимална
                               ефективност и безопасност.
                             </p>
@@ -1229,7 +1289,7 @@ export default function Home() {
                               </ul>
                             </div>
 
-                            <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                            <div className="space-y-2 border border-neutral-700 bg-neutral-900/50 px-4 py-3 shadow-sm">
                               <p className="font-semibold text-[#D4AF37]">
                                 Предимства:
                               </p>
@@ -1241,7 +1301,7 @@ export default function Home() {
                               </ul>
                             </div>
 
-                            <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                            <div className="space-y-2 border border-neutral-700 bg-neutral-900/50 px-4 py-3 shadow-sm">
                               <p className="font-semibold text-[#D4AF37]">
                                 Важно:
                               </p>
@@ -1290,7 +1350,7 @@ export default function Home() {
                               </ul>
                             </div>
 
-                            <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                            <div className="space-y-2 border border-neutral-700 bg-neutral-900/50 px-4 py-3 shadow-sm">
                               <p className="font-semibold text-[#D4AF37]">
                                 Предимства:
                               </p>
@@ -1302,7 +1362,7 @@ export default function Home() {
                               </ul>
                             </div>
 
-                            <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                            <div className="space-y-2 border border-neutral-700 bg-neutral-900/50 px-4 py-3 shadow-sm">
                               <p className="font-semibold text-[#D4AF37]">
                                 Важно:
                               </p>
@@ -1316,7 +1376,7 @@ export default function Home() {
                         ) : (
                           <>
                             <p className="text-base">{service.description}</p>
-                            <div className="space-y-2 bg-white/80 border border-[#E7DBC1] px-4 py-3 shadow-sm">
+                            <div className="space-y-2 border border-neutral-700 bg-neutral-900/50 px-4 py-3 shadow-sm">
                               <p className="font-semibold text-[#D4AF37]">
                                 More details
                               </p>
@@ -1346,24 +1406,58 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            <button
-              type="button"
-              aria-label="Scroll services right"
-              disabled={!canScrollServicesRight}
-              onClick={() => scrollServicesCarousel("right")}
-              className={cn(
-                "flex h-11 w-11 shrink-0 items-center justify-center self-center rounded-full border-2 border-[#D4AF37] bg-neutral-900/90 text-neutral-100 opacity-40 shadow-[0_4px_20px_rgba(0,0,0,0.4)] transition-[opacity,transform,box-shadow,background-color,color] max-md:hover:opacity-100 hover:bg-[#D4AF37] hover:text-black max-md:hover:shadow-lg sm:h-12 sm:w-12 md:h-14 md:w-14 md:opacity-100 md:bg-neutral-900 md:shadow-[0_4px_24px_rgba(212,175,55,0.12)] md:hover:shadow-lg active:scale-95",
-                !canScrollServicesRight &&
-                  "pointer-events-none border-neutral-700 text-neutral-600 opacity-25 shadow-none max-md:hover:opacity-25 hover:bg-neutral-900/90 hover:text-neutral-600 md:opacity-25 md:bg-neutral-900 md:hover:bg-neutral-900 md:hover:text-neutral-600 md:hover:shadow-none"
-              )}
+            <div
+              className="flex items-center justify-center gap-4 px-2 pb-2 pt-1"
+              role="navigation"
+              aria-label="Услуги карусел"
             >
-              <ChevronRight className="h-6 w-6 md:h-7 md:w-7" strokeWidth={2.5} aria-hidden />
-            </button>
+              <button
+                type="button"
+                aria-label="Предишна услуга"
+                disabled={!canScrollServicesLeft}
+                onClick={() => scrollServicesCarousel("left")}
+                className={cn(
+                  "inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-neutral-600 bg-neutral-900 text-neutral-100 transition-[opacity,border-color,background-color] hover:border-neutral-500 hover:bg-neutral-800",
+                  !canScrollServicesLeft && "cursor-not-allowed opacity-[0.35]"
+                )}
+              >
+                <ChevronLeft className="h-5 w-5" strokeWidth={2} aria-hidden />
+              </button>
+              <div className="flex max-w-[320px] flex-wrap justify-center gap-1.5">
+                {Array.from({ length: serviceCarouselSlideCount }).map((_, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    aria-label={`Услуга ${i + 1}`}
+                    aria-current={focusedCarouselIndex === i ? "true" : undefined}
+                    onClick={() => scrollToServiceSlide(i)}
+                    className={cn(
+                      "h-2 w-2 rounded-full border-0 p-0 transition-[transform,background-color] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#D4AF37]",
+                      focusedCarouselIndex === i
+                        ? "scale-125 bg-[#D4AF37]"
+                        : "bg-neutral-600 hover:bg-neutral-500"
+                    )}
+                  />
+                ))}
+              </div>
+              <button
+                type="button"
+                aria-label="Следваща услуга"
+                disabled={!canScrollServicesRight}
+                onClick={() => scrollServicesCarousel("right")}
+                className={cn(
+                  "inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-neutral-600 bg-neutral-900 text-neutral-100 transition-[opacity,border-color,background-color] hover:border-neutral-500 hover:bg-neutral-800",
+                  !canScrollServicesRight && "cursor-not-allowed opacity-[0.35]"
+                )}
+              >
+                <ChevronRight className="h-5 w-5" strokeWidth={2} aria-hidden />
+              </button>
+            </div>
           </div>
           <div className="mt-10 flex justify-center">
             <a href="#contact" className="inline-block">
               <Button
-                className="rounded-none border-2 border-[#D4AF37] bg-[#D4AF37] px-10 py-5 text-base font-semibold text-white transition-colors hover:bg-white hover:text-[#D4AF37]"
+                className="rounded-none border-2 border-[#D4AF37] bg-[#D4AF37] px-10 py-5 text-base font-semibold text-white transition-colors hover:border-[#b8941f] hover:bg-[#b8941f] hover:text-white"
                 style={{ fontFamily: "Inter" }}
               >
                 Научи повече
