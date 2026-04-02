@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import contactSectionVisual from "@/assets/contact-section-visual.png";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -12,7 +13,11 @@ export default function ContactForm() {
 
   const [submitted, setSubmitted] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
@@ -31,52 +36,44 @@ export default function ContactForm() {
   };
 
   return (
-    <div className="grid min-h-screen grid-cols-1 gap-0 overflow-hidden rounded-none bg-black lg:min-h-auto lg:grid-cols-2">
-      {/* Left Side - Map/Location Image */}
-      <div
-        className="hidden lg:block h-full min-h-screen bg-cover bg-center relative"
-        style={{
-          backgroundImage: `url('https://d2xsxph8kpxj0f.cloudfront.net/310519663405959620/fyDCaCDjBEZajfCbgjZ8q2/phibrows-hero-aALDGAh5YNLHVHPPj9a8en.webp')`,
-          opacity: 0.7,
-        }}
-      >
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-black/50"></div>
-        
-        {/* Location Pin */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center">
-            <div className="w-12 h-12 bg-white rounded-none flex items-center justify-center mb-4 mx-auto">
-              <div className="w-4 h-4 bg-[#0A0A0A]"></div>
-            </div>
-            <p className="text-white text-sm font-semibold tracking-wider" style={{ fontFamily: "Inter" }}>
-              СТУДИО
-            </p>
-          </div>
-        </div>
+    <div className="grid grid-cols-1 gap-0 overflow-hidden bg-black lg:grid-cols-2 lg:items-stretch lg:min-h-[min(88vh,800px)]">
+      {/* Visual — без наслагване */}
+      <div className="relative h-[min(32vh,240px)] w-full shrink-0 overflow-hidden bg-black sm:h-[min(36vh,280px)] lg:h-full lg:min-h-[560px]">
+        <img
+          src={contactSectionVisual}
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover object-top lg:object-[center_22%]"
+        />
       </div>
 
-      {/* Right Side - Form */}
-      <div className="flex items-center justify-center bg-black p-8 lg:p-12">
-        <form onSubmit={handleSubmit} className="w-full max-w-lg space-y-6">
-          {/* Heading */}
-          <div className="mb-10">
+      {/* Form */}
+      <div className="flex items-center justify-center bg-black px-4 py-8 sm:px-6 sm:py-10 lg:p-10 xl:p-12">
+        <form
+          onSubmit={handleSubmit}
+          className="w-full max-w-lg space-y-4 sm:space-y-6"
+        >
+          <div className="mb-6 sm:mb-8">
             <h2
-              className="text-5xl lg:text-6xl font-light text-white mb-3"
+              className="mb-2 text-3xl font-light leading-tight text-white sm:text-4xl md:text-5xl lg:text-6xl"
               style={{ fontFamily: "Bodoni Moda" }}
             >
-              Begin Your Journey
+              Свържи се с нас
             </h2>
-            <p className="text-gray-400 text-xs tracking-widest font-semibold" style={{ fontFamily: "Inter" }}>
-              BESPOKE BEAUTY TAILORED TO YOUR UNIQUE ESSENCE.
+            <p
+              className="text-[10px] font-semibold uppercase leading-snug tracking-[0.2em] text-gray-400 sm:text-xs"
+              style={{ fontFamily: "Inter" }}
+            >
+              Персонализирана красота и грижа според твоите нужди.
             </p>
           </div>
 
-          {/* Name and Email */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-2 md:gap-6">
             <div>
-              <label className="block text-xs font-semibold tracking-widest text-gray-300 mb-4" style={{ fontFamily: "Inter" }}>
-                FULL NAME
+              <label
+                className="mb-2 block text-[10px] font-semibold uppercase tracking-widest text-gray-300 sm:mb-3 sm:text-xs"
+                style={{ fontFamily: "Inter" }}
+              >
+                Име и фамилия
               </label>
               <input
                 type="text"
@@ -84,15 +81,18 @@ export default function ContactForm() {
                 value={formData.name}
                 onChange={handleChange}
                 required
-                placeholder="Evelyn Vane"
-                className="w-full px-0 py-3 bg-transparent border-b border-gray-600 text-white placeholder-gray-500 focus:outline-none focus:border-[#D4AF37] transition-colors text-base"
+                placeholder="Име Фамилия"
+                className="w-full border-b border-gray-600 bg-transparent px-0 py-2.5 text-sm text-white placeholder:text-gray-500 focus:border-[#D4AF37] focus:outline-none sm:py-3 sm:text-base"
                 style={{ fontFamily: "Inter" }}
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold tracking-widest text-gray-300 mb-4" style={{ fontFamily: "Inter" }}>
-                EMAIL ADDRESS
+              <label
+                className="mb-2 block text-[10px] font-semibold uppercase tracking-widest text-gray-300 sm:mb-3 sm:text-xs"
+                style={{ fontFamily: "Inter" }}
+              >
+                Имейл
               </label>
               <input
                 type="email"
@@ -100,82 +100,108 @@ export default function ContactForm() {
                 value={formData.email}
                 onChange={handleChange}
                 required
-                placeholder="evelyn@bespoke.beauty"
-                className="w-full px-0 py-3 bg-transparent border-b border-gray-600 text-white placeholder-gray-500 focus:outline-none focus:border-[#D4AF37] transition-colors text-base"
+                placeholder="име@пример.bg"
+                className="w-full border-b border-gray-600 bg-transparent px-0 py-2.5 text-sm text-white placeholder:text-gray-500 focus:border-[#D4AF37] focus:outline-none sm:py-3 sm:text-base"
                 style={{ fontFamily: "Inter" }}
               />
             </div>
           </div>
 
-          {/* Phone and Service */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 gap-5 sm:gap-6 md:grid-cols-2 md:gap-6">
             <div>
-              <label className="block text-xs font-semibold tracking-widest text-gray-300 mb-4" style={{ fontFamily: "Inter" }}>
-                PHONE NUMBER
+              <label
+                className="mb-2 block text-[10px] font-semibold uppercase tracking-widest text-gray-300 sm:mb-3 sm:text-xs"
+                style={{ fontFamily: "Inter" }}
+              >
+                Телефон
               </label>
               <input
                 type="tel"
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
-                placeholder="+1 (555) 000-0000"
-                className="w-full px-0 py-3 bg-transparent border-b border-gray-600 text-white placeholder-gray-500 focus:outline-none focus:border-[#D4AF37] transition-colors text-base"
+                placeholder="+359 88 …"
+                className="w-full border-b border-gray-600 bg-transparent px-0 py-2.5 text-sm text-white placeholder:text-gray-500 focus:border-[#D4AF37] focus:outline-none sm:py-3 sm:text-base"
                 style={{ fontFamily: "Inter" }}
               />
             </div>
 
             <div>
-              <label className="block text-xs font-semibold tracking-widest text-gray-300 mb-4" style={{ fontFamily: "Inter" }}>
-                DESIRED SERVICE
+              <label
+                className="mb-2 block text-[10px] font-semibold uppercase tracking-widest text-gray-300 sm:mb-3 sm:text-xs"
+                style={{ fontFamily: "Inter" }}
+              >
+                Желана услуга
               </label>
               <select
                 name="service"
                 value={formData.service}
                 onChange={handleChange}
                 required
-                className="w-full px-0 py-3 bg-transparent border-b border-gray-600 text-white focus:outline-none focus:border-[#D4AF37] transition-colors appearance-none cursor-pointer text-base"
+                className="w-full cursor-pointer appearance-none border-b border-gray-600 bg-transparent px-0 py-2.5 text-sm text-white focus:border-[#D4AF37] focus:outline-none sm:py-3 sm:text-base"
                 style={{ fontFamily: "Inter" }}
               >
-                <option value="" className="bg-black text-white">Select a treatment</option>
-                <option value="microblading" className="bg-black text-white">Microblading</option>
-                <option value="eyelashes" className="bg-black text-white">Eyelash Extensions</option>
-                <option value="laser" className="bg-black text-white">Laser Pigmentation Removal</option>
-                <option value="lipstick" className="bg-black text-white">Permanent Lipstick</option>
+                <option value="" className="bg-black text-white">
+                  Избери услуга
+                </option>
+                <option value="hairstrokes" className="bg-black text-white">
+                  Hairstrokes / микропигментация
+                </option>
+                <option value="microblading" className="bg-black text-white">
+                  Микроблейдинг
+                </option>
+                <option value="eyeliner" className="bg-black text-white">
+                  Перманентна очна линия
+                </option>
+                <option value="lips" className="bg-black text-white">
+                  Перманентно червило (Soft Lips)
+                </option>
+                <option value="lashes" className="bg-black text-white">
+                  Мигли / ламиниране
+                </option>
+                <option value="laser" className="bg-black text-white">
+                  Лазерни процедури
+                </option>
+                <option value="other" className="bg-black text-white">
+                  Друго / консултация
+                </option>
               </select>
             </div>
           </div>
 
-          {/* Message */}
           <div>
-            <label className="block text-xs font-semibold tracking-widest text-gray-300 mb-4" style={{ fontFamily: "Inter" }}>
-              MESSAGE
+            <label
+              className="mb-2 block text-[10px] font-semibold uppercase tracking-widest text-gray-300 sm:mb-3 sm:text-xs"
+              style={{ fontFamily: "Inter" }}
+            >
+              Съобщение
             </label>
             <textarea
               name="message"
               value={formData.message}
               onChange={handleChange}
-              placeholder="How may we enhance your natural beauty?"
+              placeholder="Разкажи ни накратко какво търсиш или задай въпрос…"
               rows={4}
-              className="w-full px-0 py-3 bg-transparent border-b border-gray-600 text-white placeholder-gray-500 focus:outline-none focus:border-[#D4AF37] transition-colors resize-none text-base"
+              className="w-full resize-none border-b border-gray-600 bg-transparent px-0 py-2.5 text-sm text-white placeholder:text-gray-500 focus:border-[#D4AF37] focus:outline-none sm:py-3 sm:text-base"
               style={{ fontFamily: "Inter" }}
             />
           </div>
 
-          {/* Submit Button */}
-          <div className="pt-8">
+          <div className="pt-4 sm:pt-6">
             <Button
               type="submit"
-              className="w-full bg-white text-[#0A0A0A] px-8 py-4 hover:bg-[#D4AF37] hover:text-white transition-all rounded-none border-none font-semibold tracking-wider text-sm"
+              className="w-full rounded-none border-none bg-white px-6 py-3 text-xs font-semibold tracking-wider text-[#0A0A0A] transition-all hover:bg-[#D4AF37] hover:text-white sm:px-8 sm:py-4 sm:text-sm"
               style={{ fontFamily: "Inter" }}
             >
-              REQUEST CONSULTATION
+              Заявка за консултация
             </Button>
           </div>
 
-          {/* Success Message */}
           {submitted && (
-            <div className="bg-green-900/30 border border-green-700 text-green-300 px-4 py-3 rounded-none text-sm">
-              <p style={{ fontFamily: "Inter" }}>Thank you! We'll get back to you soon.</p>
+            <div className="rounded-none border border-green-700 bg-green-900/30 px-4 py-3 text-sm text-green-300">
+              <p style={{ fontFamily: "Inter" }}>
+                Благодарим! Ще се свържем с теб скоро.
+              </p>
             </div>
           )}
         </form>
