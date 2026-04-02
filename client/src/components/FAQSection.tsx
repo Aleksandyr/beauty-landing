@@ -9,64 +9,76 @@ interface FAQItem {
 
 const faqItems: FAQItem[] = [
   {
-    category: "Microblading",
-    question: "How long do microblading results last?",
-    answer: "Microblading results typically last 12-18 months. After your initial appointment and touch-up (4 weeks later), you'll need a refresh appointment annually to maintain the color and shape.",
+    category: "Процедури и перманентен грим",
+    question: "Болезнени ли са процедурите?",
+    answer:
+      "По време на процедурите се използват висококачествени анестетици, които значително намаляват дискомфорта. Усещането е индивидуално, но в повечето случаи е напълно поносимо.",
   },
   {
-    category: "Microblading",
-    question: "Is microblading painful?",
-    answer: "Most clients experience minimal discomfort. We apply a numbing cream before the procedure to ensure your comfort. You may feel slight pressure or scratching, but it's generally well-tolerated.",
+    category: "Процедури и перманентен грим",
+    question: "Колко време трае процедурата?",
+    answer:
+      "В зависимост от избраната услуга, процедурите отнемат между 1 и 3 часа.",
   },
   {
-    category: "Microblading",
-    question: "What is the aftercare process?",
-    answer: "Keep the area dry for 7-10 days, avoid makeup and skincare products on the brows, and don't pick or scratch. Use the provided aftercare cream as instructed. Avoid swimming, saunas, and excessive sweating during healing.",
+    category: "Процедури и перманентен грим",
+    question: "Колко време се задържа перманентният грим?",
+    answer:
+      "Трайността е между 12 и 24 месеца, в зависимост от типа кожа, начина на живот и грижата след процедурата.",
   },
   {
-    category: "Eyelash Extensions",
-    question: "How long do eyelash extensions last?",
-    answer: "Eyelash extensions typically last 4-6 weeks. Natural lashes shed every 60-90 days, so maintenance refills are recommended every 2-3 weeks to maintain fullness.",
+    category: "Процедури и перманентен грим",
+    question: "Необходима ли е корекция?",
+    answer:
+      "Да. Корекцията е задължителна и се извършва 4–6 седмици след първата процедура, за да се фиксира цветът и формата.",
   },
   {
-    category: "Eyelash Extensions",
-    question: "Can I wear makeup with eyelash extensions?",
-    answer: "Yes, you can wear makeup, but use oil-free products and avoid waterproof mascara. We recommend avoiding heavy eye makeup during the first 24 hours after application.",
+    category: "Процедури и перманентен грим",
+    question: "Как протича възстановяването?",
+    answer:
+      "След процедурата е възможно леко зачервяване и чувствителност. В рамките на няколко дни може да се появи леко лющене, което е нормална част от процеса.",
   },
   {
-    category: "Eyelash Extensions",
-    question: "How do I care for my lash extensions?",
-    answer: "Avoid water for 24 hours after application, use oil-free makeup remover, brush lashes gently with the provided spoolie, and avoid rubbing your eyes. Sleep on your back to prevent damage.",
+    category: "Процедури и перманентен грим",
+    question: "Мога ли да използвам грим след процедурата?",
+    answer:
+      "Препоръчва се да се избягва нанасяне на грим в третираната зона за около 7 дни, до пълното възстановяване на кожата.",
   },
   {
-    category: "Laser Pigmentation Removal",
-    question: "How many sessions are needed for removal?",
-    answer: "The number of sessions varies depending on pigment depth, color, and age. Most clients need 3-8 sessions spaced 6-8 weeks apart. We'll assess your specific situation during consultation.",
+    category: "Процедури и перманентен грим",
+    question: "Подходящ ли е перманентният грим за всеки?",
+    answer:
+      "В повечето случаи да, но има противопоказания. Затова преди процедурата се провежда индивидуална консултация.",
   },
   {
-    category: "Laser Pigmentation Removal",
-    question: "Is laser removal safe?",
-    answer: "Yes, our advanced laser technology is safe and FDA-approved. We use cooling technology to minimize discomfort and protect surrounding skin. Some redness and swelling may occur temporarily.",
+    category: "Процедури и перманентен грим",
+    question: "Как да избера подходящата техника?",
+    answer:
+      "Изборът се прави след консултация, като се вземат предвид формата на лицето, типа кожа и желания резултат.",
   },
   {
-    category: "Laser Pigmentation Removal",
-    question: "What should I avoid after laser treatment?",
-    answer: "Avoid sun exposure, swimming, and intense exercise for 48 hours. Don't pick or scratch the treated area. Use sunscreen (SPF 30+) for at least 2 weeks and follow our aftercare instructions carefully.",
+    category: "Мигли и ламиниране",
+    question: "Колко време трае ефектът при миглопластика и ламиниране?",
+    answer:
+      "Ефектът при тези процедури се запазва между 4 и 6 седмици, в зависимост от индивидуалния растеж на косъмчетата.",
   },
   {
-    category: "Permanent Lipstick",
-    question: "How long does permanent lipstick last?",
-    answer: "Permanent lipstick typically lasts 2-3 years. Color may fade gradually, and you may want a refresh appointment to maintain vibrancy. We can adjust the shade or intensity during touch-ups.",
+    category: "Лазерни процедури",
+    question: "Колко процедури са нужни за лазерно премахване?",
+    answer:
+      "Броят на процедурите е индивидуален и зависи от пигмента, дълбочината и зоната. Обикновено са необходими няколко сесии.",
   },
   {
-    category: "Permanent Lipstick",
-    question: "Will the color look natural?",
-    answer: "Yes! We customize the color to match your skin tone and preferences. During consultation, we'll show you color options and help you choose the perfect shade for a natural, flattering look.",
+    category: "Лазерни процедури",
+    question: "Безопасни ли са лазерните процедури?",
+    answer:
+      "Да, когато се извършват от специалист с подходяща техника и опит. Процедурите са съобразени с типа кожа и състоянието ѝ.",
   },
   {
-    category: "Permanent Lipstick",
-    question: "What is the healing process like?",
-    answer: "Expect slight swelling and tenderness for 24-48 hours. The color will appear darker initially and lighten as it heals. Avoid hot foods, spicy foods, and staining beverages for 48 hours.",
+    category: "Записване",
+    question: "Как да запиша час?",
+    answer:
+      "Може да запишете час чрез съобщение в Instagram, Viber или телефонно обаждане. След кратка консултация ще получите подходящо предложение за процедура и дата.",
   },
 ];
 
@@ -79,23 +91,33 @@ export default function FAQSection() {
       <div className="container">
         <div className="text-center mb-20">
           <span className="text-xs tracking-widest font-semibold text-[#D4AF37]" style={{ fontFamily: "Inter" }}>
-            COMMON QUESTIONS
+            ОБЩИ ВЪПРОСИ
           </span>
           <h2
             className="mt-4 text-6xl font-light text-neutral-100"
             style={{ fontFamily: "Bodoni Moda" }}
           >
-            Frequently Asked Questions
+            Често Задавани Въпроси
           </h2>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-neutral-400" style={{ fontFamily: "Inter" }}>
-            Find answers to common questions about our beauty services, aftercare, and procedures.
-          </p>
           <div className="w-12 h-1 bg-[#D4AF37] mx-auto mt-6 rounded-none"></div>
         </div>
 
-        <div className="max-w-4xl mx-auto space-y-12">
-          {categories.map((category) => (
-            <div key={category}>
+        <div className="mx-auto max-w-4xl">
+          {categories.map((category, catIndex) => (
+            <div
+              key={category}
+              className={catIndex > 0 ? "mt-14" : undefined}
+            >
+              {catIndex > 0 ? (
+                <div
+                  className="mb-10 flex items-center gap-4"
+                  aria-hidden="true"
+                >
+                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-neutral-700 to-neutral-600" />
+                  <div className="h-px w-14 shrink-0 bg-[#D4AF37]/85" />
+                  <div className="h-px flex-1 bg-gradient-to-l from-transparent via-neutral-700 to-neutral-600" />
+                </div>
+              ) : null}
               <h3
                 className="mb-6 border-b-2 border-neutral-800 pb-4 text-2xl font-light text-neutral-100"
                 style={{ fontFamily: "Bodoni Moda" }}
@@ -152,14 +174,15 @@ export default function FAQSection() {
 
         <div className="mt-20 text-center">
           <p className="mb-6 text-neutral-400" style={{ fontFamily: "Inter" }}>
-            Didn't find your answer? Contact us directly for personalized assistance.
+            Не открихте отговор? Свържете се с нас за индивидуална консултация.
           </p>
-          <button
-            className="rounded-none border border-[#D4AF37] bg-[#D4AF37] px-8 py-3 font-medium text-black transition-all hover:border-[#b8941f] hover:bg-[#b8941f] hover:text-white"
+          <a
+            href="#contact"
+            className="inline-block rounded-none border border-[#D4AF37] bg-[#D4AF37] px-8 py-3 font-medium text-black transition-all hover:border-[#b8941f] hover:bg-[#b8941f] hover:text-white"
             style={{ fontFamily: "Inter" }}
           >
-            Contact Us
-          </button>
+            Свържете се с нас
+          </a>
         </div>
       </div>
     </section>
