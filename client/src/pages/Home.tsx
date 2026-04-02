@@ -12,6 +12,28 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import hairstrokesImage from "@/assets/hairstrokes.png";
+import galleryHairstrokesAfter from "@/assets/hairstrokes-after.png";
+import galleryHairstrokesBefore from "@/assets/hairstrokes-before.png";
+import galleryMicropigmentationAfter from "@/assets/micropigmentation-after.png";
+import galleryMicropigmentationBefore from "@/assets/micropigmentation-before.png";
+import galleryMicrobladingAfter from "@/assets/microblading-gallery-after.png";
+import galleryMicrobladingBefore from "@/assets/microblading-gallery-before.png";
+import galleryCombinedTechniqueAfter from "@/assets/combined-technique-after.png";
+import galleryCombinedTechniqueBefore from "@/assets/combined-technique-before.png";
+import galleryPermanentEyelinerAfter from "@/assets/permanent-eyeliner-after.png";
+import galleryPermanentEyelinerBefore from "@/assets/permanent-eyeliner-before.png";
+import gallerySoftLipsAfter from "@/assets/gallery-soft-lips-after.png";
+import gallerySoftLipsBefore from "@/assets/gallery-soft-lips-before.png";
+import galleryLaminationBrowsLashesAfter from "@/assets/gallery-lamination-brows-lashes-after.png";
+import galleryLaminationBrowsLashesBefore from "@/assets/gallery-lamination-brows-lashes-before.png";
+import galleryLashLaminationAfter from "@/assets/gallery-lash-lamination-after.png";
+import galleryLashLaminationBefore from "@/assets/gallery-lash-lamination-before.png";
+import galleryLaserPmuRemovalAfter from "@/assets/gallery-laser-pmu-removal-after.png";
+import galleryLaserPmuRemovalBefore from "@/assets/gallery-laser-pmu-removal-before.png";
+import galleryCarbonPeelingAfter from "@/assets/gallery-carbon-peeling-after.png";
+import galleryCarbonPeelingBefore from "@/assets/gallery-carbon-peeling-before.png";
+import galleryLaserTattooRemovalAfter from "@/assets/gallery-laser-tattoo-removal-after.png";
+import galleryLaserTattooRemovalBefore from "@/assets/gallery-laser-tattoo-removal-before.png";
 import micropigmentationImage from "@/assets/micropigmentation.png";
 import microbladingImage from "@/assets/microblading.png";
 import hairstrokesPowderImage from "@/assets/hairstrokes-powder.png";
@@ -111,7 +133,7 @@ function ServiceCarouselTapDialog({
 }
 
 /**
- * PhiBrows Landing Page - Material Design
+ * Landing Page - Material Design
  * Design: Elegant luxury with pink accents, rounded components
  * Typography: Bodoni Moda (serif, editorial) + Inter (clean, readable)
  * Layout: Full-screen hero, compact gallery, pricing section
@@ -1574,44 +1596,97 @@ export default function Home() {
         <div className="container">
           <div className="text-center mb-12">
             <span className="text-xs tracking-widest font-semibold text-[#D4AF37]" style={{ fontFamily: "Inter" }}>
-              REAL RESULTS
+              Истински Резултати
             </span>
             <h2
               className="mt-4 text-5xl font-light text-neutral-100"
               style={{ fontFamily: "Bodoni Moda" }}
             >
-              Transformations
+              Трансформации
             </h2>
             <p className="mx-auto mt-4 max-w-2xl text-base text-neutral-400" style={{ fontFamily: "Inter" }}>
-              Drag the slider to compare before and after results from our clients.
+              Плъзнете, за да сравните резултатите преди и след на моите клиенти.
             </p>
           </div>
 
           <BeforeAfterGallery
             items={[
               {
-                title: "Microblading",
-                before: "https://d2xsxph8kpxj0f.cloudfront.net/310519663405959620/fyDCaCDjBEZajfCbgjZ8q2/phibrows-microblading-before-fSKWSsKiZrNnCf5ggwcTvs.webp",
-                after: "https://d2xsxph8kpxj0f.cloudfront.net/310519663405959620/fyDCaCDjBEZajfCbgjZ8q2/phibrows-microblading-after-Siyeqe9r76wSrS8WR5Sm8a.webp",
-                description: "Precision microblading creates natural, symmetrical eyebrows with perfect definition.",
+                title: "Hairstrokes",
+                after: galleryHairstrokesAfter,
+                before: galleryHairstrokesBefore,
+                description:
+                  "Фини косъмчета за естествен, прецизен вид на веждите — техника, която имитира реални косъмчета.",
               },
               {
-                title: "Eyelash Extensions",
-                before: "https://d2xsxph8kpxj0f.cloudfront.net/310519663405959620/fyDCaCDjBEZajfCbgjZ8q2/phibrows-lashes-before-gUXc3RrbykaxR8BWXG7Brm.webp",
-                after: "https://d2xsxph8kpxj0f.cloudfront.net/310519663405959620/fyDCaCDjBEZajfCbgjZ8q2/phibrows-lashes-after-Z8Jg8EYakF4SgP8s9JwgLP.webp",
-                description: "Luxurious lash extensions add volume, length, and curl to your natural lashes.",
+                title: "Микропигментация",
+                after: galleryMicropigmentationAfter,
+                before: galleryMicropigmentationBefore,
+                description:
+                  "Меко пудрено запълване и градиент по веждите — дълготраен, естествен вид с прецизна пигментация.",
               },
               {
-                title: "Laser Pigmentation Removal",
-                before: "https://d2xsxph8kpxj0f.cloudfront.net/310519663405959620/fyDCaCDjBEZajfCbgjZ8q2/phibrows-removal-before-WNFDGkUyvRHxtqpx9W8wdn.webp",
-                after: "https://d2xsxph8kpxj0f.cloudfront.net/310519663405959620/fyDCaCDjBEZajfCbgjZ8q2/phibrows-removal-after-ZUPSHFoEkaHtps5n75PRcw.webp",
-                description: "Our advanced laser technology safely removes unwanted tattoos and pigmentation.",
+                title: "Микроблейдинг",
+                after: galleryMicrobladingAfter,
+                before: galleryMicrobladingBefore,
+                description:
+                  "Фини разрези за естествена форма и плътност на веждите — полуперманентна техника с прецизни косъмчета.",
               },
               {
-                title: "Permanent Lipstick",
-                before: "https://d2xsxph8kpxj0f.cloudfront.net/310519663405959620/fyDCaCDjBEZajfCbgjZ8q2/phibrows-lips-before-BgvabpjN9b8U49xZF2HCyw.webp",
-                after: "https://d2xsxph8kpxj0f.cloudfront.net/310519663405959620/fyDCaCDjBEZajfCbgjZ8q2/phibrows-lips-after-oNYmFiPH9DxH7sEvyXfZrT.webp",
-                description: "Long-lasting permanent lipstick that stays vibrant and perfect throughout your day.",
+                title: "Комбинирана техника",
+                after: galleryCombinedTechniqueAfter,
+                before: galleryCombinedTechniqueBefore,
+                description:
+                  "Съчетание от фини косъмчета и пудрено запълване — форма, плътност и мек градиент в една процедура.",
+              },
+              {
+                title: "Перманентна очна линия",
+                after: galleryPermanentEyelinerAfter,
+                before: galleryPermanentEyelinerBefore,
+                description:
+                  "Дефинирана линия по миглите за по-изразителен поглед — дълготраен резултат с естествен или по-наситен ефект.",
+              },
+              {
+                title: "Soft Lips Перманентно червило",
+                after: gallerySoftLipsAfter,
+                before: gallerySoftLipsBefore,
+                description:
+                  "Мек контур и наситен цвят на устните — дълготраен резултат с естествен или по-изразителен тон.",
+              },
+              {
+                title: "Ламиниране на вежди и мигли",
+                after: galleryLaminationBrowsLashesAfter,
+                before: galleryLaminationBrowsLashesBefore,
+                description:
+                  "Фиксиране и форма на веждите за „четка“ ефект, комбинирано с извити и подчертани мигли.",
+              },
+              {
+                title: "Ламиниране на мигли",
+                after: galleryLashLaminationAfter,
+                before: galleryLashLaminationBefore,
+                description:
+                  "Извиване, подреждане и подчертаване на естествените мигли за по-отворен и изразителен поглед.",
+              },
+              {
+                title: "Лазерно отстраняване на перманентен грим",
+                after: galleryLaserPmuRemovalAfter,
+                before: galleryLaserPmuRemovalBefore,
+                description:
+                  "Безопасно разбиване на пигмента с лазер — постепенно изсветляване и премахване на стар татуировъчен грим.",
+              },
+              {
+                title: "Карбонов пилинг",
+                after: galleryCarbonPeelingAfter,
+                before: galleryCarbonPeelingBefore,
+                description:
+                  "Дълбоко почистване и подобряване на текстурата на кожата — по-гладък тен и освежен вид.",
+              },
+              {
+                title: "Лазерно отстраняване на татуировки",
+                after: galleryLaserTattooRemovalAfter,
+                before: galleryLaserTattooRemovalBefore,
+                description:
+                  "Целенасочено разбиване на мастилото с лазер — постепенно избледняване и изчистване на татуировката.",
               },
             ]}
           />

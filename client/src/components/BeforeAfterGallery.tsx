@@ -2,8 +2,8 @@ import { useState } from "react";
 
 interface BeforeAfterItem {
   title: string;
-  before: string;
   after: string;
+  before: string;
   description: string;
 }
 
@@ -42,23 +42,24 @@ export default function BeforeAfterGallery({ items }: BeforeAfterGalleryProps) {
         onMouseMove={handleMouseMove}
         onTouchMove={handleTouchMove}
       >
-        {/* After Image (Background) */}
         <img
-          src={current.after}
-          alt="After"
-          className="absolute inset-0 w-full h-full object-cover"
+          src={current.before}
+          alt="Преди"
+          className="absolute inset-0 h-full w-full object-cover"
         />
 
-        {/* Before Image (Overlay) */}
         <div
           className="absolute inset-0 overflow-hidden"
           style={{ width: `${sliderPosition}%` }}
         >
           <img
-            src={current.before}
-            alt="Before"
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{ width: `${(100 / sliderPosition) * 100}%` }}
+            src={current.after}
+            alt="След"
+            className="absolute inset-0 h-full w-full object-cover"
+            style={{
+              width:
+                sliderPosition > 0 ? `${(100 / sliderPosition) * 100}%` : "100%",
+            }}
           />
         </div>
 
@@ -79,12 +80,11 @@ export default function BeforeAfterGallery({ items }: BeforeAfterGalleryProps) {
           </div>
         </div>
 
-        {/* Labels */}
-        <div className="absolute top-4 left-4 bg-black/50 text-white px-3 py-1 rounded-none text-sm font-semibold">
-          BEFORE
+        <div className="absolute top-4 left-4 rounded-none bg-black/50 px-3 py-1 text-sm font-semibold text-white">
+          СЛЕД
         </div>
-        <div className="absolute top-4 right-4 bg-black/50 text-white px-3 py-1 rounded-none text-sm font-semibold">
-          AFTER
+        <div className="absolute top-4 right-4 rounded-none bg-black/50 px-3 py-1 text-sm font-semibold text-white">
+          ПРЕДИ
         </div>
       </div>
 

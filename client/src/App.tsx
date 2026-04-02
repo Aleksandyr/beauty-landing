@@ -18,7 +18,7 @@ function Router() {
   );
 }
 
-// PhiBrows: Light theme with black/white/rose gold palette
+// Light theme with black/white/rose gold palette
 function App() {
   return (
     <ErrorBoundary>

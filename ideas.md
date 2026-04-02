@@ -147,7 +147,7 @@
 
 ## Selected Approach: **Idea 1 — Neo-Art Deco Opulence** (Adapted for PhiBrows)
 
-**Brand:** PhiBrows — Premium Microblading, Eyelashes, Laser Pigmentation Removal & Permanent Lipstick
+**Brand:** Premium Microblading, Eyelashes, Laser Pigmentation Removal & Permanent Lipstick
 
 **Adapted Color Palette:**
 - Deep Black (`#0A0A0A`) — sophisticated, premium
