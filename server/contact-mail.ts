@@ -5,8 +5,6 @@ import {
   type ContactFormPayload,
 } from "../shared/contact-schema";
 
-const DEFAULT_TO = "aleksandyr.kamenov@gmail.com";
-
 const serviceLabels: Record<string, string> = {
   hairstrokes: "Hairstrokes / микропигментация",
   microblading: "Микроблейдинг",
@@ -113,7 +111,13 @@ function smtpFailureMessage(err: unknown): string {
 }
 
 export async function sendContactEmail(data: ContactFormPayload): Promise<void> {
-  const to = process.env.CONTACT_TO_EMAIL?.trim() || DEFAULT_TO;
+  const to = process.env.CONTACT_TO_EMAIL?.trim();
+  if (!to) {
+    throw new Error(
+      "CONTACT_TO_EMAIL не е настроен. Задай го в .env или в средата на процеса (виж .env.example)."
+    );
+  }
+
   const { user, pass } = normalizeSmtpCredentials();
 
   if (!user || !pass) {
@@ -122,19 +126,25 @@ export async function sendContactEmail(data: ContactFormPayload): Promise<void> 
     );
   }
 
-  const host = (process.env.SMTP_HOST ?? "smtp.gmail.com").trim();
+  const explicitTls = process.env.SMTP_GMAIL_EXPLICIT === "true";
+  const hostFromEnv = stripEnvValue(process.env.SMTP_HOST);
   const port = Number(process.env.SMTP_PORT ?? 587);
   const secure = process.env.SMTP_SECURE === "true" || port === 465;
 
-  /** Nodemailer’s Gmail preset uses smtp.gmail.com:465 + TLS — often fewer auth issues than STARTTLS on 587. */
-  const useGmailPreset =
-    host === "smtp.gmail.com" && process.env.SMTP_GMAIL_EXPLICIT !== "true";
+  /** Empty SMTP_HOST → Nodemailer Gmail preset (no hostname literals in bundle; avoids Netlify secret-scan false positives). */
+  if (explicitTls && !hostFromEnv) {
+    throw new Error(
+      "При SMTP_GMAIL_EXPLICIT=true задай SMTP_HOST в .env (хостът на SMTP сървъра)."
+    );
+  }
+
+  const useGmailPreset = !explicitTls && hostFromEnv === "";
 
   const transporter = nodemailer.createTransport(
     useGmailPreset
       ? { service: "gmail", auth: { user, pass } }
       : {
-          host,
+          host: hostFromEnv,
           port,
           secure,
           requireTLS: !secure && port === 587,
@@ -175,6 +185,18 @@ export async function handleContactRequest(
     await sendContactEmail(parsed.data);
     return { ok: true };
   } catch (err) {
+    if (err instanceof Error) {
+      const m = err.message;
+      if (
+        m.includes("CONTACT_TO_EMAIL") ||
+        m.includes("SMTP_USER и SMTP_PASS") ||
+        m.includes("SMTP_GMAIL_EXPLICIT") ||
+        m.includes("При SMTP_GMAIL_EXPLICIT")
+      ) {
+        console.error("[contact-mail]", m);
+        return { ok: false, status: 500, error: m };
+      }
+    }
     const e = err as { code?: string; responseCode?: number; response?: string };
     console.error("[contact-mail]", e.code, e.responseCode, e.response ?? err);
     if (e.code === "EAUTH" || e.responseCode === 535) {
