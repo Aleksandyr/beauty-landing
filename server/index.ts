@@ -1,20 +1,51 @@
+import "./load-env.js";
 import express from "express";
+import fs from "node:fs";
 import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
+import { handleContactRequest } from "./contact-mail";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+/** Bundled server lives in `dist/`; source runs from `server/`. Client build is always `dist/public`. */
+function clientStaticDir(): string {
+  return path.basename(__dirname) === "dist"
+    ? path.resolve(__dirname, "public")
+    : path.resolve(__dirname, "..", "dist", "public");
+}
 
 async function startServer() {
   const app = express();
   const server = createServer(app);
 
-  // Serve static files from dist/public in production
-  const staticPath =
-    process.env.NODE_ENV === "production"
-      ? path.resolve(__dirname, "public")
-      : path.resolve(__dirname, "..", "dist", "public");
+  app.use(
+    express.json({
+      limit: "48kb",
+    })
+  );
+
+  app.post("/api/contact", async (req, res) => {
+    const result = await handleContactRequest(req.body);
+    if (!result.ok) {
+      res.status(result.status).json({
+        ok: false,
+        error: result.error,
+        fieldErrors: result.fieldErrors,
+      });
+      return;
+    }
+    res.status(200).json({ ok: true });
+  });
+
+  const staticPath = clientStaticDir();
+  const indexPath = path.join(staticPath, "index.html");
+  if (!fs.existsSync(indexPath)) {
+    console.error(
+      `[server] Missing client build at ${indexPath}. Run \`pnpm build\`, or use \`pnpm dev\` (Vite) for local development.`
+    );
+  }
 
   app.use(express.static(staticPath));
 

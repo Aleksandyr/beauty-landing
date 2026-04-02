@@ -3,8 +3,9 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import fs from "node:fs";
 import path from "node:path";
-import { defineConfig, type Plugin, type ViteDevServer } from "vite";
+import { defineConfig, loadEnv, type Plugin, type ViteDevServer } from "vite";
 import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
+import { handleContactRequest } from "./server/contact-mail";
 
 // =============================================================================
 // Manus Debug Collector - Vite Plugin
@@ -150,39 +151,148 @@ function vitePluginManusDebugCollector(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector()];
+/** POST /api/contact — same handler as production Express (requires SMTP_* in .env) */
+function viteContactApiPlugin(): Plugin {
+  return {
+    name: "contact-api",
+    configureServer(viteServer) {
+      const loaded = loadEnv(
+        viteServer.config.mode,
+        viteServer.config.envDir,
+        ""
+      );
+      for (const [key, value] of Object.entries(loaded)) {
+        const cur = process.env[key];
+        const smtpOrContact =
+          key.startsWith("SMTP_") || key === "CONTACT_TO_EMAIL";
+        if (
+          cur === undefined ||
+          (smtpOrContact && cur === "" && value !== undefined && value !== "")
+        ) {
+          process.env[key] = value;
+        }
+      }
 
-export default defineConfig({
-  plugins,
-  resolve: {
-    alias: {
-      "@": path.resolve(import.meta.dirname, "client", "src"),
-      "@shared": path.resolve(import.meta.dirname, "shared"),
-      "@assets": path.resolve(import.meta.dirname, "attached_assets"),
+      viteServer.middlewares.use((req, res, next) => {
+        const url = req.url?.split("?")[0] ?? "";
+        if (url !== "/api/contact" || req.method !== "POST") {
+          next();
+          return;
+        }
+        let body = "";
+        req.on("data", (chunk: Buffer) => {
+          body += chunk.toString();
+        });
+        req.on("end", () => {
+          void (async () => {
+            let parsed: unknown = {};
+            try {
+              parsed = body ? JSON.parse(body) : {};
+            } catch {
+              res.statusCode = 400;
+              res.setHeader("Content-Type", "application/json");
+              res.end(JSON.stringify({ ok: false, error: "Невалиден JSON." }));
+              return;
+            }
+            const result = await handleContactRequest(parsed);
+            if (!result.ok) {
+              res.statusCode = result.status;
+              res.setHeader("Content-Type", "application/json");
+              res.end(
+                JSON.stringify({
+                  ok: false,
+                  error: result.error,
+                  fieldErrors: result.fieldErrors,
+                })
+              );
+              return;
+            }
+            res.statusCode = 200;
+            res.setHeader("Content-Type", "application/json");
+            res.end(JSON.stringify({ ok: true }));
+          })().catch((err) => {
+            console.error("[contact-api]", err);
+            res.statusCode = 500;
+            res.setHeader("Content-Type", "application/json");
+            res.end(
+              JSON.stringify({
+                ok: false,
+                error: "Вътрешна грешка на сървъра.",
+              })
+            );
+          });
+        });
+      });
     },
-  },
-  envDir: path.resolve(import.meta.dirname),
-  root: path.resolve(import.meta.dirname, "client"),
-  build: {
-    outDir: path.resolve(import.meta.dirname, "dist/public"),
-    emptyOutDir: true,
-  },
-  server: {
-    port: 3000,
-    strictPort: false, // Will find next available port if 3000 is busy
-    host: true,
-    allowedHosts: [
-      ".manuspre.computer",
-      ".manus.computer",
-      ".manus-asia.computer",
-      ".manuscomputer.ai",
-      ".manusvm.computer",
-      "localhost",
-      "127.0.0.1",
-    ],
-    fs: {
-      strict: true,
-      deny: ["**/.*"],
+  };
+}
+
+/** Omit Umami script when analytics env is missing (avoids broken `%VITE_*%` URLs in HTML). */
+function viteOptionalAnalyticsPlugin(mode: string, envDir: string): Plugin {
+  return {
+    name: "optional-analytics",
+    transformIndexHtml: {
+      order: "pre",
+      handler(html) {
+        const env = loadEnv(mode, envDir, "");
+        const ep = env.VITE_ANALYTICS_ENDPOINT?.trim();
+        const id = env.VITE_ANALYTICS_WEBSITE_ID?.trim();
+        if (ep && id) return html;
+        // Must NOT match from the first <script> (main.tsx): a lazy [\s\S]*? would
+        // span past </script> and strip the app entry. Umami is the only defer script.
+        return html.replace(
+          /\s*<script\s+defer[\s\S]*?VITE_ANALYTICS[\s\S]*?<\/script>\s*/i,
+          "\n"
+        );
+      },
     },
-  },
+  };
+}
+
+export default defineConfig(({ mode }) => {
+  const envDir = path.resolve(import.meta.dirname);
+  const plugins = [
+    react(),
+    tailwindcss(),
+    jsxLocPlugin(),
+    vitePluginManusRuntime(),
+    vitePluginManusDebugCollector(),
+    viteOptionalAnalyticsPlugin(mode, envDir),
+    viteContactApiPlugin(),
+  ];
+
+  return {
+    plugins,
+    resolve: {
+      alias: {
+        "@": path.resolve(import.meta.dirname, "client", "src"),
+        "@shared": path.resolve(import.meta.dirname, "shared"),
+        "@assets": path.resolve(import.meta.dirname, "attached_assets"),
+      },
+    },
+    envDir,
+    root: path.resolve(import.meta.dirname, "client"),
+    build: {
+      outDir: path.resolve(import.meta.dirname, "dist/public"),
+      emptyOutDir: true,
+    },
+    server: {
+      port: 3000,
+      strictPort: false, // Will find next available port if 3000 is busy
+      host: true,
+      allowedHosts: [
+        ".manuspre.computer",
+        ".manus.computer",
+        ".manus-asia.computer",
+        ".manuscomputer.ai",
+        ".manusvm.computer",
+        "localhost",
+        "127.0.0.1",
+      ],
+      fs: {
+        strict: true,
+        deny: ["**/.*"],
+      },
+    },
+  };
 });

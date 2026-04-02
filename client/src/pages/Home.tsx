@@ -324,7 +324,7 @@ export default function Home() {
           <a href="#contact" className="inline-block">
             <Button className={`transition-all border rounded-none ${isScrolled ? "border-[#D4AF37] bg-[#D4AF37] text-black hover:border-[#b8941f] hover:bg-[#b8941f] hover:text-white" : "border-[#D4AF37] bg-[#D4AF37] text-white hover:border-[#b8941f] hover:bg-[#b8941f] hover:text-white"}`}>
               Запази Час
-            </Button>
+          </Button>
           </a>
         </div>
       </nav>
@@ -369,7 +369,7 @@ export default function Home() {
                   <DialogTrigger asChild>
                     <Button className="rounded-none bg-[#D4AF37] px-8 py-6 text-base font-semibold text-white transition-all hover:bg-[#b8941f] hover:text-white">
                       Повече за Мен
-                    </Button>
+                </Button>
                   </DialogTrigger>
                   <DialogContent
                     bodyScroll={false}
@@ -383,7 +383,7 @@ export default function Home() {
                         alt="Цветелина Каменова"
                         className="h-full w-full object-cover object-[center_20%]"
                       />
-                    </div>
+              </div>
                     {/* Right: text (scrolls when content exceeds panel — critical on mobile) */}
                     <div className="flex min-h-0 min-w-0 flex-1 touch-pan-y flex-col overflow-y-auto overscroll-contain px-6 pb-6 pt-10 [-webkit-overflow-scrolling:touch] sm:px-8 sm:pb-8 sm:pt-12 md:max-h-[min(90vh,620px)]">
                       <DialogHeader className="space-y-0 text-left">
@@ -413,7 +413,7 @@ export default function Home() {
                               качество.
                             </span>
                           </p>
-                        </div>
+            </div>
 
                         <div className="space-y-2 border-l-2 border-[#D4AF37] pl-4">
                           <p className="font-semibold text-sm text-[#D4AF37]">
@@ -534,7 +534,7 @@ export default function Home() {
                       >
                         повече
                       </span>
-                    </div>
+              </div>
                     <div className={serviceCardImageTouchHintClass}>
                       <span
                         className={serviceCardImageTouchHintTextClass}
@@ -649,7 +649,7 @@ export default function Home() {
                       >
                         повече
                       </span>
-                    </div>
+              </div>
                     <div className={serviceCardImageTouchHintClass}>
                       <span
                         className={serviceCardImageTouchHintTextClass}
@@ -774,7 +774,7 @@ export default function Home() {
                       >
                         повече
                       </span>
-                    </div>
+              </div>
                     <div className={serviceCardImageTouchHintClass}>
                       <span
                         className={serviceCardImageTouchHintTextClass}
@@ -883,7 +883,7 @@ export default function Home() {
                       >
                         повече
                       </span>
-                    </div>
+              </div>
                     <div className={serviceCardImageTouchHintClass}>
                       <span
                         className={serviceCardImageTouchHintTextClass}

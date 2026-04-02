@@ -138,19 +138,20 @@ export default function FAQSection() {
                         className="border-b border-neutral-800 pb-4"
                       >
                         <button
+                          type="button"
                           onClick={() =>
                             setOpenIndex(isOpen ? null : globalIndex)
                           }
-                          className="w-full flex items-start justify-between gap-4 py-4 hover:text-[#D4AF37] transition-colors text-left"
+                          className="group flex w-full items-start justify-between gap-4 rounded-none py-4 text-left transition-colors hover:bg-[#b8941f] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                         >
                           <span
-                            className="flex-1 text-lg font-light text-neutral-100"
+                            className="flex-1 text-lg font-light text-neutral-100 transition-colors group-hover:text-white"
                             style={{ fontFamily: "Bodoni Moda" }}
                           >
                             {item.question}
                           </span>
                           <ChevronDown
-                            className={`h-5 w-5 shrink-0 text-neutral-400 transition-transform duration-300 ${
+                            className={`h-5 w-5 shrink-0 text-neutral-400 transition-transform duration-300 group-hover:text-white ${
                               isOpen ? "rotate-180" : ""
                             }`}
                           />
