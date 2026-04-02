@@ -154,12 +154,7 @@ export default function PricingSection() {
         </div>
 
         <div className="mx-auto mt-10 flex max-w-4xl justify-center">
-          <a
-            href="https://wa.me/359899124512"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block"
-          >
+          <a href="#contact" className="inline-block">
             <Button className="rounded-none border border-[#D4AF37] bg-[#D4AF37] px-10 py-6 text-base font-semibold text-black transition-all hover:border-[#b8941f] hover:bg-[#b8941f] hover:text-white">
               Запази Час
             </Button>

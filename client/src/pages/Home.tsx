@@ -321,12 +321,7 @@ export default function Home() {
               Контакти
             </a>
           </div>
-          <a
-            href="https://wa.me/359899124512"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block"
-          >
+          <a href="#contact" className="inline-block">
             <Button className={`transition-all border rounded-none ${isScrolled ? "border-[#D4AF37] bg-[#D4AF37] text-black hover:border-[#b8941f] hover:bg-[#b8941f] hover:text-white" : "border-[#D4AF37] bg-[#D4AF37] text-white hover:border-[#b8941f] hover:bg-[#b8941f] hover:text-white"}`}>
               Запази Час
             </Button>
@@ -1782,18 +1777,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-[#0A0A0A] text-white py-16 border-t-2 border-[#D4AF37]">
         <div className="container">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-            <div>
-              <h3
-                className="text-2xl font-light mb-4"
-                style={{ fontFamily: "Bodoni Moda" }}
-              >
-                PhiBrows
-              </h3>
-              <p className="text-gray-400 text-sm" style={{ fontFamily: "Inter" }}>
-                Premium beauty services crafted with precision and luxury.
-              </p>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
             <div>
               <h4 className="font-light mb-4" style={{ fontFamily: "Bodoni Moda" }}>
                 Services
@@ -1821,22 +1805,32 @@ export default function Home() {
                 Connect
               </h4>
               <ul className="space-y-2 text-gray-400 text-sm" style={{ fontFamily: "Inter" }}>
-                <li><a href="#" className="hover:text-[#D4AF37] transition-colors">Instagram</a></li>
-                <li><a href="#" className="hover:text-[#D4AF37] transition-colors">Facebook</a></li>
-                <li><a href="#" className="hover:text-[#D4AF37] transition-colors">TikTok</a></li>
-                <li><a href="#" className="hover:text-[#D4AF37] transition-colors">Pinterest</a></li>
+                <li>
+                  <a
+                    href="https://www.instagram.com/phimaster.kamenova/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-[#D4AF37] transition-colors"
+                  >
+                    Instagram
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.facebook.com/profile.php?id=100064212961528&utm_source=ig&utm_medium=social&utm_content=link_in_bio"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-[#D4AF37] transition-colors"
+                  >
+                    Facebook
+                  </a>
+                </li>
               </ul>
-              <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 mt-6 bg-[#25D366] text-white px-4 py-2 rounded-none hover:bg-[#20BA5E] transition-all font-medium text-sm" style={{ fontFamily: "Inter" }}>
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.272-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.67-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.076 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421-7.403h-.004a9.87 9.87 0 00-4.255.949c-1.238.503-2.335 1.236-3.356 2.259-1.02 1.02-1.756 2.119-2.259 3.356-.524 1.205-.954 2.56-.949 4.255 0 3.476 2.829 6.305 6.305 6.305 1.695 0 3.05-.425 4.255-.949 1.238-.503 2.335-1.236 3.356-2.259 1.02-1.02 1.756-2.119 2.259-3.356.524-1.205.954-2.56.949-4.255 0-3.476-2.829-6.305-6.305-6.305z"/>
-                </svg>
-                WhatsApp
-              </a>
             </div>
           </div>
           <div className="border-t border-gray-800 pt-8 text-center text-gray-400 text-sm">
             <p style={{ fontFamily: "Inter" }}>
-              © 2026 PhiBrows. All rights reserved. | Privacy Policy | Terms of Service
+              © 2026 All rights reserved. | Privacy Policy | Terms of Service
             </p>
           </div>
         </div>

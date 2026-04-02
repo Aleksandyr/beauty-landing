@@ -50,7 +50,7 @@ export default function ContactForm() {
               <div className="w-4 h-4 bg-[#0A0A0A]"></div>
             </div>
             <p className="text-white text-sm font-semibold tracking-wider" style={{ fontFamily: "Inter" }}>
-              PHIBROWS STUDIO
+              СТУДИО
             </p>
           </div>
         </div>
