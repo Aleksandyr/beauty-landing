@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+
 interface PricingItem {
   name: string;
   price: string;
@@ -151,6 +153,19 @@ export default function PricingSection() {
           ))}
         </div>
 
+        <div className="mx-auto mt-10 flex max-w-4xl justify-center">
+          <a
+            href="https://wa.me/359899124512"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block"
+          >
+            <Button className="rounded-none border border-[#D4AF37] bg-[#D4AF37] px-10 py-6 text-base font-semibold text-black transition-all hover:border-[#b8941f] hover:bg-[#b8941f] hover:text-white">
+              Запази Час
+            </Button>
+          </a>
+        </div>
+        
         <div
           className="mx-auto mt-14 max-w-4xl border border-[#D4AF37]/35 bg-neutral-950/90 px-6 py-5 text-sm leading-relaxed text-neutral-300"
           style={{ fontFamily: "Inter" }}
@@ -164,6 +179,7 @@ export default function PricingSection() {
             Окончателната цена се определя след консултация.
           </p>
         </div>
+
 
         {/* Package Deals Section */}
         <div className="mt-20 border-t-2 border-neutral-800 pt-12 text-center">

@@ -1715,7 +1715,7 @@ export default function Home() {
               <div className="space-y-8">
                 {[
                   {
-                    title: "Опитen специалист",
+                    title: "Опитен специалист",
                     desc: "Сертифициран професионалист с дългогодишна практика",
                   },
                   {
