@@ -1696,28 +1696,40 @@ export default function Home() {
       {/* Pricing Section */}
       <PricingSection />
 
-      {/* Why PhiBrows Section */}
+      {/* About us */}
       <section id="about" className="relative bg-black py-24">
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-10">
               <div>
                 <span className="text-xs tracking-widest font-semibold text-[#D4AF37]" style={{ fontFamily: "Inter" }}>
-                  ABOUT US
+                  ЗА НАС
                 </span>
                 <h2
                   className="mt-4 text-6xl font-light text-neutral-100"
                   style={{ fontFamily: "Bodoni Moda" }}
                 >
-                  Why PhiBrows?
+                  Защо да ни се довериш?
                 </h2>
               </div>
               <div className="space-y-8">
                 {[
-                  { title: "Expert Artisans", desc: "Certified professionals with years of experience" },
-                  { title: "Premium Products", desc: "Only the finest, hypoallergenic materials used" },
-                  { title: "Personalized Care", desc: "Custom treatments tailored to your unique features" },
-                  { title: "Luxury Experience", desc: "Spa-like atmosphere designed for your comfort" },
+                  {
+                    title: "Опитen специалист",
+                    desc: "Сертифициран професионалист с дългогодишна практика",
+                  },
+                  {
+                    title: "Премиум продукти",
+                    desc: "Само висококачествени, хипоалергенни материали",
+                  },
+                  {
+                    title: "Индивидуален подход",
+                    desc: "Персонализирани процедури, съобразени с твоите черти и желания",
+                  },
+                  {
+                    title: "Луксозно изживяване",
+                    desc: "Спокойна, „спа“ атмосфера за максимален комфорт",
+                  },
                 ].map((item, i) => (
                   <div key={i} className="flex gap-6">
                     <div className="w-12 h-12 bg-[#D4AF37] flex items-center justify-center flex-shrink-0 rounded-none">
@@ -1745,10 +1757,11 @@ export default function Home() {
                 className="mb-8 text-center text-3xl font-light text-neutral-100"
                 style={{ fontFamily: "Bodoni Moda" }}
               >
-                "Beauty is not about perfection. It's about confidence."
+                „Красотата не е съвършенство. Тя е увереност.“
               </p>
               <p className="text-center text-sm text-neutral-300" style={{ fontFamily: "Inter" }}>
-                At PhiBrows, we believe every client deserves to feel beautiful and confident. Our mission is to enhance your natural beauty through precision, artistry, and luxury care.
+                Вярвам, че всеки човек заслужава да се чувства красив и уверен. Моята мисия е да
+                подчертавам естествената ти красота чрез прецизност, артистичност и внимателна грижа.
               </p>
             </div>
           </div>

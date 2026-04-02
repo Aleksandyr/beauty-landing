@@ -171,17 +171,18 @@ export default function PricingSection() {
             className="mb-6 text-3xl font-light text-neutral-100"
             style={{ fontFamily: "Bodoni Moda" }}
           >
-            Package Deals & Discounts
+            Пакетни оферти & Промоции
           </h3>
           <p className="mx-auto mb-8 max-w-2xl text-base text-neutral-300" style={{ fontFamily: "Inter" }}>
-            Combine multiple services and save up to 20%. Book a consultation to discuss custom packages tailored to your needs and budget.
+            Комбинирай няколко услиги и спести до 20%. Запиши се за консултация и обсъди пакетите, подходящи за твоите нужди и бюджет.
           </p>
-          <button
-            className="rounded-none border border-[#D4AF37] bg-[#D4AF37] px-8 py-3 font-medium text-black transition-all hover:border-[#b8941f] hover:bg-[#b8941f] hover:text-white"
+          <a
+            href="#contact"
+            className="inline-block rounded-none border border-[#D4AF37] bg-[#D4AF37] px-8 py-3 font-medium text-black transition-all hover:border-[#b8941f] hover:bg-[#b8941f] hover:text-white"
             style={{ fontFamily: "Inter" }}
           >
-            Inquire About Packages
-          </button>
+            Запитвания за пакети
+          </a>
         </div>
       </div>
     </section>
