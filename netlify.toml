@@ -4,6 +4,9 @@
 
 [functions]
   directory = "netlify/functions"
+  node_bundler = "esbuild"
+  # Avoid bundling issues with the Resend SDK; load from node_modules at runtime.
+  external_node_modules = ["resend"]
 
 [build.environment]
   # Netlify supports Node 22 broadly; Node 24 may not be available.

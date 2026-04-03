@@ -1,4 +1,3 @@
-import "./load-env.js";
 import { Resend } from "resend";
 import { CONTACT_SERVICE_LABELS } from "../shared/contact-labels";
 import {
