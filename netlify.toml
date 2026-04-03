@@ -9,8 +9,7 @@
   # Netlify supports Node 22 broadly; Node 24 may not be available.
   NODE_VERSION = "22"
   PNPM_VERSION = "10.4.1"
-  # Skip scanning for keys whose values often appear harmlessly in docs or public SMTP hostnames.
-  SECRETS_SCAN_OMIT_KEYS = "SMTP_HOST,CONTACT_TO_EMAIL"
+  SECRETS_SCAN_OMIT_KEYS = "CONTACT_TO_EMAIL,RESEND_FROM"
   # Optional: extra paths/globs (comma-separated) to skip scanning.
   SECRETS_SCAN_OMIT_PATHS = ".env.example"
 

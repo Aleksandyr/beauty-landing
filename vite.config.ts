@@ -151,7 +151,7 @@ function vitePluginManusDebugCollector(): Plugin {
   };
 }
 
-/** POST /api/contact — same handler as production Express (requires SMTP_* in .env) */
+/** POST /api/contact — see .env.example */
 function viteContactApiPlugin(): Plugin {
   return {
     name: "contact-api",
@@ -163,11 +163,13 @@ function viteContactApiPlugin(): Plugin {
       );
       for (const [key, value] of Object.entries(loaded)) {
         const cur = process.env[key];
-        const smtpOrContact =
-          key.startsWith("SMTP_") || key === "CONTACT_TO_EMAIL";
+        const contactEnv =
+          key === "RESEND_API_KEY" ||
+          key === "RESEND_FROM" ||
+          key === "CONTACT_TO_EMAIL";
         if (
           cur === undefined ||
-          (smtpOrContact && cur === "" && value !== undefined && value !== "")
+          (contactEnv && cur === "" && value !== undefined && value !== "")
         ) {
           process.env[key] = value;
         }

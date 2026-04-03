@@ -1,20 +1,11 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import contactSectionVisual from "@/assets/contact-section-visual.png";
+import { CONTACT_SERVICE_LABELS } from "@shared/contact-labels";
 import {
   CONTACT_MESSAGE_MIN_LENGTH,
   contactFormSchema,
 } from "@shared/contact-schema";
-
-const serviceLabels: Record<string, string> = {
-  hairstrokes: "Hairstrokes / микропигментация",
-  microblading: "Микроблейдинг",
-  eyeliner: "Перманентна очна линия",
-  lips: "Перманентно червило (Soft Lips)",
-  lashes: "Мигли / ламиниране",
-  laser: "Лазерни процедури",
-  other: "Друго / консултация",
-};
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -207,7 +198,7 @@ export default function ContactForm() {
                 <option value="" className="bg-black text-white">
                   Избери услуга
                 </option>
-                {Object.entries(serviceLabels).map(([value, label]) => (
+                {Object.entries(CONTACT_SERVICE_LABELS).map(([value, label]) => (
                   <option key={value} value={value} className="bg-black text-white">
                     {label}
                   </option>
