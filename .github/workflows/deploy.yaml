@@ -27,7 +27,10 @@ jobs:
           npm cache clean --force
 
       - name: Install dependencies
-        run: npm install --legacy-peer-deps
+        run: npm install
+
+      - name: Rebuild native modules
+        run: npm rebuild
 
       - name: Build Vite app
         run: npm run build
