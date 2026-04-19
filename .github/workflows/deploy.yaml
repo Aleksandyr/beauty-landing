@@ -11,6 +11,9 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    # Required so GITHUB_TOKEN can push the gh-pages branch (default is often read-only).
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout code
@@ -32,7 +35,9 @@ jobs:
       - name: Build Vite app
         run: pnpm run build
 
+      # PRs (especially from forks) cannot push; only deploy from main.
       - name: Deploy to GitHub Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
