@@ -1,3 +1,8 @@
+# GitHub repo → Settings → Pages:
+#   * Source MUST be "Deploy from a branch" → Branch: gh-pages, Folder: / (root).
+#   * Do NOT use "GitHub Actions" as the source unless you switch to deploy-pages + upload-artifact;
+#     this workflow uses peaceiris, which pushes static files to the gh-pages branch.
+#   * Add custom domain there (same as DNS) and wait for DNS check / HTTPS.
 name: Deploy React Vite to GitHub Pages
 
 on:
@@ -34,6 +39,11 @@ jobs:
 
       - name: Build Vite app
         run: pnpm run build
+
+      - name: Verify static output
+        run: |
+          test -f dist/public/index.html || (echo "Missing dist/public/index.html" && exit 1)
+          ls -la dist/public | head -30
 
       # PRs (especially from forks) cannot push; only deploy from main.
       - name: Deploy to GitHub Pages
