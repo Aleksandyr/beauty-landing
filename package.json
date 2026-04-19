@@ -4,7 +4,8 @@
   "type": "module",
   "license": "MIT",
   "engines": {
-    "node": ">=18.12.0"
+    "node": ">=22.0.0",
+    "pnpm": ">=10.0.0"
   },
   "scripts": {
     "dev": "vite --host",
@@ -102,8 +103,14 @@
     "patchedDependencies": {
       "wouter@3.7.1": "patches/wouter@3.7.1.patch"
     },
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "@builder.io/vite-plugin-jsx-loc>vite": "6"
+      }
+    },
     "overrides": {
-      "tailwindcss>nanoid": "3.3.7"
+      "tailwindcss>nanoid": "3.3.7",
+      "glob": "^10.4.5"
     },
     "onlyBuiltDependencies": [
       "@tailwindcss/oxide",
