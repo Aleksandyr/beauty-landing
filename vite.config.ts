@@ -6,24 +6,23 @@ import { defineConfig, loadEnv, type Plugin, type ViteDevServer } from "vite";
 import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
 import { handleContactRequest } from "./server/contact-mail";
 
-// ... (keep all the existing plugin code) ...
+// ... (keep all your existing plugin code: vitePluginManusDebugCollector, viteContactApiPlugin, viteOptionalAnalyticsPlugin) ...
 
-export default defineConfig(({ mode }) => {
+export default defineConfig(async ({ mode }) => {
   const envDir = path.resolve(import.meta.dirname);
   
-  // Lazy load tailwindcss only when needed
-  let tailwindPlugin;
+  // Dynamically import tailwindcss
+  let tailwindPlugin = null;
   try {
-    const tailwindcss = require("@tailwindcss/vite");
-    tailwindPlugin = tailwindcss.default || tailwindcss;
+    const tailwindcss = await import("@tailwindcss/vite");
+    tailwindPlugin = tailwindcss.default;
   } catch (e) {
     console.warn("Tailwind CSS Vite plugin failed to load", e);
-    tailwindPlugin = null;
   }
 
   const plugins = [
     react(),
-    tailwindPlugin || undefined,
+    tailwindPlugin,
     jsxLocPlugin(),
     vitePluginManusRuntime(),
     vitePluginManusDebugCollector(),
