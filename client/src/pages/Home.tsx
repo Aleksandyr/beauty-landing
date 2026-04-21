@@ -46,6 +46,7 @@ import laserTattooRemovalImage from "@/assets/laser-tattoo-removal.png";
 import migloplastikaImage from "@/assets/migloplastika.png";
 import laminationBrowsLashesImage from "@/assets/lamination-brows-lashes.png";
 import moreForMePortrait from "@/assets/more-for-me.png";
+import logoTks from "@/assets/logo-tks.svg";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { fontFamilyBulgarian } from "@/lib/typography";
 import { cn } from "@/lib/utils";
@@ -303,9 +304,25 @@ export default function Home() {
           isScrolled ? "border-b border-neutral-800 bg-black/90 shadow-sm backdrop-blur-md" : "bg-transparent"
         }`}
       >
-        <div className="container flex items-center justify-between py-4">
-          <div />
-          <div className="hidden md:flex gap-12" style={{ fontFamily: fontFamilyBulgarian }}>
+        <div className="container flex items-center justify-between gap-4 py-4">
+          <div
+            className="relative flex size-[3.625rem] shrink-0 items-center justify-center sm:size-[4.125rem]"
+            aria-hidden="true"
+          >
+            <img
+              src={logoTks}
+              alt=""
+              width={66}
+              height={66}
+              className="h-full w-full object-contain object-center"
+              decoding="async"
+            />
+          </div>
+          <div
+            className="hidden flex-1 justify-center md:flex"
+            style={{ fontFamily: fontFamilyBulgarian }}
+          >
+            <div className="flex gap-12">
             <a href="#services" className={`nav-link text-sm font-semibold transition-colors ${isScrolled ? "text-neutral-100" : "text-white"} hover:text-[#D4AF37]`}>
               Услуги
             </a>
@@ -321,8 +338,9 @@ export default function Home() {
             <a href="#contact" className={`nav-link text-sm font-semibold transition-colors ${isScrolled ? "text-neutral-100" : "text-white"} hover:text-[#D4AF37]`}>
               Контакти
             </a>
+            </div>
           </div>
-          <a href="#contact" className="inline-block">
+          <a href="#contact" className="inline-block shrink-0">
             <Button className={`transition-all border rounded-none ${isScrolled ? "border-[#D4AF37] bg-[#D4AF37] text-black hover:border-[#b8941f] hover:bg-[#b8941f] hover:text-white" : "border-[#D4AF37] bg-[#D4AF37] text-white hover:border-[#b8941f] hover:bg-[#b8941f] hover:text-white"}`}>
               Запази Час
           </Button>
