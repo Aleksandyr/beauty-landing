@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { fontFamilyBulgarian } from "@/lib/typography";
 
 interface FAQItem {
   question: string;
@@ -90,12 +91,12 @@ export default function FAQSection() {
     <section id="faq" className="bg-black py-24 text-neutral-100">
       <div className="container">
         <div className="text-center mb-20">
-          <span className="text-xs tracking-widest font-semibold text-[#D4AF37]" style={{ fontFamily: "Inter" }}>
+          <span className="text-xs tracking-widest font-semibold text-[#D4AF37]" style={{ fontFamily: fontFamilyBulgarian }}>
             ОБЩИ ВЪПРОСИ
           </span>
           <h2
             className="mt-4 text-6xl font-light text-neutral-100"
-            style={{ fontFamily: "Bodoni Moda" }}
+            style={{ fontFamily: fontFamilyBulgarian }}
           >
             Често Задавани Въпроси
           </h2>
@@ -120,7 +121,7 @@ export default function FAQSection() {
               ) : null}
               <h3
                 className="mb-6 border-b-2 border-neutral-800 pb-4 text-2xl font-light text-neutral-100"
-                style={{ fontFamily: "Bodoni Moda" }}
+                style={{ fontFamily: fontFamilyBulgarian }}
               >
                 {category}
               </h3>
@@ -146,7 +147,7 @@ export default function FAQSection() {
                         >
                           <span
                             className="flex-1 text-lg font-light text-neutral-100 transition-colors group-hover:text-white"
-                            style={{ fontFamily: "Bodoni Moda" }}
+                            style={{ fontFamily: fontFamilyBulgarian }}
                           >
                             {item.question}
                           </span>
@@ -160,7 +161,7 @@ export default function FAQSection() {
                         {isOpen && (
                           <div
                             className="pb-4 text-base leading-relaxed text-neutral-300"
-                            style={{ fontFamily: "Inter" }}
+                            style={{ fontFamily: fontFamilyBulgarian }}
                           >
                             {item.answer}
                           </div>
@@ -174,13 +175,13 @@ export default function FAQSection() {
         </div>
 
         <div className="mt-20 text-center">
-          <p className="mb-6 text-neutral-400" style={{ fontFamily: "Inter" }}>
+          <p className="mb-6 text-neutral-400" style={{ fontFamily: fontFamilyBulgarian }}>
             Не открихте отговор? Свържете се с нас за индивидуална консултация.
           </p>
           <a
             href="#contact"
             className="inline-block rounded-none border border-[#D4AF37] bg-[#D4AF37] px-8 py-3 font-medium text-black transition-all hover:border-[#b8941f] hover:bg-[#b8941f] hover:text-white"
-            style={{ fontFamily: "Inter" }}
+            style={{ fontFamily: fontFamilyBulgarian }}
           >
             Свържете се с нас
           </a>

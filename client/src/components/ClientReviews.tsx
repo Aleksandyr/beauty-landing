@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Star } from "lucide-react";
+import { fontFamilyBulgarian } from "@/lib/typography";
 
 const intro =
   "Доверието и удовлетворението на клиентите са най-важната част от моята работа. Всеки резултат е съобразен индивидуално, с внимание към детайла и естествената визия.";
@@ -48,7 +49,7 @@ function ReviewCard({ text }: { text: string }) {
       </span>
       <p
         className="pr-14 text-[15px] leading-relaxed text-neutral-300"
-        style={{ fontFamily: "Inter" }}
+        style={{ fontFamily: fontFamilyBulgarian }}
       >
         <span className="text-[#D4AF37]/90">„</span>
         {text}
@@ -198,19 +199,19 @@ function ReviewSectionBlock({
       <div className="mb-10 text-center">
         <span
           className="text-xs font-semibold tracking-[0.2em] text-[#D4AF37]"
-          style={{ fontFamily: "Inter" }}
+          style={{ fontFamily: fontFamilyBulgarian }}
         >
           {eyebrow}
         </span>
         <HeadingTag
           className="mt-4 text-3xl font-light text-neutral-100 sm:text-4xl md:text-5xl"
-          style={{ fontFamily: "Bodoni Moda" }}
+          style={{ fontFamily: fontFamilyBulgarian }}
         >
           {title}
         </HeadingTag>
         <p
           className="mx-auto mt-3 max-w-xl text-base text-neutral-400"
-          style={{ fontFamily: "Inter" }}
+          style={{ fontFamily: fontFamilyBulgarian }}
         >
           {subtitle}
         </p>
@@ -232,7 +233,7 @@ export default function ClientReviews() {
       <div className="container">
         <p
           className="mx-auto mb-10 max-w-3xl text-center text-lg leading-relaxed text-neutral-400"
-          style={{ fontFamily: "Inter" }}
+          style={{ fontFamily: fontFamilyBulgarian }}
         >
           {intro}
         </p>

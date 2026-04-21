@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { fontFamilyBulgarian } from "@/lib/typography";
 
 interface PricingItem {
   name: string;
@@ -79,16 +80,16 @@ export default function PricingSection() {
     <section id="pricing" className="bg-black py-24 text-neutral-100">
       <div className="container">
         <div className="text-center mb-20">
-          <span className="text-xs tracking-widest font-semibold text-[#D4AF37]" style={{ fontFamily: "Inter" }}>
+          <span className="text-xs tracking-widest font-semibold text-[#D4AF37]" style={{ fontFamily: fontFamilyBulgarian }}>
             ИНВЕСТИРАЙ В КРАСОТАТА СИ
           </span>
           <h2
             className="mt-4 text-6xl font-light text-neutral-100"
-            style={{ fontFamily: "Bodoni Moda" }}
+            style={{ fontFamily: fontFamilyBulgarian }}
           >
             Цени на Услугите
           </h2>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-neutral-400" style={{ fontFamily: "Inter" }}>
+          <p className="mx-auto mt-6 max-w-2xl text-lg text-neutral-400" style={{ fontFamily: fontFamilyBulgarian }}>
             Инвестиция в качество, дълготраен резултат и професионална грижа.
           </p>
           <div className="w-12 h-1 bg-[#D4AF37] mx-auto mt-6 rounded-none"></div>
@@ -100,7 +101,7 @@ export default function PricingSection() {
               {item.sectionHeading ? (
                 <p
                   className="mb-1 text-xs font-semibold tracking-widest text-[#D4AF37]"
-                  style={{ fontFamily: "Inter" }}
+                  style={{ fontFamily: fontFamilyBulgarian }}
                 >
                   {item.sectionHeading}
                 </p>
@@ -110,12 +111,12 @@ export default function PricingSection() {
                 <div className="flex-1">
                   <h3
                     className="text-xl font-light text-neutral-100"
-                    style={{ fontFamily: "Bodoni Moda" }}
+                    style={{ fontFamily: fontFamilyBulgarian }}
                   >
                     {item.name}
                   </h3>
                   {item.subtitle && (
-                    <p className="mt-1 text-sm text-neutral-500" style={{ fontFamily: "Inter" }}>
+                    <p className="mt-1 text-sm text-neutral-500" style={{ fontFamily: fontFamilyBulgarian }}>
                       {item.subtitle}
                     </p>
                   )}
@@ -132,7 +133,7 @@ export default function PricingSection() {
                 {/* Price */}
                 <span
                   className="text-lg font-light text-[#D4AF37] whitespace-nowrap"
-                  style={{ fontFamily: "Bodoni Moda" }}
+                  style={{ fontFamily: fontFamilyBulgarian }}
                 >
                   {item.price}
                 </span>
@@ -140,7 +141,7 @@ export default function PricingSection() {
 
               {/* Description if available */}
               {item.description && (
-                <p className="pl-0 text-sm text-neutral-400" style={{ fontFamily: "Inter" }}>
+                <p className="pl-0 text-sm text-neutral-400" style={{ fontFamily: fontFamilyBulgarian }}>
                   {item.description}
                 </p>
               )}
@@ -163,7 +164,7 @@ export default function PricingSection() {
         
         <div
           className="mx-auto mt-14 max-w-4xl border border-[#D4AF37]/35 bg-neutral-950/90 px-6 py-5 text-sm leading-relaxed text-neutral-300"
-          style={{ fontFamily: "Inter" }}
+          style={{ fontFamily: fontFamilyBulgarian }}
         >
           <p className="mb-3 font-semibold tracking-wide text-[#D4AF37]">⚠ Важно</p>
           <p className="mb-2">
@@ -180,17 +181,17 @@ export default function PricingSection() {
         <div className="mt-20 border-t-2 border-neutral-800 pt-12 text-center">
           <h3
             className="mb-6 text-3xl font-light text-neutral-100"
-            style={{ fontFamily: "Bodoni Moda" }}
+            style={{ fontFamily: fontFamilyBulgarian }}
           >
             Пакетни оферти & Промоции
           </h3>
-          <p className="mx-auto mb-8 max-w-2xl text-base text-neutral-300" style={{ fontFamily: "Inter" }}>
+          <p className="mx-auto mb-8 max-w-2xl text-base text-neutral-300" style={{ fontFamily: fontFamilyBulgarian }}>
             Комбинирай няколко услиги и спести до 20%. Запиши се за консултация и обсъди пакетите, подходящи за твоите нужди и бюджет.
           </p>
           <a
             href="#contact"
             className="inline-block rounded-none border border-[#D4AF37] bg-[#D4AF37] px-8 py-3 font-medium text-black transition-all hover:border-[#b8941f] hover:bg-[#b8941f] hover:text-white"
-            style={{ fontFamily: "Inter" }}
+            style={{ fontFamily: fontFamilyBulgarian }}
           >
             Запитвания за пакети
           </a>

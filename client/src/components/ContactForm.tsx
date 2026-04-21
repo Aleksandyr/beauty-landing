@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { fontFamilyBulgarian } from "@/lib/typography";
 import contactSectionVisual from "@/assets/contact-section-visual.png";
 import { CONTACT_SERVICE_LABELS } from "@shared/contact-labels";
 import {
@@ -100,13 +101,13 @@ export default function ContactForm() {
           <div className="mb-6 sm:mb-8">
             <h2
               className="mb-2 text-3xl font-light leading-tight text-white sm:text-4xl md:text-5xl lg:text-6xl"
-              style={{ fontFamily: "Bodoni Moda" }}
+              style={{ fontFamily: fontFamilyBulgarian }}
             >
               Свържи се с нас
             </h2>
             <p
               className="text-[10px] font-semibold uppercase leading-snug tracking-[0.2em] text-gray-400 sm:text-xs"
-              style={{ fontFamily: "Inter" }}
+              style={{ fontFamily: fontFamilyBulgarian }}
             >
               Персонализирана красота и грижа според твоите нужди.
             </p>
@@ -116,7 +117,7 @@ export default function ContactForm() {
             <div>
               <label
                 className="mb-2 block text-[10px] font-semibold uppercase tracking-widest text-gray-300 sm:mb-3 sm:text-xs"
-                style={{ fontFamily: "Inter" }}
+                style={{ fontFamily: fontFamilyBulgarian }}
               >
                 Име и фамилия
               </label>
@@ -129,14 +130,14 @@ export default function ContactForm() {
                 autoComplete="name"
                 placeholder="Име Фамилия"
                 className="w-full border-b border-gray-600 bg-transparent px-0 py-2.5 text-sm text-white placeholder:text-gray-500 focus:border-[#D4AF37] focus:outline-none sm:py-3 sm:text-base"
-                style={{ fontFamily: "Inter" }}
+                style={{ fontFamily: fontFamilyBulgarian }}
               />
             </div>
 
             <div>
               <label
                 className="mb-2 block text-[10px] font-semibold uppercase tracking-widest text-gray-300 sm:mb-3 sm:text-xs"
-                style={{ fontFamily: "Inter" }}
+                style={{ fontFamily: fontFamilyBulgarian }}
               >
                 Имейл
               </label>
@@ -149,7 +150,7 @@ export default function ContactForm() {
                 autoComplete="email"
                 placeholder="име@пример.bg"
                 className="w-full border-b border-gray-600 bg-transparent px-0 py-2.5 text-sm text-white placeholder:text-gray-500 focus:border-[#D4AF37] focus:outline-none sm:py-3 sm:text-base"
-                style={{ fontFamily: "Inter" }}
+                style={{ fontFamily: fontFamilyBulgarian }}
               />
             </div>
           </div>
@@ -158,7 +159,7 @@ export default function ContactForm() {
             <div>
               <label
                 className="mb-2 block text-[10px] font-semibold uppercase tracking-widest text-gray-300 sm:mb-3 sm:text-xs"
-                style={{ fontFamily: "Inter" }}
+                style={{ fontFamily: fontFamilyBulgarian }}
               >
                 Телефон <span className="text-neutral-500">(само цифри)</span>
               </label>
@@ -176,14 +177,14 @@ export default function ContactForm() {
                 pattern="\d{8,15}"
                 title="8–15 цифри"
                 className="w-full border-b border-gray-600 bg-transparent px-0 py-2.5 text-sm text-white placeholder:text-gray-500 focus:border-[#D4AF37] focus:outline-none sm:py-3 sm:text-base"
-                style={{ fontFamily: "Inter" }}
+                style={{ fontFamily: fontFamilyBulgarian }}
               />
             </div>
 
             <div>
               <label
                 className="mb-2 block text-[10px] font-semibold uppercase tracking-widest text-gray-300 sm:mb-3 sm:text-xs"
-                style={{ fontFamily: "Inter" }}
+                style={{ fontFamily: fontFamilyBulgarian }}
               >
                 Желана услуга
               </label>
@@ -193,7 +194,7 @@ export default function ContactForm() {
                 onChange={handleChange}
                 required
                 className="w-full cursor-pointer appearance-none border-b border-gray-600 bg-transparent px-0 py-2.5 text-sm text-white focus:border-[#D4AF37] focus:outline-none sm:py-3 sm:text-base"
-                style={{ fontFamily: "Inter" }}
+                style={{ fontFamily: fontFamilyBulgarian }}
               >
                 <option value="" className="bg-black text-white">
                   Избери услуга
@@ -210,7 +211,7 @@ export default function ContactForm() {
           <div>
             <label
               className="mb-2 block text-[10px] font-semibold uppercase tracking-widest text-gray-300 sm:mb-3 sm:text-xs"
-              style={{ fontFamily: "Inter" }}
+              style={{ fontFamily: fontFamilyBulgarian }}
             >
               Съобщение{" "}
               <span className="font-normal text-neutral-500">
@@ -226,11 +227,11 @@ export default function ContactForm() {
               rows={4}
               minLength={CONTACT_MESSAGE_MIN_LENGTH}
               className="w-full resize-none border-b border-gray-600 bg-transparent px-0 py-2.5 text-sm text-white placeholder:text-gray-500 focus:border-[#D4AF37] focus:outline-none sm:py-3 sm:text-base"
-              style={{ fontFamily: "Inter" }}
+              style={{ fontFamily: fontFamilyBulgarian }}
             />
             <p
               className={`mt-1 text-xs ${messageOk ? "text-green-600/90" : "text-neutral-500"}`}
-              style={{ fontFamily: "Inter" }}
+              style={{ fontFamily: fontFamilyBulgarian }}
             >
               {messageLen}/{CONTACT_MESSAGE_MIN_LENGTH} —{" "}
               {messageOk
@@ -244,7 +245,7 @@ export default function ContactForm() {
               type="submit"
               disabled={loading || !messageOk}
               className="w-full rounded-none border-none bg-white px-6 py-3 text-xs font-semibold tracking-wider text-[#0A0A0A] transition-all hover:bg-[#D4AF37] hover:text-white disabled:cursor-not-allowed disabled:opacity-50 sm:px-8 sm:py-4 sm:text-sm"
-              style={{ fontFamily: "Inter" }}
+              style={{ fontFamily: fontFamilyBulgarian }}
             >
               {loading ? "Изпращане…" : "Заявка за консултация"}
             </Button>
@@ -252,13 +253,13 @@ export default function ContactForm() {
 
           {error && (
             <div className="rounded-none border border-red-800 bg-red-950/40 px-4 py-3 text-sm text-red-200">
-              <p style={{ fontFamily: "Inter" }}>{error}</p>
+              <p style={{ fontFamily: fontFamilyBulgarian }}>{error}</p>
             </div>
           )}
 
           {submitted && (
             <div className="rounded-none border border-green-700 bg-green-900/30 px-4 py-3 text-sm text-green-300">
-              <p style={{ fontFamily: "Inter" }}>
+              <p style={{ fontFamily: fontFamilyBulgarian }}>
                 Благодарим! Съобщението е изпратено — ще се свържем с теб скоро.
               </p>
             </div>

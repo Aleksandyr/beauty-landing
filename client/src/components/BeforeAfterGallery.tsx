@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { fontFamilyBulgarian } from "@/lib/typography";
 
 interface BeforeAfterItem {
   title: string;
@@ -92,11 +93,11 @@ export default function BeforeAfterGallery({ items }: BeforeAfterGalleryProps) {
       <div className="text-center">
         <h3
           className="mb-4 text-4xl font-light text-neutral-100"
-          style={{ fontFamily: "Bodoni Moda" }}
+          style={{ fontFamily: fontFamilyBulgarian }}
         >
           {current.title}
         </h3>
-        <p className="mx-auto max-w-2xl text-base text-neutral-400" style={{ fontFamily: "Inter" }}>
+        <p className="mx-auto max-w-2xl text-base text-neutral-400" style={{ fontFamily: fontFamilyBulgarian }}>
           {current.description}
         </p>
       </div>

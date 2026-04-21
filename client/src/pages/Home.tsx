@@ -47,6 +47,7 @@ import migloplastikaImage from "@/assets/migloplastika.png";
 import laminationBrowsLashesImage from "@/assets/lamination-brows-lashes.png";
 import moreForMePortrait from "@/assets/more-for-me.png";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { fontFamilyBulgarian } from "@/lib/typography";
 import { cn } from "@/lib/utils";
 import {
   useCallback,
@@ -135,7 +136,7 @@ function ServiceCarouselTapDialog({
 /**
  * Landing Page - Material Design
  * Design: Elegant luxury with pink accents, rounded components
- * Typography: Bodoni Moda (serif, editorial) + Inter (clean, readable)
+ * Typography: Playfair Display for Bulgarian marketing copy
  * Layout: Full-screen hero, compact gallery, pricing section
  */
 
@@ -304,7 +305,7 @@ export default function Home() {
       >
         <div className="container flex items-center justify-between py-4">
           <div />
-          <div className="hidden md:flex gap-12" style={{ fontFamily: "Inter" }}>
+          <div className="hidden md:flex gap-12" style={{ fontFamily: fontFamilyBulgarian }}>
             <a href="#services" className={`nav-link text-sm font-semibold transition-colors ${isScrolled ? "text-neutral-100" : "text-white"} hover:text-[#D4AF37]`}>
               Услуги
             </a>
@@ -348,20 +349,20 @@ export default function Home() {
           <div className="container">
             <div className="max-w-2xl space-y-8">
               <div className="inline-block">
-                <span className="text-xs tracking-widest font-semibold text-[#D4AF37]" style={{ fontFamily: "Inter" }}>
+                <span className="text-xs tracking-widest font-semibold text-[#D4AF37]" style={{ fontFamily: fontFamilyBulgarian }}>
                   LUXURY BEAUTY SERVICES
                 </span>
               </div>
               <h1
                 className="text-7xl lg:text-8xl font-light leading-tight text-white"
-                style={{ fontFamily: "Bodoni Moda" }}
+                style={{ fontFamily: fontFamilyBulgarian }}
               >
                 <span className="block">Tsvetelina Kamenova</span>
                 <span className="block text-3xl lg:text-4xl mt-3 font-light">
                   Master Trainer in Permanent Makeup
                 </span>
               </h1>
-              <p className="text-xl text-gray-100 max-w-lg leading-relaxed" style={{ fontFamily: "Inter" }}>
+              <p className="text-xl text-gray-100 max-w-lg leading-relaxed" style={{ fontFamily: fontFamilyBulgarian }}>
                 Перманентен грим и професионални обучения
               </p>
               <div className="flex gap-6 pt-4">
@@ -389,14 +390,14 @@ export default function Home() {
                       <DialogHeader className="space-y-0 text-left">
                         <DialogTitle
                           className="text-2xl leading-snug tracking-wide text-neutral-100"
-                          style={{ fontFamily: "Bodoni Moda" }}
+                          style={{ fontFamily: fontFamilyBulgarian }}
                         >
                           Повече за мен
                         </DialogTitle>
                       </DialogHeader>
                       <div
                         className="mt-10 space-y-5 text-sm leading-relaxed text-neutral-300 sm:mt-12"
-                        style={{ fontFamily: "Inter" }}
+                        style={{ fontFamily: fontFamilyBulgarian }}
                       >
                         <div className="space-y-3">
                           <p className="text-xs tracking-[0.25em] text-[#D4AF37] uppercase">
@@ -486,12 +487,12 @@ export default function Home() {
       <section id="services" className="relative bg-black py-16 md:py-24">
         <div className="container">
           <div className="text-center mb-12 md:mb-20">
-            <span className="text-xs tracking-widest font-semibold text-[#D4AF37]" style={{ fontFamily: "Inter" }}>
+            <span className="text-xs tracking-widest font-semibold text-[#D4AF37]" style={{ fontFamily: fontFamilyBulgarian }}>
               УСЛУГИ
             </span>
             <h2
               className="mt-4 px-2 text-4xl font-light text-neutral-100 sm:text-5xl md:text-6xl"
-              style={{ fontFamily: "Bodoni Moda" }}
+              style={{ fontFamily: fontFamilyBulgarian }}
             >
               {/* Mobile/tablet: stacked */}
               <span className="block lg:hidden">Прецизност</span>
@@ -530,7 +531,7 @@ export default function Home() {
                     <div className={serviceCardImageHoverMoreWrapClass}>
                       <span
                         className="rounded-none border border-white/70 px-6 py-2 text-xs font-semibold tracking-widest text-white"
-                        style={{ fontFamily: "Inter" }}
+                        style={{ fontFamily: fontFamilyBulgarian }}
                       >
                         повече
                       </span>
@@ -538,7 +539,7 @@ export default function Home() {
                     <div className={serviceCardImageTouchHintClass}>
                       <span
                         className={serviceCardImageTouchHintTextClass}
-                        style={{ fontFamily: "Inter" }}
+                        style={{ fontFamily: fontFamilyBulgarian }}
                       >
                         Натисни за повече
                       </span>
@@ -550,13 +551,13 @@ export default function Home() {
                   <DialogHeader>
                     <DialogTitle
                       className="text-2xl tracking-wide"
-                      style={{ fontFamily: "Bodoni Moda" }}
+                      style={{ fontFamily: fontFamilyBulgarian }}
                     >
                       Hairstrokes
                     </DialogTitle>
                   </DialogHeader>
                   <div
-                    style={{ fontFamily: "Inter" }}
+                    style={{ fontFamily: fontFamilyBulgarian }}
                     className="space-y-5 text-sm leading-relaxed text-neutral-300"
                   >
                     <p className="text-base">
@@ -621,11 +622,11 @@ export default function Home() {
               />
               <h3
                 className={serviceCardTitleClass}
-                style={{ fontFamily: "Bodoni Moda" }}
+                style={{ fontFamily: fontFamilyBulgarian }}
               >
                 Hairstrokes
               </h3>
-              <p className={serviceCardDescClass} style={{ fontFamily: "Inter" }}>
+              <p className={serviceCardDescClass} style={{ fontFamily: fontFamilyBulgarian }}>
                 Hairstrokes е хиперреалистична техника за перманентен грим на вежди
               </p>
             </div>
@@ -645,7 +646,7 @@ export default function Home() {
                     <div className={serviceCardImageHoverMoreWrapClass}>
                       <span
                         className="rounded-none border border-white/70 px-6 py-2 text-xs font-semibold tracking-widest text-white"
-                        style={{ fontFamily: "Inter" }}
+                        style={{ fontFamily: fontFamilyBulgarian }}
                       >
                         повече
                       </span>
@@ -653,7 +654,7 @@ export default function Home() {
                     <div className={serviceCardImageTouchHintClass}>
                       <span
                         className={serviceCardImageTouchHintTextClass}
-                        style={{ fontFamily: "Inter" }}
+                        style={{ fontFamily: fontFamilyBulgarian }}
                       >
                         Натисни за повече
                       </span>
@@ -665,13 +666,13 @@ export default function Home() {
                   <DialogHeader>
                     <DialogTitle
                       className="text-2xl tracking-wide"
-                      style={{ fontFamily: "Bodoni Moda" }}
+                      style={{ fontFamily: fontFamilyBulgarian }}
                     >
                       Микропигментация на вежди
                     </DialogTitle>
                   </DialogHeader>
                   <div
-                    style={{ fontFamily: "Inter" }}
+                    style={{ fontFamily: fontFamilyBulgarian }}
                     className="space-y-5 text-sm leading-relaxed text-neutral-300"
                   >
                     <p className="text-base">
@@ -746,11 +747,11 @@ export default function Home() {
               />
               <h3
                 className={serviceCardTitleClass}
-                style={{ fontFamily: "Bodoni Moda" }}
+                style={{ fontFamily: fontFamilyBulgarian }}
               >
                 Микропигментация на вежди
               </h3>
-              <p className={serviceCardDescClass} style={{ fontFamily: "Inter" }}>
+              <p className={serviceCardDescClass} style={{ fontFamily: fontFamilyBulgarian }}>
                 Микропигментацията е техника, при която чрез машинен метод пигментът се въвежда в кожата.
               </p>
             </div>
@@ -770,7 +771,7 @@ export default function Home() {
                     <div className={serviceCardImageHoverMoreWrapClass}>
                       <span
                         className="rounded-none border border-white/70 px-6 py-2 text-xs font-semibold tracking-widest text-white"
-                        style={{ fontFamily: "Inter" }}
+                        style={{ fontFamily: fontFamilyBulgarian }}
                       >
                         повече
                       </span>
@@ -778,7 +779,7 @@ export default function Home() {
                     <div className={serviceCardImageTouchHintClass}>
                       <span
                         className={serviceCardImageTouchHintTextClass}
-                        style={{ fontFamily: "Inter" }}
+                        style={{ fontFamily: fontFamilyBulgarian }}
                       >
                         Натисни за повече
                       </span>
@@ -790,13 +791,13 @@ export default function Home() {
                   <DialogHeader>
                     <DialogTitle
                       className="text-2xl tracking-wide"
-                      style={{ fontFamily: "Bodoni Moda" }}
+                      style={{ fontFamily: fontFamilyBulgarian }}
                     >
                       Микроблейдинг
                     </DialogTitle>
                   </DialogHeader>
                   <div
-                    style={{ fontFamily: "Inter" }}
+                    style={{ fontFamily: fontFamilyBulgarian }}
                     className="space-y-5 text-sm leading-relaxed text-neutral-300"
                   >
                     <p className="text-base">
@@ -855,11 +856,11 @@ export default function Home() {
               />
               <h3
                 className={serviceCardTitleClass}
-                style={{ fontFamily: "Bodoni Moda" }}
+                style={{ fontFamily: fontFamilyBulgarian }}
               >
                 Микроблейдинг
               </h3>
-              <p className={serviceCardDescClass} style={{ fontFamily: "Inter" }}>
+              <p className={serviceCardDescClass} style={{ fontFamily: fontFamilyBulgarian }}>
                 Ръчна техника, при която се създават деликатни косъмчета, имитиращи естествения растеж на веждите.
               </p>
             </div>
@@ -879,7 +880,7 @@ export default function Home() {
                     <div className={serviceCardImageHoverMoreWrapClass}>
                       <span
                         className="rounded-none border border-white/70 px-6 py-2 text-xs font-semibold tracking-widest text-white"
-                        style={{ fontFamily: "Inter" }}
+                        style={{ fontFamily: fontFamilyBulgarian }}
                       >
                         повече
                       </span>
@@ -887,7 +888,7 @@ export default function Home() {
                     <div className={serviceCardImageTouchHintClass}>
                       <span
                         className={serviceCardImageTouchHintTextClass}
-                        style={{ fontFamily: "Inter" }}
+                        style={{ fontFamily: fontFamilyBulgarian }}
                       >
                         Натисни за повече
                       </span>
@@ -899,13 +900,13 @@ export default function Home() {
                   <DialogHeader>
                     <DialogTitle
                       className="text-2xl tracking-wide"
-                      style={{ fontFamily: "Bodoni Moda" }}
+                      style={{ fontFamily: fontFamilyBulgarian }}
                     >
                       hairstrokes + powder effect
                     </DialogTitle>
                   </DialogHeader>
                   <div
-                    style={{ fontFamily: "Inter" }}
+                    style={{ fontFamily: fontFamilyBulgarian }}
                     className="space-y-5 text-sm leading-relaxed text-neutral-300"
                   >
                     <p className="text-base">
@@ -985,11 +986,11 @@ export default function Home() {
               />
               <h3
                 className={serviceCardTitleClass}
-                style={{ fontFamily: "Bodoni Moda" }}
+                style={{ fontFamily: fontFamilyBulgarian }}
               >
                 hairstrokes + powder effect
               </h3>
-              <p className={serviceCardDescClass} style={{ fontFamily: "Inter" }}>
+              <p className={serviceCardDescClass} style={{ fontFamily: fontFamilyBulgarian }}>
                 Комбинирана техника за естествени, но по-плътни и изразени вежди с дълготраен резултат.
               </p>
             </div>
@@ -1012,7 +1013,7 @@ export default function Home() {
                         <div className={serviceCardImageHoverMoreWrapClass}>
                           <span
                             className="rounded-none border border-white/70 px-6 py-2 text-xs font-semibold tracking-widest text-white"
-                            style={{ fontFamily: "Inter" }}
+                            style={{ fontFamily: fontFamilyBulgarian }}
                           >
                             more
                           </span>
@@ -1020,7 +1021,7 @@ export default function Home() {
                         <div className={serviceCardImageTouchHintClass}>
                           <span
                             className={serviceCardImageTouchHintTextClass}
-                            style={{ fontFamily: "Inter" }}
+                            style={{ fontFamily: fontFamilyBulgarian }}
                           >
                             Натисни за повече
                           </span>
@@ -1032,13 +1033,13 @@ export default function Home() {
                       <DialogHeader>
                         <DialogTitle
                           className="text-2xl tracking-wide"
-                          style={{ fontFamily: "Bodoni Moda" }}
+                          style={{ fontFamily: fontFamilyBulgarian }}
                         >
                           {service.title}
                         </DialogTitle>
                       </DialogHeader>
                       <div
-                        style={{ fontFamily: "Inter" }}
+                        style={{ fontFamily: fontFamilyBulgarian }}
                         className="space-y-4 text-sm leading-relaxed text-neutral-300"
                       >
                         {service.title === "Soft Lips Перманентно червило" ? (
@@ -1202,7 +1203,7 @@ export default function Home() {
                             <div className="space-y-4 border-t border-neutral-700/90 pt-4">
                               <h3
                                 className="text-base font-semibold tracking-wide text-[#D4AF37]"
-                                style={{ fontFamily: "Bodoni Moda" }}
+                                style={{ fontFamily: fontFamilyBulgarian }}
                               >
                                 Лазерно отстраняване на стар перманентен грим
                               </h3>
@@ -1246,7 +1247,7 @@ export default function Home() {
                             <div className="space-y-4 border-t border-neutral-700/90 pt-4">
                               <h3
                                 className="text-base font-semibold tracking-wide text-[#D4AF37]"
-                                style={{ fontFamily: "Bodoni Moda" }}
+                                style={{ fontFamily: fontFamilyBulgarian }}
                               >
                                 Карбонов пилинг
                               </h3>
@@ -1315,7 +1316,7 @@ export default function Home() {
                             <div className="space-y-4 border-t border-neutral-700/90 pt-4">
                               <h3
                                 className="text-base font-semibold tracking-wide text-[#D4AF37]"
-                                style={{ fontFamily: "Bodoni Moda" }}
+                                style={{ fontFamily: fontFamilyBulgarian }}
                               >
                                 Лазерно премахване на татуировки
                               </h3>
@@ -1512,13 +1513,13 @@ export default function Home() {
                   />
                   <h3
                     className={serviceCardTitleClass}
-                    style={{ fontFamily: "Bodoni Moda" }}
+                    style={{ fontFamily: fontFamilyBulgarian }}
                   >
                     {service.title}
                   </h3>
                   <p
                     className={serviceCardDescClass}
-                    style={{ fontFamily: "Inter" }}
+                    style={{ fontFamily: fontFamilyBulgarian }}
                   >
                     {service.description}
                   </p>
@@ -1577,7 +1578,7 @@ export default function Home() {
             <a href="#contact" className="inline-block">
               <Button
                 className="rounded-none border-2 border-[#D4AF37] bg-[#D4AF37] px-10 py-5 text-base font-semibold text-white transition-colors hover:border-[#b8941f] hover:bg-[#b8941f] hover:text-white"
-                style={{ fontFamily: "Inter" }}
+                style={{ fontFamily: fontFamilyBulgarian }}
               >
                 Научи повече
               </Button>
@@ -1590,16 +1591,16 @@ export default function Home() {
       <section id="gallery" className="relative bg-black py-16">
         <div className="container">
           <div className="text-center mb-12">
-            <span className="text-xs tracking-widest font-semibold text-[#D4AF37]" style={{ fontFamily: "Inter" }}>
+            <span className="text-xs tracking-widest font-semibold text-[#D4AF37]" style={{ fontFamily: fontFamilyBulgarian }}>
               Истински Резултати
             </span>
             <h2
               className="mt-4 text-5xl font-light text-neutral-100"
-              style={{ fontFamily: "Bodoni Moda" }}
+              style={{ fontFamily: fontFamilyBulgarian }}
             >
               Трансформации
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-base text-neutral-400" style={{ fontFamily: "Inter" }}>
+            <p className="mx-auto mt-4 max-w-2xl text-base text-neutral-400" style={{ fontFamily: fontFamilyBulgarian }}>
               Плъзнете, за да сравните резултатите преди и след на моите клиенти.
             </p>
           </div>
@@ -1697,12 +1698,12 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-10">
               <div>
-                <span className="text-xs tracking-widest font-semibold text-[#D4AF37]" style={{ fontFamily: "Inter" }}>
+                <span className="text-xs tracking-widest font-semibold text-[#D4AF37]" style={{ fontFamily: fontFamilyBulgarian }}>
                   ЗА НАС
                 </span>
                 <h2
                   className="mt-4 text-6xl font-light text-neutral-100"
-                  style={{ fontFamily: "Bodoni Moda" }}
+                  style={{ fontFamily: fontFamilyBulgarian }}
                 >
                   Защо да ни се довериш?
                 </h2>
@@ -1728,18 +1729,18 @@ export default function Home() {
                 ].map((item, i) => (
                   <div key={i} className="flex gap-6">
                     <div className="w-12 h-12 bg-[#D4AF37] flex items-center justify-center flex-shrink-0 rounded-none">
-                      <span className="text-white font-bold" style={{ fontFamily: "Bodoni Moda" }}>
+                      <span className="text-white font-bold" style={{ fontFamily: fontFamilyBulgarian }}>
                         {i + 1}
                       </span>
                     </div>
                     <div>
                       <h3
                         className="mb-2 text-xl font-light text-neutral-100"
-                        style={{ fontFamily: "Bodoni Moda" }}
+                        style={{ fontFamily: fontFamilyBulgarian }}
                       >
                         {item.title}
                       </h3>
-                      <p className="text-sm text-neutral-400" style={{ fontFamily: "Inter" }}>
+                      <p className="text-sm text-neutral-400" style={{ fontFamily: fontFamilyBulgarian }}>
                         {item.desc}
                       </p>
                     </div>
@@ -1750,11 +1751,11 @@ export default function Home() {
             <div className="relative rounded-none border border-neutral-800 bg-neutral-950 p-12 shadow-md">
               <p
                 className="mb-8 text-center text-3xl font-light text-neutral-100"
-                style={{ fontFamily: "Bodoni Moda" }}
+                style={{ fontFamily: fontFamilyBulgarian }}
               >
                 „Красотата не е съвършенство. Тя е увереност.“
               </p>
-              <p className="text-center text-sm text-neutral-300" style={{ fontFamily: "Inter" }}>
+              <p className="text-center text-sm text-neutral-300" style={{ fontFamily: fontFamilyBulgarian }}>
                 Вярвам, че всеки човек заслужава да се чувства красив и уверен. Моята мисия е да
                 подчертавам естествената ти красота чрез прецизност, артистичност и внимателна грижа.
               </p>
@@ -1779,10 +1780,10 @@ export default function Home() {
         <div className="container">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
             <div>
-              <h4 className="font-light mb-4" style={{ fontFamily: "Bodoni Moda" }}>
+              <h4 className="font-light mb-4" style={{ fontFamily: fontFamilyBulgarian }}>
                 Services
               </h4>
-              <ul className="space-y-2 text-gray-400 text-sm" style={{ fontFamily: "Inter" }}>
+              <ul className="space-y-2 text-gray-400 text-sm" style={{ fontFamily: fontFamilyBulgarian }}>
                 <li><a href="#services" className="hover:text-[#D4AF37] transition-colors">Microblading</a></li>
                 <li><a href="#services" className="hover:text-[#D4AF37] transition-colors">Eyelashes</a></li>
                 <li><a href="#services" className="hover:text-[#D4AF37] transition-colors">Laser Removal</a></li>
@@ -1790,10 +1791,10 @@ export default function Home() {
               </ul>
             </div>
             <div>
-              <h4 className="font-light mb-4" style={{ fontFamily: "Bodoni Moda" }}>
+              <h4 className="font-light mb-4" style={{ fontFamily: fontFamilyBulgarian }}>
                 Company
               </h4>
-              <ul className="space-y-2 text-gray-400 text-sm" style={{ fontFamily: "Inter" }}>
+              <ul className="space-y-2 text-gray-400 text-sm" style={{ fontFamily: fontFamilyBulgarian }}>
                 <li><a href="#about" className="hover:text-[#D4AF37] transition-colors">About Us</a></li>
                 <li><a href="#gallery" className="hover:text-[#D4AF37] transition-colors">Gallery</a></li>
                 <li><a href="#pricing" className="hover:text-[#D4AF37] transition-colors">Pricing</a></li>
@@ -1801,10 +1802,10 @@ export default function Home() {
               </ul>
             </div>
             <div>
-              <h4 className="font-light mb-4" style={{ fontFamily: "Bodoni Moda" }}>
+              <h4 className="font-light mb-4" style={{ fontFamily: fontFamilyBulgarian }}>
                 Connect
               </h4>
-              <ul className="space-y-2 text-gray-400 text-sm" style={{ fontFamily: "Inter" }}>
+              <ul className="space-y-2 text-gray-400 text-sm" style={{ fontFamily: fontFamilyBulgarian }}>
                 <li>
                   <a
                     href="https://www.instagram.com/phimaster.kamenova/"
@@ -1829,7 +1830,7 @@ export default function Home() {
             </div>
           </div>
           <div className="border-t border-gray-800 pt-8 text-center text-gray-400 text-sm">
-            <p style={{ fontFamily: "Inter" }}>
+            <p style={{ fontFamily: fontFamilyBulgarian }}>
               © 2026 All rights reserved. | Privacy Policy | Terms of Service
             </p>
           </div>
