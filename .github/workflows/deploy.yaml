@@ -3,6 +3,11 @@
 #   * Do NOT use "GitHub Actions" as the source unless you switch to deploy-pages + upload-artifact;
 #     this workflow uses peaceiris, which pushes static files to the gh-pages branch.
 #   * Add custom domain there (same as DNS) and wait for DNS check / HTTPS.
+#
+# Contact form on Pages: the browser must POST to a real API host (not this domain).
+# Add a repository Secret OR Variable named exactly: VITE_CONTACT_API_URL
+# Value example: https://your-api.example.com/api/contact
+# (Vite only embeds env names starting with VITE_. Names like API_KEY are not used here.)
 name: Deploy React Vite to GitHub Pages
 
 on:
@@ -38,7 +43,17 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build Vite app
-        run: pnpm run build
+        env:
+          # Secret preferred; Variables tab works too (same name).
+          VITE_CONTACT_API_URL: ${{ secrets.VITE_CONTACT_API_URL || vars.VITE_CONTACT_API_URL }}
+        run: |
+          if [ "${{ github.event_name }}" = "push" ] && [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            if [ -z "$VITE_CONTACT_API_URL" ]; then
+              echo "::error::Missing VITE_CONTACT_API_URL. In the repo: Settings → Secrets and variables → Actions — add a Secret OR a Variable with that exact name, value = full HTTPS URL of your contact API (where Resend runs). Push again after saving."
+              exit 1
+            fi
+          fi
+          pnpm run build
 
       - name: Verify static output
         run: |

@@ -16,6 +16,12 @@ function clientStaticDir(): string {
     : path.resolve(__dirname, "..", "dist", "public");
 }
 
+function setContactCorsHeaders(res: express.Response) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+}
+
 async function startServer() {
   const app = express();
   const server = createServer(app);
@@ -26,7 +32,13 @@ async function startServer() {
     })
   );
 
+  app.options("/api/contact", (_req, res) => {
+    setContactCorsHeaders(res);
+    res.sendStatus(204);
+  });
+
   app.post("/api/contact", async (req, res) => {
+    setContactCorsHeaders(res);
     const result = await handleContactRequest(req.body);
     if (!result.ok) {
       res.status(result.status).json({

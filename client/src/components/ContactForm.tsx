@@ -8,6 +8,13 @@ import {
   contactFormSchema,
 } from "@shared/contact-schema";
 
+/**
+ * GitHub Pages is static: POST /api/contact on the site origin always fails.
+ * CI must set `VITE_CONTACT_API_URL` (secret or variable) so `pnpm build` inlines a full HTTPS URL.
+ */
+const CONTACT_POST_URL =
+  import.meta.env.VITE_CONTACT_API_URL?.trim() || "/api/contact";
+
 export default function ContactForm() {
   const [formData, setFormData] = useState({
     name: "",
@@ -53,7 +60,7 @@ export default function ContactForm() {
 
     setLoading(true);
     try {
-      const res = await fetch("/api/contact", {
+      const res = await fetch(CONTACT_POST_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(parsedLocal.data),
