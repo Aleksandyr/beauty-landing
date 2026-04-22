@@ -33,6 +33,8 @@ export default function BeforeAfterGallery({ items }: BeforeAfterGalleryProps) {
   };
 
   const current = items[activeIndex];
+  const zoomHairstrokesGallery =
+    current.title === "Hairstrokes" ? "origin-center scale-[1.5]" : "";
 
   return (
     <div className="space-y-8">
@@ -46,7 +48,7 @@ export default function BeforeAfterGallery({ items }: BeforeAfterGalleryProps) {
         <img
           src={current.before}
           alt="Преди"
-          className="absolute inset-0 h-full w-full object-cover"
+          className={`absolute inset-0 h-full w-full object-cover ${zoomHairstrokesGallery}`}
         />
 
         <div
@@ -56,7 +58,7 @@ export default function BeforeAfterGallery({ items }: BeforeAfterGalleryProps) {
           <img
             src={current.after}
             alt="След"
-            className="absolute inset-0 h-full w-full object-cover"
+            className={`absolute inset-0 h-full w-full object-cover ${zoomHairstrokesGallery}`}
             style={{
               width:
                 sliderPosition > 0 ? `${(100 / sliderPosition) * 100}%` : "100%",
