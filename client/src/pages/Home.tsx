@@ -62,6 +62,11 @@ import {
 /** Movement above this (px) counts as scroll/drag — do not open the service dialog. */
 const SERVICE_CAROUSEL_TAP_THRESHOLD_PX = 14;
 
+/** Header CTA — WhatsApp chat (+359 89 912 4512, digits only for wa.me). */
+const WHATSAPP_BOOKING_URL =
+  "https://wa.me/359899124512?text=" +
+  encodeURIComponent("Здравейте, искам да запазя час.");
+
 const serviceCarouselImageTriggerClass =
   "relative mb-4 h-52 cursor-pointer touch-pan-x touch-pan-y select-none overflow-hidden rounded-none shadow-md sm:mb-6 sm:h-64";
 
@@ -340,10 +345,16 @@ export default function Home() {
             </a>
             </div>
           </div>
-          <a href="#contact" className="inline-block shrink-0">
+          <a
+            href={WHATSAPP_BOOKING_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block shrink-0"
+            aria-label="Запази час в WhatsApp"
+          >
             <Button className={`transition-all border rounded-none ${isScrolled ? "border-[#D4AF37] bg-[#D4AF37] text-black hover:border-[#b8941f] hover:bg-[#b8941f] hover:text-white" : "border-[#D4AF37] bg-[#D4AF37] text-white hover:border-[#b8941f] hover:bg-[#b8941f] hover:text-white"}`}>
               Запази Час
-          </Button>
+            </Button>
           </a>
         </div>
       </nav>
