@@ -1734,44 +1734,31 @@ export default function Home() {
                   className="mt-4 text-6xl font-light text-neutral-100"
                   style={{ fontFamily: fontFamilyBulgarian }}
                 >
-                  Защо да ни се довериш?
+                  Защо да ни се доверите?
                 </h2>
               </div>
               <div className="space-y-8">
                 {[
-                  {
-                    title: "Опитен специалист",
-                    desc: "Сертифициран професионалист с дългогодишна практика",
-                  },
-                  {
-                    title: "Премиум продукти",
-                    desc: "Само висококачествени, хипоалергенни материали",
-                  },
-                  {
-                    title: "Индивидуален подход",
-                    desc: "Персонализирани процедури, съобразени с твоите черти и желания",
-                  },
-                  {
-                    title: "Луксозно изживяване",
-                    desc: "Спокойна, „спа“ атмосфера за максимален комфорт",
-                  },
+                  { title: "Доказан опит и експертиза" },
+                  { title: "Индивидуален подход към всяко лице" },
+                  { title: "Висок клас продукти и съвременни техники" },
+                  { title: "Безкомпромисна хигиена и безопасност" },
+                  { title: "Експертност, подкрепена с обучение" },
+                  { title: "Резултати с дълготраен ефект" },
                 ].map((item, i) => (
-                  <div key={i} className="flex gap-6">
-                    <div className="w-12 h-12 bg-[#D4AF37] flex items-center justify-center flex-shrink-0 rounded-none">
-                      <span className="text-white font-bold" style={{ fontFamily: fontFamilyBulgarian }}>
+                  <div key={i} className="flex items-center gap-6">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-none bg-[#D4AF37]">
+                      <span className="font-bold text-white" style={{ fontFamily: fontFamilyBulgarian }}>
                         {i + 1}
                       </span>
                     </div>
-                    <div>
+                    <div className="min-w-0 flex-1">
                       <h3
-                        className="mb-2 text-xl font-light text-neutral-100"
+                        className="text-xl font-light leading-snug text-neutral-100"
                         style={{ fontFamily: fontFamilyBulgarian }}
                       >
                         {item.title}
                       </h3>
-                      <p className="text-sm text-neutral-400" style={{ fontFamily: fontFamilyBulgarian }}>
-                        {item.desc}
-                      </p>
                     </div>
                   </div>
                 ))}
